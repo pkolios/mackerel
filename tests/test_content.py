@@ -1,27 +1,17 @@
-from mackerel import content, renderer
+from unittest import mock
+
+from mackerel import content
 
 
-def test_document_init():
-    input_content = """Title: Test post
-Author: John Doe
-Date: December 31, 2099
+def test_document_init(document_content):
+    renderer = mock.Mock()
+    doc = content.Document(content=document_content, renderer=renderer)
 
-It's very easy to produce words **bold** and *italic* with Markdown.
-You can even [link to Google!](http://google.com)"""
-    doc = content.Document(
-        content=input_content, renderer=renderer.MarkdownRenderer())
+    renderer.extract_metadata.assert_called_with(text=document_content)
+    renderer.extract_text.assert_called_with(text=document_content)
+    renderer.render.assert_called_with(doc.text)
 
-    assert doc.metadata == {
-        'Title': 'Test post',
-        'Author': 'John Doe',
-        'Date': 'December 31, 2099'
-    }
-
-    assert doc.text == """
-It's very easy to produce words **bold** and *italic* with Markdown.
-You can even [link to Google!](http://google.com)"""
-
-    assert doc.html == (
-        '<p>It\'s very easy to produce words <strong>bold</strong> and '
-        '<em>italic</em> with Markdown.\nYou can even '
-        '<a href="http://google.com">link to Google!</a></p>\n')
+    assert doc.default_template is None
+    assert renderer.extract_metadata() == doc.metadata
+    assert renderer.extract_text() == doc.text
+    assert renderer.render() == doc.html

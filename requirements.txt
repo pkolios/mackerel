@@ -1,5 +1,7 @@
 ipdb
+Jinja2
 mistune
 mistune-contrib
 mypy
+pylint
 pytest
