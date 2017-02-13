@@ -10,6 +10,8 @@ if TYPE_CHECKING:
 
 
 class DocumentRenderer:
+    EXT = None  # type: str
+
     def extract_metadata(self, text: str) -> Dict[str, str]:
         """Extract the metadata from the top of the document and return a
         dictionary with lower cased keys.
@@ -24,6 +26,8 @@ class DocumentRenderer:
 
 
 class MarkdownRenderer(DocumentRenderer):
+    EXT = '.md'  # type: str
+
     def __init__(self) -> None:
         self.markdown = mistune.Markdown()
 
@@ -51,5 +55,5 @@ class Jinja2Renderer(TemplateRenderer):
 
     def render(self, ctx: 'content.Context', doc: 'content.Document') -> str:
         template = self.env.get_template(
-            doc.metadata.get('template', doc.default_template))
+            doc.metadata.get('template', doc.template))
         return template.render(ctx=ctx, doc=doc)

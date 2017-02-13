@@ -25,5 +25,10 @@ def document(document_content):
 
 
 @pytest.yield_fixture
+def source_path():
+    yield Path(__file__).parent / 'content'
+
+
+@pytest.yield_fixture
 def template_path():
     yield Path(__file__).parent / 'templates'
