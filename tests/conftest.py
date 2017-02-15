@@ -30,5 +30,26 @@ def source_path():
 
 
 @pytest.yield_fixture
+def source(source_path):
+    yield content.Source(source_path)
+
+
+@pytest.yield_fixture
 def template_path():
     yield Path(__file__).parent / 'templates'
+
+
+@pytest.yield_fixture
+def output_path(tmpdir):
+    tmp = tmpdir.mkdir('_build')
+    yield Path(str(tmp))
+
+
+@pytest.yield_fixture
+def markdown_renderer():
+    yield renderers.MarkdownRenderer()
+
+
+@pytest.yield_fixture
+def jinja2renderer(template_path):
+    yield renderers.Jinja2Renderer(template_dir=template_path)

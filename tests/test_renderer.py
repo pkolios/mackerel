@@ -45,4 +45,4 @@ def test_jinja2_renderer(template_path, document):
         '<html><head><title>Test</title></head><body><p>It\'s very easy to '
         'produce words <strong>bold</strong> and <em>italic</em> with '
         'Markdown.\nYou can even <a href="http://google.com">link to Google!'
-        '</a></p>\n</body></html>\n')
+        '</a></p>\n</body></html>')

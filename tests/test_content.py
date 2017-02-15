@@ -23,3 +23,12 @@ def test_source_init(source_path):
     assert src.doc_ext == '.md'
     assert len(src.docs) == 3
     assert len(src.other_files) == 1
+
+
+def test_build(source, output_path, markdown_renderer, jinja2renderer):
+    build = content.Build(
+        source=source, output_dir=output_path,
+        document_renderer=markdown_renderer, template_renderer=jinja2renderer)
+    # TODO: Expand the assertions
+    assert len(build.documents) == 3
+    assert len(build.pages) == 3
