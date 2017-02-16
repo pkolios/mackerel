@@ -10,8 +10,6 @@ if TYPE_CHECKING:
 
 
 class DocumentRenderer:
-    EXT = None  # type: str
-
     def extract_metadata(self, text: str) -> Dict[str, str]:
         """Extract the metadata from the top of the document and return a
         dictionary with lower cased keys.
@@ -26,8 +24,6 @@ class DocumentRenderer:
 
 
 class MarkdownRenderer(DocumentRenderer):
-    EXT = '.md'  # type: str
-
     def __init__(self) -> None:
         self.markdown = mistune.Markdown()
 

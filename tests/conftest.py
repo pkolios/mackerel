@@ -46,6 +46,14 @@ def output_path(tmpdir):
 
 
 @pytest.yield_fixture
+def build(source, output_path, markdown_renderer, jinja2renderer):
+    build = content.Build(
+        source=source, output_dir=output_path,
+        document_renderer=markdown_renderer, template_renderer=jinja2renderer)
+    yield build
+
+
+@pytest.yield_fixture
 def markdown_renderer():
     yield renderers.MarkdownRenderer()
 
