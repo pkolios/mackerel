@@ -18,9 +18,9 @@ def document_content(document_path):
 
 
 @pytest.yield_fixture
-def document(document_content):
+def document(document_path):
     doc = content.Document(
-        content=document_content, renderer=renderers.MarkdownRenderer())
+        document_path=document_path, renderer=renderers.MarkdownRenderer())
     yield doc
 
 
@@ -40,15 +40,15 @@ def template_path():
 
 
 @pytest.yield_fixture
-def output_path(tmpdir):
+def output_dir(tmpdir):
     tmp = tmpdir.mkdir('_build')
     yield Path(str(tmp))
 
 
 @pytest.yield_fixture
-def build(source, output_path, markdown_renderer, jinja2renderer):
+def build(source, output_dir, markdown_renderer, jinja2renderer):
     build = content.Build(
-        source=source, output_dir=output_path,
+        source=source, output_dir=output_dir,
         document_renderer=markdown_renderer, template_renderer=jinja2renderer)
     yield build
 

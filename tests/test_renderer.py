@@ -40,7 +40,7 @@ class TestMarkdownRenderer:
 
 def test_jinja2_renderer(template_path, document):
     renderer = renderers.Jinja2Renderer(template_path)
-    html = renderer.render(ctx=content.Context(), doc=document)
+    html = renderer.render(ctx=content.Context(), document=document)
     assert html == (
         '<html><head><title>Test</title></head><body><p>It\'s very easy to '
         'produce words <strong>bold</strong> and <em>italic</em> with '

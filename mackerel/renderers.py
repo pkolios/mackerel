@@ -40,7 +40,8 @@ class MarkdownRenderer(DocumentRenderer):
 
 
 class TemplateRenderer:
-    def render(self, ctx: 'content.Context', doc: 'content.Document') -> str:
+    def render(self, ctx: 'content.Context',
+               document: 'content.Document') -> str:
         raise NotImplementedError
 
 
@@ -49,7 +50,7 @@ class Jinja2Renderer(TemplateRenderer):
         self.env = jinja2.Environment(
             loader=jinja2.FileSystemLoader(str(template_dir.resolve())))
 
-    def render(self, ctx: 'content.Context', doc: 'content.Document') -> str:
-        template = self.env.get_template(
-            doc.metadata.get('template', doc.template))
-        return template.render(ctx=ctx, doc=doc)
+    def render(self, ctx: 'content.Context',
+               document: 'content.Document') -> str:
+        template = self.env.get_template(document.template)
+        return template.render(ctx=ctx, doc=document)
