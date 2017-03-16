@@ -66,10 +66,19 @@ def test_build(source, output_dir, markdown_renderer, jinja2renderer):
     assert len(build.pages) == 3
 
     for page in build.pages:
-        for key in ('page_path', 'page_content'):
-            assert key in page
+        assert page.path
+        assert page.content
+
+    for doc in build.build_documents:
+        assert doc.document
+        assert doc.uri
 
 
 def test_build__build_page_path(build, document, output_dir):
     page_path = build._build_page_path(document, output_dir)
     assert page_path == output_dir / Path('document.html')
+
+
+def test_build__build_uri(build, document):
+    uri = build._build_uri(document)
+    assert uri == '/document.html'

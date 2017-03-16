@@ -1,6 +1,6 @@
 from unittest import mock
 
-from mackerel import content, renderers
+from mackerel import renderers
 
 
 class TestMarkdownRenderer:
@@ -38,9 +38,9 @@ class TestMarkdownRenderer:
             "<a href=\"http://google.com\">link to Google!</a></p>\n")
 
 
-def test_jinja2_renderer(template_path, document):
+def test_jinja2_renderer(template_path, document, context):
     renderer = renderers.Jinja2Renderer(template_path)
-    html = renderer.render(ctx=content.Context(), document=document)
+    html = renderer.render(ctx=context, document=document)
     assert html == (
         '<html><head><title>Test</title></head><body><p>It\'s very easy to '
         'produce words <strong>bold</strong> and <em>italic</em> with '
