@@ -51,13 +51,13 @@ def test_source_init(source_path):
     assert len(src.other_files) == 1
 
 
-def test_build(source, output_dir, markdown_renderer, jinja2renderer):
+def test_build(source, output_path, markdown_renderer, jinja2renderer):
     build = content.Build(
-        source=source, output_dir=output_dir,
+        source=source, output_path=output_path,
         document_renderer=markdown_renderer, template_renderer=jinja2renderer)
 
     assert build.source == source
-    assert build.output_dir == output_dir
+    assert build.output_path == output_path
 
     assert build.document_renderer == markdown_renderer
     assert build.template_renderer == jinja2renderer
@@ -76,9 +76,9 @@ def test_build(source, output_dir, markdown_renderer, jinja2renderer):
     assert isinstance(build.context, content.Context)
 
 
-def test_build__build_page_path(build, document, output_dir):
-    page_path = build._build_page_path(document, output_dir)
-    assert page_path == output_dir / Path('document.html')
+def test_build__build_page_path(build, document, output_path):
+    page_path = build._build_page_path(document, output_path)
+    assert page_path == output_path / Path('document.html')
 
 
 def test_build__build_uri(build, document):

@@ -70,15 +70,19 @@ class Context:
 
 
 class Build:
-    def __init__(self, source: 'Source', output_dir: 'Path',
+    def __init__(self, source: 'Source', output_path: 'Path',
                  document_renderer: 'DocumentRenderer',
                  template_renderer: 'TemplateRenderer',
                  output_ext: str = '.html') -> None:
         self.source = source
-        self.output_dir = output_dir
+        self.output_path = output_path
         self.document_renderer = document_renderer
         self.template_renderer = template_renderer
         self.output_ext = output_ext
+
+    def execute(self, dry_run: bool = False) -> None:
+        # TODO
+        return None
 
     @cached_property
     def context(self) -> 'Context':
@@ -99,7 +103,7 @@ class Build:
     @cached_property
     def pages(self) -> 'Tuple[BuildPage, ...]':
         return tuple(BuildPage(
-            path=self._build_page_path(build_doc.document, self.output_dir),
+            path=self._build_page_path(build_doc.document, self.output_path),
             content=self.template_renderer.render(
                 ctx=self.context, document=build_doc.document))
             for build_doc in self.build_documents)
@@ -108,8 +112,8 @@ class Build:
         return document.document_path.relative_to(self.source.path)
 
     def _build_page_path(self, document: 'Document',
-                         output_dir: 'Path') -> 'Path':
-        return output_dir / self.__get_relative_path(
+                         output_path: 'Path') -> 'Path':
+        return output_path / self.__get_relative_path(
             document).with_suffix(self.output_ext)
 
     def _build_uri(self, document: 'Document') -> str:

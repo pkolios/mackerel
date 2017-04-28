@@ -46,9 +46,9 @@ class TemplateRenderer:
 
 
 class Jinja2Renderer(TemplateRenderer):
-    def __init__(self, template_dir: 'Path') -> None:
+    def __init__(self, template_path: 'Path') -> None:
         self.env = jinja2.Environment(
-            loader=jinja2.FileSystemLoader(str(template_dir.resolve())))
+            loader=jinja2.FileSystemLoader(str(template_path.resolve())))
 
     def render(self, ctx: 'content.Context',
                document: 'content.Document') -> str:
