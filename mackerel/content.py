@@ -66,7 +66,7 @@ class Context:
     # TODO: Build navigation nodes
     """Context contains data that is relevant for all documents"""
     def __init__(self, build_documents: 'BuildDocument') -> None:
-        self.build_documents = build_documents  # type: BuildDocument
+        self._build_documents = build_documents  # type: BuildDocument
 
 
 class Build:

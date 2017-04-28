@@ -73,6 +73,8 @@ def test_build(source, output_dir, markdown_renderer, jinja2renderer):
         assert doc.document
         assert doc.uri
 
+    assert isinstance(build.context, content.Context)
+
 
 def test_build__build_page_path(build, document, output_dir):
     page_path = build._build_page_path(document, output_dir)
