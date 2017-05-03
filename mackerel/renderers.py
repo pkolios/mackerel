@@ -5,8 +5,8 @@ import mistune
 from mistune_contrib import meta
 
 if TYPE_CHECKING:
-    from pathlib import Path
-    from mackerel import content
+    from pathlib import Path  # noqa
+    from mackerel import content, build  # noqa
 
 
 class DocumentRenderer:
@@ -40,7 +40,7 @@ class MarkdownRenderer(DocumentRenderer):
 
 
 class TemplateRenderer:
-    def render(self, ctx: 'content.Context',
+    def render(self, ctx: 'build.Context',
                document: 'content.Document') -> str:
         raise NotImplementedError
 
@@ -50,7 +50,7 @@ class Jinja2Renderer(TemplateRenderer):
         self.env = jinja2.Environment(
             loader=jinja2.FileSystemLoader(str(template_path.resolve())))
 
-    def render(self, ctx: 'content.Context',
+    def render(self, ctx: 'build.Context',
                document: 'content.Document') -> str:
         template = self.env.get_template(document.template)
         return template.render(ctx=ctx, doc=document)

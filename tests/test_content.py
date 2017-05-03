@@ -1,4 +1,3 @@
-from pathlib import Path
 from unittest import mock
 
 import pytest
@@ -49,38 +48,3 @@ def test_source_init(source_path):
     assert src.doc_ext == '.md'
     assert len(src.document_files) == 3
     assert len(src.other_files) == 1
-
-
-def test_build(source, output_path, markdown_renderer, jinja2renderer):
-    build = content.Build(
-        source=source, output_path=output_path,
-        document_renderer=markdown_renderer, template_renderer=jinja2renderer)
-
-    assert build.source == source
-    assert build.output_path == output_path
-
-    assert build.document_renderer == markdown_renderer
-    assert build.template_renderer == jinja2renderer
-    assert build.output_ext == '.html'
-    assert len(build.documents) == 3
-    assert len(build.pages) == 3
-
-    for page in build.pages:
-        assert page.path
-        assert page.content
-
-    for doc in build.build_documents:
-        assert doc.document
-        assert doc.uri
-
-    assert isinstance(build.context, content.Context)
-
-
-def test_build__build_page_path(build, document, output_path):
-    page_path = build._build_page_path(document, output_path)
-    assert page_path == output_path / Path('document.html')
-
-
-def test_build__build_uri(build, document):
-    uri = build._build_uri(document)
-    assert uri == '/document.html'

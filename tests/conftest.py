@@ -2,7 +2,7 @@ from pathlib import Path
 
 import pytest
 
-from mackerel import content, renderers
+from mackerel import build as build_module, content, renderers
 
 
 @pytest.yield_fixture
@@ -47,10 +47,10 @@ def output_path(tmpdir):
 
 @pytest.yield_fixture
 def build(source, output_path, markdown_renderer, jinja2renderer):
-    build = content.Build(
+    b = build_module.Build(
         source=source, output_path=output_path,
         document_renderer=markdown_renderer, template_renderer=jinja2renderer)
-    yield build
+    yield b
 
 
 @pytest.yield_fixture

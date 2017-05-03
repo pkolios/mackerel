@@ -13,7 +13,7 @@ import mackerel
 @click.pass_context
 def cli(ctx: click.core.Context, debug: bool, verbose: bool) -> None:
     # TODO: cli description text
-    ctx.obj={}
+    ctx.obj = {}
     ctx.obj['DEBUG'] = debug
     ctx.obj['VERBOSE'] = verbose
     if ctx.obj.get('VERBOSE'):
@@ -45,12 +45,13 @@ def build(ctx: click.core.Context, content_path: str, output_path: str,
             click.echo(f'    - {key}: {ctx.obj[key]}')
 
     source = mackerel.content.Source(Path(content_path))
-    build = mackerel.content.Build(
+    build = mackerel.build.Build(
         source=source, output_path=Path(output_path),
         document_renderer=mackerel.renderers.MarkdownRenderer(),
         template_renderer=mackerel.renderers.Jinja2Renderer(
             template_path=Path(template_path)))
     build.execute(dry_run=dry_run)
+
 
 if __name__ == '__main__':
     cli()

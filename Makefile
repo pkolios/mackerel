@@ -1,7 +1,13 @@
-.PHONY: test typing
+.PHONY: lint test typing
 
-test: typing
+lint:
+	flake8 --exit-zero mackerel
+
+test: lint typing
 	py.test -v
 
 typing:
-	MYPYPATH='' mypy mackerel --ignore-missing-imports
+	MYPYPATH='' mypy mackerel \
+			 --disallow-untyped-defs \
+			 --ignore-missing-imports \
+			 --disallow-untyped-calls

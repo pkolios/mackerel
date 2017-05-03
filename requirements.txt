@@ -1,8 +1,8 @@
 click
+flake8
 ipdb
 Jinja2
 mistune
 mistune-contrib
 mypy
-pylint
 pytest
