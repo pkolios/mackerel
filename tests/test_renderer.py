@@ -19,6 +19,7 @@ class TestMarkdownRenderer:
             'author': 'John Doe',
             'date': 'December 31, 2099',
             'template': 'document.html',
+            'custom_meta': 'Nyancat',
         }
 
     def test_markdown_renderer_extract_text(self, document_content):

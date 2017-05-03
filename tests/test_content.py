@@ -16,7 +16,7 @@ def test_document_init(document_path):
     renderer.render.assert_called_with(doc.text)
 
     assert doc.document_path == document_path
-    assert doc.checksum == '6a9fa1fce2e95979cbbb5b949ad0f3a2810af133'
+    assert doc.checksum == '25a3bb324f875a8c72562970ab28df8dffdf48bd'
     assert doc.template == 'document.html'
     assert doc.title == 'Test post'
     assert renderer.extract_metadata() == doc.metadata

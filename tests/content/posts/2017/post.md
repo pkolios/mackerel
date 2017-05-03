@@ -1,4 +1,4 @@
-Title: Test post #2 (/posts/2017/post.html) 
+Title: Test post #2 (/posts/2017/post.html)
 Author: Bender Bending Rodríguez
 Image: /img/fender.svg
 Template: post.html

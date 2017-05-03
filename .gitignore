@@ -67,3 +67,4 @@ ENV/
 
 # Mackerel
 _build/
+_content/
