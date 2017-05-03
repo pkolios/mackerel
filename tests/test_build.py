@@ -36,3 +36,20 @@ def test_build__build_page_path(build, document, output_path):
 def test_build__build_uri(build, document):
     uri = build._build_uri(document)
     assert uri == '/document.html'
+
+
+def test_build_execute(build):
+    build.execute()
+    output_pages = [
+        page.relative_to(build.output_path)
+        for page in build.output_path.rglob(f'*{build.output_ext}')]
+    for src_file in build.source.document_files:
+        assert src_file.relative_to(
+            build.source.path).with_suffix(build.output_ext) in output_pages
+
+
+def test_build_execute_dry_run(build):
+    build.execute(dry_run=True)
+    output_pages = [
+        page for page in build.output_path.rglob(f'*{build.output_ext}')]
+    assert len(output_pages) == 0

@@ -2,7 +2,7 @@ from pathlib import Path
 from typing import TYPE_CHECKING, Tuple, NamedTuple
 
 from mackerel import content
-from mackerel.helpers import cached_property
+from mackerel.helpers import cached_property, touch
 
 if TYPE_CHECKING:
     from mackerel import renderers  # noqa
@@ -37,8 +37,12 @@ class Build:
         self.output_ext = output_ext
 
     def execute(self, dry_run: bool = False) -> None:
-        # TODO
-        return None
+        if dry_run:
+            return None
+
+        for page in self.pages:
+            touch(page.path)
+            page.path.write_text(page.content)
 
     @cached_property
     def context(self) -> Context:

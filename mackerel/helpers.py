@@ -1,3 +1,4 @@
+from pathlib import Path
 from typing import Any
 
 
@@ -11,3 +12,10 @@ class cached_property:
             return self
         value = obj.__dict__[self.func.__name__] = self.func(obj)
         return value
+
+
+def touch(path: Path) -> bool:
+    if not path.parent.exists():
+        path.parent.mkdir(parents=True)
+    path.touch()
+    return True

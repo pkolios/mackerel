@@ -41,7 +41,7 @@ class Source:
     def __init__(self, path: Path, doc_ext: str = '.md') -> None:
         self.path = path
         self.doc_ext = doc_ext
-        all_files = tuple(self.path.glob('**/*'))  # type: Tuple[Path, ...]
+        all_files = tuple(self.path.rglob('*'))  # type: Tuple[Path, ...]
         self.other_files = self._get_other_files(files=all_files)
         self.document_files = self._get_docs(files=all_files)
 
