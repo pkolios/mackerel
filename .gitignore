@@ -45,16 +45,6 @@ coverage.xml
 *,cover
 .hypothesis/
 
-# Flask stuff:
-instance/
-.webassets-cache
-
-# PyBuilder
-target/
-
-# IPython Notebook
-.ipynb_checkpoints
-
 # pyenv
 .python-version
 
@@ -64,6 +54,9 @@ target/
 # virtualenv
 venv/
 ENV/
+
+# mypy
+.mypy_cache/
 
 # Mackerel
 _build/
