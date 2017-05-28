@@ -53,3 +53,19 @@ def test_build_execute_dry_run(build):
     output_pages = [
         page for page in build.output_path.rglob(f'*{build.output_ext}')]
     assert len(output_pages) == 0
+
+
+def test_navigation(build_documents):
+    nav = build.Navigation(build_documents)
+    assert nav._build_documents == build_documents
+
+
+def test_navigation_nodes(build_documents):
+    nav = build.Navigation(build_documents)
+    nodes = nav.nodes
+    assert len(nodes) == len(build_documents)
+    uris = [doc.uri for doc in build_documents]
+    for node in nodes:
+        assert node.is_file is True
+        assert node.is_dir is False
+        assert node.uri in uris

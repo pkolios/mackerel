@@ -1,4 +1,4 @@
-from pathlib import Path
+from pathlib import Path, PurePosixPath
 from typing import TYPE_CHECKING, Tuple, NamedTuple
 
 from mackerel import content
@@ -18,11 +18,29 @@ class BuildPage(NamedTuple):
     content: str
 
 
+class Node(NamedTuple):
+    uri: str
+    parts: Tuple[str, ...]
+    is_dir: bool
+    is_file: bool
+
+
+class Navigation:
+    """Navigation provides methods to list and access the content"""
+    def __init__(self, build_documents: 'Tuple[BuildDocument, ...]') -> None:
+        self._build_documents = build_documents  # type: Tuple[BuildDocument, ...]  # noqa
+
+    @cached_property
+    def nodes(self) -> Tuple[Node, ...]:
+        return tuple(Node(uri=doc.uri, parts=PurePosixPath(doc.uri).parts,
+                          is_dir=False, is_file=True)
+                     for doc in self._build_documents)
+
+
 class Context:
-    # TODO: Build navigation nodes
     """Context contains data that is relevant for all documents"""
-    def __init__(self, build_documents: BuildDocument) -> None:
-        self._build_documents = build_documents  # type: BuildDocument
+    def __init__(self, build_documents: Tuple[BuildDocument, ...]) -> None:
+        self.nav = Navigation(build_documents)
 
 
 class Build:

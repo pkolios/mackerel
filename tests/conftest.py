@@ -54,6 +54,11 @@ def build(source, output_path, markdown_renderer, jinja2renderer):
 
 
 @pytest.yield_fixture
+def build_documents(build):
+    yield build.build_documents
+
+
+@pytest.yield_fixture
 def context(build):
     yield build.context
 
