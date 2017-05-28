@@ -53,4 +53,4 @@ class Jinja2Renderer(TemplateRenderer):
     def render(self, ctx: 'build.Context',
                document: 'content.Document') -> str:
         template = self.env.get_template(document.template)
-        return template.render(ctx=ctx, doc=document)
+        return template.render(ctx=ctx, document=document)
