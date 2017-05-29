@@ -39,12 +39,13 @@ def build(ctx: click.core.Context, content_path: str, output_path: str,
     ctx.obj['OUTPUT_PATH'] = output_path
     ctx.obj['TEMPLATE_PATH'] = template_path
     ctx.obj['DRY_RUN'] = dry_run
+    config = mackerel.helpers.make_config(path=None, ctx=ctx)
     if ctx.obj.get('VERBOSE'):
-        click.echo('- Build Arguments')
-        for key in ('CONTENT_PATH', 'OUTPUT_PATH'):
-            click.echo(f'    - {key}: {ctx.obj[key]}')
+        click.echo('- Configuration:')
+        for key, value in config['mackerel'].items():
+            click.echo(f'    - {key}: {value}')
 
-    source = mackerel.content.Source(Path(content_path))
+    source = mackerel.content.Source(path=Path(content_path))
     build = mackerel.build.Build(
         source=source, output_path=Path(output_path),
         document_renderer=mackerel.renderers.MarkdownRenderer(),
