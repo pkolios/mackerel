@@ -23,7 +23,7 @@ def cli(ctx: click.core.Context, debug: bool, verbose: bool) -> None:
 
 
 @cli.command()
-@click.argument('CONTENT_PATH', type=click.Path(
+@click.argument('SOURCE_PATH', type=click.Path(
     exists=True, file_okay=False, readable=True, resolve_path=True))
 @click.argument('OUTPUT_PATH', type=click.Path(
     exists=False, file_okay=False, writable=True, resolve_path=True))
@@ -32,10 +32,10 @@ def cli(ctx: click.core.Context, debug: bool, verbose: bool) -> None:
 @click.option('--dry-run', default=False, is_flag=True,
               help='Make a build without persisting any files.')
 @click.pass_context
-def build(ctx: click.core.Context, content_path: str, output_path: str,
+def build(ctx: click.core.Context, source_path: str, output_path: str,
           template_path: str, dry_run: bool) -> None:
-    """Builds the contents of CONTENT_PATH and stores them in OUTPUT_PATH"""
-    ctx.obj['CONTENT_PATH'] = content_path
+    """Builds the contents of SOURCE_PATH and stores them in OUTPUT_PATH"""
+    ctx.obj['SOURCE_PATH'] = source_path
     ctx.obj['OUTPUT_PATH'] = output_path
     ctx.obj['TEMPLATE_PATH'] = template_path
     ctx.obj['DRY_RUN'] = dry_run
@@ -45,7 +45,7 @@ def build(ctx: click.core.Context, content_path: str, output_path: str,
         for key, value in config['mackerel'].items():
             click.echo(f'    - {key}: {value}')
 
-    source = mackerel.content.Source(path=Path(content_path))
+    source = mackerel.content.Source(path=Path(source_path))
     build = mackerel.build.Build(
         source=source, output_path=Path(output_path),
         document_renderer=mackerel.renderers.MarkdownRenderer(),

@@ -18,7 +18,7 @@ def test_cli_base(runner):
 def test_cli_build_error(runner):
     result = runner.invoke(cli.cli, ['build'])
     assert result.exit_code == 2
-    assert 'CONTENT_PATH' in result.output
+    assert 'SOURCE_PATH' in result.output
     assert 'OUTPUT_PATH' in result.output
     assert 'TEMPLATE_PATH' in result.output
 
