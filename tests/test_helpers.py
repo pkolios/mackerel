@@ -1,6 +1,5 @@
 from pathlib import Path
 
-import click
 import pytest
 
 from mackerel import helpers
@@ -34,16 +33,12 @@ def test_touch(tmpdir, path):
     assert path.exists()
 
 
-def test_make_config(tmpdir):
-    p = tmpdir.mkdir('config').join('test.ini')
-    p.write('[mackerel]\nTEMPLATE_PATH=/some/path')
-    ctx = click.core.Context(click.Command('test_command'))
-    ctx.obj = {'SOURCE_PATH': 'test/path'}
-
-    config = helpers.make_config(path=p, ctx=ctx)
+def test_make_config(source_path):
+    config = helpers.make_config(source_path=source_path)
     assert 'mackerel' in config
-    for key in ('OUTPUT_PATH', 'SOURCE_PATH', 'TEMPLATE_PATH'):
+    for key in ('OUTPUT_PATH', 'CONTENT_PATH', 'TEMPLATE_PATH', 'DOC_EXT'):
         assert key in config['mackerel']
-    assert config['mackerel']['TEMPLATE_PATH'] == '/some/path'
+    assert config['mackerel']['TEMPLATE_PATH'] == 'template'
     assert config['mackerel']['OUTPUT_PATH'] == '_build'
-    assert config['mackerel']['SOURCE_PATH'] == ctx.obj['SOURCE_PATH']
+    assert config['mackerel']['CONTENT_PATH'] == 'content'
+    assert config['mackerel']['DOC_EXT'] == '.md'

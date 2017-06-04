@@ -44,15 +44,12 @@ class Context:
 
 
 class Build:
-    def __init__(self, source: content.Source, output_path: Path,
+    def __init__(self, source: content.Source,
                  document_renderer: 'renderers.DocumentRenderer',
-                 template_renderer: 'renderers.TemplateRenderer',
-                 output_ext: str = '.html') -> None:
+                 template_renderer: 'renderers.TemplateRenderer') -> None:
         self.source = source
-        self.output_path = output_path
         self.document_renderer = document_renderer
         self.template_renderer = template_renderer
-        self.output_ext = output_ext
 
     def execute(self, dry_run: bool = False) -> None:
         if dry_run:
@@ -81,20 +78,21 @@ class Build:
     @cached_property
     def pages(self) -> Tuple[BuildPage, ...]:
         return tuple(BuildPage(
-            path=self._build_page_path(build_doc.document, self.output_path),
+            path=self._build_page_path(
+                build_doc.document, self.source.output_path),
             content=self.template_renderer.render(
                 ctx=self.context, document=build_doc.document))
             for build_doc in self.build_documents)
 
     def __get_relative_path(self, document: content.Document) -> Path:
-        return document.document_path.relative_to(self.source.path)
+        return document.document_path.relative_to(self.source.content_path)
 
     def _build_page_path(self, document: content.Document,
                          output_path: Path) -> Path:
         return output_path / self.__get_relative_path(
-            document).with_suffix(self.output_ext)
+            document).with_suffix(self.source.output_ext)
 
     def _build_uri(self, document: content.Document) -> str:
         relative_path = self.__get_relative_path(
-            document).with_suffix(self.output_ext).as_posix()
+            document).with_suffix(self.source.output_ext).as_posix()
         return '/{}'.format(str(relative_path))

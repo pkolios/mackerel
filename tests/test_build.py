@@ -5,15 +5,13 @@ from mackerel import build
 
 def test_build(source, output_path, markdown_renderer, jinja2renderer):
     test_build = build.Build(
-        source=source, output_path=output_path,
-        document_renderer=markdown_renderer, template_renderer=jinja2renderer)
+        source=source, document_renderer=markdown_renderer,
+        template_renderer=jinja2renderer)
 
     assert test_build.source == source
-    assert test_build.output_path == output_path
 
     assert test_build.document_renderer == markdown_renderer
     assert test_build.template_renderer == jinja2renderer
-    assert test_build.output_ext == '.html'
     assert len(test_build.documents) == 3
     assert len(test_build.pages) == 3
 
@@ -41,17 +39,20 @@ def test_build__build_uri(build, document):
 def test_build_execute(build):
     build.execute()
     output_pages = [
-        page.relative_to(build.output_path)
-        for page in build.output_path.rglob(f'*{build.output_ext}')]
+        page.relative_to(build.source.output_path)
+        for page in build.source.output_path.rglob(
+            f'*{build.source.output_ext}')]
     for src_file in build.source.document_files:
         assert src_file.relative_to(
-            build.source.path).with_suffix(build.output_ext) in output_pages
+            build.source.content_path).with_suffix(
+                build.source.output_ext) in output_pages
 
 
 def test_build_execute_dry_run(build):
     build.execute(dry_run=True)
     output_pages = [
-        page for page in build.output_path.rglob(f'*{build.output_ext}')]
+        page for page in build.source.content_path.rglob(
+            f'*{build.source.output_ext}')]
     assert len(output_pages) == 0
 
 

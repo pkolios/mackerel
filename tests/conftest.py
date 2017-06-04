@@ -1,3 +1,4 @@
+import shutil
 from pathlib import Path
 
 import pytest
@@ -7,7 +8,7 @@ from mackerel import build as build_module, content, renderers
 
 @pytest.yield_fixture
 def document_path():
-    yield Path(__file__).parent / 'content' / 'document.md'
+    yield Path(__file__).parent / 'site' / 'content' / 'document.md'
 
 
 @pytest.yield_fixture
@@ -26,7 +27,7 @@ def document(document_path):
 
 @pytest.yield_fixture
 def source_path():
-    yield Path(__file__).parent / 'content'
+    yield Path(__file__).parent / 'site'
 
 
 @pytest.yield_fixture
@@ -36,20 +37,24 @@ def source(source_path):
 
 @pytest.yield_fixture
 def template_path():
-    yield Path(__file__).parent / 'templates'
+    yield Path(__file__).parent / 'site' / 'template'
 
 
 @pytest.yield_fixture
-def output_path(tmpdir):
-    tmp = tmpdir.mkdir('_build')
-    yield Path(str(tmp))
+def output_path(source_path, tmpdir):
+    path = Path(__file__).parent / 'site' / '_build'
+    yield path
+    try:
+        shutil.rmtree(path)
+    except FileNotFoundError:
+        pass
 
 
 @pytest.yield_fixture
-def build(source, output_path, markdown_renderer, jinja2renderer):
+def build(source, markdown_renderer, jinja2renderer):
     b = build_module.Build(
-        source=source, output_path=output_path,
-        document_renderer=markdown_renderer, template_renderer=jinja2renderer)
+        source=source, document_renderer=markdown_renderer,
+        template_renderer=jinja2renderer)
     yield b
 
 

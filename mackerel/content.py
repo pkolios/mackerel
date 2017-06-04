@@ -2,7 +2,10 @@ import hashlib
 from pathlib import Path
 from typing import TYPE_CHECKING, Tuple, Dict
 
+from mackerel import helpers
+
 if TYPE_CHECKING:
+    from configparser import ConfigParser  # noqa
     from mackerel.renderers import DocumentRenderer  # noqa
 
 
@@ -38,12 +41,19 @@ class Document:
 
 
 class Source:
-    def __init__(self, path: Path, doc_ext: str = '.md') -> None:
+    def __init__(self, path: Path) -> None:
         self.path = path
-        self.doc_ext = doc_ext
-        all_files = tuple(self.path.rglob('*'))  # type: Tuple[Path, ...]
-        self.other_files = self._get_other_files(files=all_files)
-        self.document_files = self._get_docs(files=all_files)
+        self.config = helpers.make_config(source_path=path)  # type: ConfigParser # noqa
+        self.content_path = path / Path(
+            self.config['mackerel']['CONTENT_PATH'])  # type: Path # noqa
+        self.output_path = path / Path(self.config['mackerel']['OUTPUT_PATH'])  # type: Path # noqa
+        self.template_path = path / Path(
+            self.config['mackerel']['TEMPLATE_PATH'])  # type: Path # noqa
+        self.output_ext = self.config['mackerel']['OUTPUT_EXT']  # type: str
+        self.doc_ext = self.config['mackerel']['DOC_EXT']  # type: str
+        content_files = tuple(self.content_path.rglob('*'))  # type: Tuple[Path, ...] # noqa
+        self.other_files = self._get_other_files(files=content_files)
+        self.document_files = self._get_docs(files=content_files)
 
     def _get_docs(self, files: Tuple[Path, ...]) -> Tuple[Path, ...]:
         return tuple(f for f in files if f.suffix == self.doc_ext)
