@@ -2,7 +2,7 @@ import hashlib
 from pathlib import Path
 from typing import TYPE_CHECKING, Tuple, Dict
 
-from mackerel import helpers
+from mackerel.helpers import cached_property, make_config
 
 if TYPE_CHECKING:
     from configparser import ConfigParser  # noqa
@@ -43,21 +43,34 @@ class Document:
 class Source:
     def __init__(self, path: Path) -> None:
         self.path = path
-        self.config = helpers.make_config(source_path=path)  # type: ConfigParser # noqa
-        self.content_path = path / Path(
-            self.config['mackerel']['CONTENT_PATH'])  # type: Path # noqa
-        self.output_path = path / Path(self.config['mackerel']['OUTPUT_PATH'])  # type: Path # noqa
-        self.template_path = path / Path(
-            self.config['mackerel']['TEMPLATE_PATH'])  # type: Path # noqa
+        self.config = make_config(source_path=path)  # type: ConfigParser # noqa
+        self.template_ext = self.config['mackerel']['TEMPLATE_EXT']  # type: str # noqa
         self.output_ext = self.config['mackerel']['OUTPUT_EXT']  # type: str
         self.doc_ext = self.config['mackerel']['DOC_EXT']  # type: str
-        content_files = tuple(self.content_path.rglob('*'))  # type: Tuple[Path, ...] # noqa
-        self.other_files = self._get_other_files(files=content_files)
-        self.document_files = self._get_docs(files=content_files)
 
-    def _get_docs(self, files: Tuple[Path, ...]) -> Tuple[Path, ...]:
-        return tuple(f for f in files if f.suffix == self.doc_ext)
+    @property
+    def content_path(self) -> Path:
+        return self.path / Path(self.config['mackerel']['CONTENT_PATH'])
 
-    def _get_other_files(self, files: Tuple[Path, ...]) -> Tuple[Path, ...]:
-        return tuple(
-            f for f in files if f.suffix != self.doc_ext and f.is_file())
+    @property
+    def output_path(self) -> Path:
+        return self.path / Path(self.config['mackerel']['OUTPUT_PATH'])
+
+    @property
+    def template_path(self) -> Path:
+        return self.path / Path(self.config['mackerel']['TEMPLATE_PATH'])
+
+    @cached_property
+    def document_files(self) -> Tuple[Path, ...]:
+        return tuple(f for f in self.content_path.rglob('*')
+                     if f.suffix == self.doc_ext)
+
+    @cached_property
+    def other_files(self) -> Tuple[Path, ...]:
+        return tuple(f for f in self.content_path.rglob('*')
+                     if f.suffix != self.doc_ext and f.is_file())
+
+    @cached_property
+    def other_template_files(self) -> Tuple[Path, ...]:
+        return tuple(f for f in self.template_path.rglob('*')
+                     if f.suffix != self.template_ext and f.is_file())

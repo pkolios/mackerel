@@ -31,7 +31,7 @@ def source_path():
 
 
 @pytest.yield_fixture
-def source(source_path):
+def source(source_path, output_path):
     yield content.Source(source_path)
 
 

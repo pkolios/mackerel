@@ -1,3 +1,4 @@
+import shutil
 from pathlib import Path, PurePosixPath
 from typing import TYPE_CHECKING, Tuple, NamedTuple
 
@@ -5,6 +6,7 @@ from mackerel import content
 from mackerel.helpers import cached_property, touch
 
 if TYPE_CHECKING:
+    from configparser import ConfigParser  # noqa
     from mackerel import renderers  # noqa
 
 
@@ -39,8 +41,10 @@ class Navigation:
 
 class Context:
     """Context contains data that is relevant for all documents"""
-    def __init__(self, build_documents: Tuple[BuildDocument, ...]) -> None:
+    def __init__(self, build_documents: Tuple[BuildDocument, ...],
+                 config: 'ConfigParser') -> None:
         self.nav = Navigation(build_documents)
+        self.cfg = config
 
 
 class Build:
@@ -59,9 +63,16 @@ class Build:
             touch(page.path)
             page.path.write_text(page.content)
 
+        for f in self.source.other_template_files:
+            path = self._build_template_file_path(f)
+            if not path.parent.exists():
+                path.parent.mkdir(parents=True)
+            shutil.copyfile(src=f, dst=path)
+
     @cached_property
     def context(self) -> Context:
-        return Context(self.build_documents)
+        return Context(
+            build_documents=self.build_documents, config=self.source.config)
 
     @cached_property
     def documents(self) -> Tuple[content.Document, ...]:
@@ -78,21 +89,23 @@ class Build:
     @cached_property
     def pages(self) -> Tuple[BuildPage, ...]:
         return tuple(BuildPage(
-            path=self._build_page_path(
-                build_doc.document, self.source.output_path),
+            path=self._build_page_path(build_doc.document),
             content=self.template_renderer.render(
                 ctx=self.context, document=build_doc.document))
             for build_doc in self.build_documents)
 
-    def __get_relative_path(self, document: content.Document) -> Path:
+    def __get_relative_doc_path(self, document: content.Document) -> Path:
         return document.document_path.relative_to(self.source.content_path)
 
-    def _build_page_path(self, document: content.Document,
-                         output_path: Path) -> Path:
-        return output_path / self.__get_relative_path(
+    def _build_page_path(self, document: content.Document) -> Path:
+        return self.source.output_path / self.__get_relative_doc_path(
             document).with_suffix(self.source.output_ext)
 
     def _build_uri(self, document: content.Document) -> str:
-        relative_path = self.__get_relative_path(
+        relative_path = self.__get_relative_doc_path(
             document).with_suffix(self.source.output_ext).as_posix()
         return '/{}'.format(str(relative_path))
+
+    def _build_template_file_path(self, template_file: Path) -> Path:
+        return self.source.output_path / template_file.relative_to(
+            self.source.template_path)

@@ -26,9 +26,9 @@ def test_build(source, output_path, markdown_renderer, jinja2renderer):
     assert isinstance(test_build.context, build.Context)
 
 
-def test_build__build_page_path(build, document, output_path):
-    page_path = build._build_page_path(document, output_path)
-    assert page_path == output_path / Path('document.html')
+def test_build__build_page_path(build, document):
+    page_path = build._build_page_path(document)
+    assert page_path == build.source.output_path / Path('document.html')
 
 
 def test_build__build_uri(build, document):
@@ -47,6 +47,10 @@ def test_build_execute(build):
             build.source.content_path).with_suffix(
                 build.source.output_ext) in output_pages
 
+    for template_file in build.source.other_template_files:
+        rel_tf = template_file.relative_to(build.source.template_path)
+        assert (build.source.output_path / rel_tf).is_file()
+
 
 def test_build_execute_dry_run(build):
     build.execute(dry_run=True)
@@ -54,6 +58,11 @@ def test_build_execute_dry_run(build):
         page for page in build.source.content_path.rglob(
             f'*{build.source.output_ext}')]
     assert len(output_pages) == 0
+
+
+def test_build_context(build):
+    assert build.context.nav
+    assert build.context.cfg
 
 
 def test_navigation(build_documents):
