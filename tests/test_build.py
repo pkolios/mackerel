@@ -47,6 +47,10 @@ def test_build_execute(build):
             build.source.content_path).with_suffix(
                 build.source.output_ext) in output_pages
 
+    for other_file in build.source.other_files:
+        rel_of = other_file.relative_to(build.source.content_path)
+        assert (build.source.output_path / rel_of).is_file()
+
     for template_file in build.source.other_template_files:
         rel_tf = template_file.relative_to(build.source.template_path)
         assert (build.source.output_path / rel_tf).is_file()

@@ -63,6 +63,12 @@ class Build:
             touch(page.path)
             page.path.write_text(page.content)
 
+        for f in self.source.other_files:
+            path = self._build_other_file_path(f)
+            if not path.parent.exists():
+                path.parent.mkdir(parents=True)
+            shutil.copyfile(src=f, dst=path)
+
         for f in self.source.other_template_files:
             path = self._build_template_file_path(f)
             if not path.parent.exists():
@@ -105,6 +111,10 @@ class Build:
         relative_path = self.__get_relative_doc_path(
             document).with_suffix(self.source.output_ext).as_posix()
         return '/{}'.format(str(relative_path))
+
+    def _build_other_file_path(self, other_file: Path) -> Path:
+        return self.source.output_path / other_file.relative_to(
+            self.source.content_path)
 
     def _build_template_file_path(self, template_file: Path) -> Path:
         return self.source.output_path / template_file.relative_to(
