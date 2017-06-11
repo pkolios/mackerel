@@ -22,5 +22,9 @@ def test_cli_build_error(runner):
 
 
 def test_build_success(runner, source_path, template_path, output_path):
-    result = runner.invoke(cli.cli, ['build', str(source_path)])
+    output_path.mkdir()
+    result = runner.invoke(cli.cli, ['build', str(source_path)], input='y\n')
     assert result.exit_code == 0
+    assert result.output == (
+        'Directory `{o}` already exists, '
+        'do you want to overwrite? [y/N]: y\n'.format(o=str(output_path)))

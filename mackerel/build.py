@@ -59,6 +59,11 @@ class Build:
         if dry_run:
             return None
 
+        try:
+            shutil.rmtree(self.source.output_path)
+        except FileNotFoundError:
+            pass
+
         for page in self.pages:
             touch(page.path)
             page.path.write_text(page.content)

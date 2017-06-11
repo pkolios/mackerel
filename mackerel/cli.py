@@ -31,6 +31,11 @@ def build(ctx: click.core.Context, source_path: str, dry_run: bool) -> None:
         for key, value in source.config['mackerel'].items():
             click.echo(f'    - {key}: {value}')
 
+    if source.output_path.exists():
+        click.confirm(
+            'Directory `{b}` already exists, do you want to overwrite?'.format(
+                b=str(source.output_path)), abort=True)
+
     build = mackerel.build.Build(
         source=source, document_renderer=mackerel.renderers.MarkdownRenderer(),
         template_renderer=mackerel.renderers.Jinja2Renderer(
