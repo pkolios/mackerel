@@ -1,3 +1,5 @@
+import os
+import shutil
 from pathlib import Path
 
 import click
@@ -18,13 +20,29 @@ def cli(ctx: click.core.Context, debug: bool, verbose: bool) -> None:
 
 
 @cli.command()
+@click.argument('SITE_PATH', type=click.Path(exists=False, resolve_path=True))
+@click.pass_context
+def init(ctx: click.core.Context, site_path: str) -> None:
+    """Create an empty mackerel site"""
+    output_path = Path(site_path)
+    if output_path.exists():
+        raise click.UsageError('Directory {s} already exists.'.format(
+            s=site_path))
+
+    sample_site_path = Path(os.path.dirname(
+        os.path.realpath(__file__))).parent / 'tests' / 'site'
+    shutil.copytree(src=sample_site_path, dst=output_path)
+    click.echo('Initialized empty mackerel site in {}'.format(output_path))
+
+
+@cli.command()
 @click.argument('SOURCE_PATH', type=click.Path(
     exists=True, file_okay=False, readable=True, resolve_path=True))
 @click.option('--dry-run', default=False, is_flag=True,
               help='Make a build without persisting any files.')
 @click.pass_context
 def build(ctx: click.core.Context, source_path: str, dry_run: bool) -> None:
-    """Builds the contents of SOURCE_PATH and stores them in OUTPUT_PATH"""
+    """Builds the contents of SOURCE_PATH"""
     source = mackerel.content.Source(path=Path(source_path))
     if ctx.obj.get('VERBOSE'):
         click.echo('- Configuration:')
@@ -33,7 +51,7 @@ def build(ctx: click.core.Context, source_path: str, dry_run: bool) -> None:
 
     if source.output_path.exists():
         click.confirm(
-            'Directory `{b}` already exists, do you want to overwrite?'.format(
+            'Directory {b} already exists, do you want to overwrite?'.format(
                 b=str(source.output_path)), abort=True)
 
     build = mackerel.build.Build(

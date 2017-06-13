@@ -41,7 +41,7 @@ def template_path():
 
 
 @pytest.yield_fixture
-def output_path(source_path, tmpdir):
+def output_path(source_path):
     path = Path(__file__).parent / 'site' / '_build'
     yield path
     try:
