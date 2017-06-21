@@ -48,7 +48,8 @@ class TemplateRenderer:
 class Jinja2Renderer(TemplateRenderer):
     def __init__(self, template_path: 'Path') -> None:
         self.env = jinja2.Environment(
-            loader=jinja2.FileSystemLoader(str(template_path.resolve())))
+            loader=jinja2.FileSystemLoader(str(template_path.resolve())),
+            trim_blocks=True, lstrip_blocks=True,)
 
     def render(self, ctx: 'build.Context',
                document: 'content.Document') -> str:
