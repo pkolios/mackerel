@@ -49,12 +49,8 @@ class Context:
 
 
 class Build:
-    def __init__(self, site: Site,
-                 document_renderer: 'renderers.DocumentRenderer',
-                 template_renderer: 'renderers.TemplateRenderer') -> None:
+    def __init__(self, site: Site) -> None:
         self.site = site
-        self.document_renderer = document_renderer
-        self.template_renderer = template_renderer
 
     def execute(self, dry_run: bool = False) -> None:
         if dry_run:
@@ -89,7 +85,7 @@ class Build:
     @cached_property
     def documents(self) -> Tuple[content.Document, ...]:
         return tuple(content.Document(
-            document_path=document_file, renderer=self.document_renderer)
+            document_path=document_file, renderer=self.site.document_renderer)
             for document_file in self.site.document_files)
 
     @cached_property
@@ -102,7 +98,7 @@ class Build:
     def pages(self) -> Tuple[BuildPage, ...]:
         return tuple(BuildPage(
             path=self._build_page_path(build_doc.document),
-            content=self.template_renderer.render(
+            content=self.site.template_renderer.render(
                 ctx=self.context, document=build_doc.document))
             for build_doc in self.build_documents)
 
@@ -111,11 +107,12 @@ class Build:
 
     def _build_page_path(self, document: content.Document) -> Path:
         return self.site.output_path / self.__get_relative_doc_path(
-            document).with_suffix(self.site.output_ext)
+            document).with_suffix(self.site.config['mackerel']['OUTPUT_EXT'])
 
     def _build_uri(self, document: content.Document) -> str:
         relative_path = self.__get_relative_doc_path(
-            document).with_suffix(self.site.output_ext).as_posix()
+            document).with_suffix(
+                self.site.config['mackerel']['OUTPUT_EXT']).as_posix()
         return '/{}'.format(str(relative_path))
 
     def _build_other_file_path(self, other_file: Path) -> Path:

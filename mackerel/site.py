@@ -2,6 +2,7 @@ from pathlib import Path
 from typing import TYPE_CHECKING, Tuple
 
 from mackerel.helpers import cached_property, make_config
+from mackerel import renderers
 
 if TYPE_CHECKING:
     from configparser import ConfigParser  # noqa
@@ -10,10 +11,7 @@ if TYPE_CHECKING:
 class Site:
     def __init__(self, path: Path) -> None:
         self.path = path
-        self.config = make_config(site_path=path)  # type: ConfigParser # noqa
-        self.template_ext = self.config['mackerel']['TEMPLATE_EXT']  # type: str # noqa
-        self.output_ext = self.config['mackerel']['OUTPUT_EXT']  # type: str
-        self.doc_ext = self.config['mackerel']['DOC_EXT']  # type: str
+        self.config = make_config(site_path=path)  # type: ConfigParser
 
     @property
     def content_path(self) -> Path:
@@ -30,14 +28,29 @@ class Site:
     @cached_property
     def document_files(self) -> Tuple[Path, ...]:
         return tuple(f for f in self.content_path.rglob('*')
-                     if f.suffix == self.doc_ext)
+                     if f.suffix == self.config['mackerel']['DOC_EXT'])
 
     @cached_property
     def other_content_files(self) -> Tuple[Path, ...]:
-        return tuple(f for f in self.content_path.rglob('*')
-                     if f.suffix != self.doc_ext and f.is_file())
+        return tuple(
+            f for f in self.content_path.rglob('*')
+            if f.suffix != self.config['mackerel']['DOC_EXT'] and f.is_file())
 
     @cached_property
     def other_template_files(self) -> Tuple[Path, ...]:
-        return tuple(f for f in self.template_path.rglob('*')
-                     if f.suffix != self.template_ext and f.is_file())
+        return tuple(
+            f for f in self.template_path.rglob('*')
+            if f.suffix != self.config['mackerel']['TEMPLATE_EXT'] and
+            f.is_file())
+
+    @cached_property
+    def document_renderer(self) -> renderers.DocumentRenderer:
+        renderer = getattr(
+            renderers, self.config['mackerel']['DOCUMENT_RENDERER'])
+        return renderer(site=self)
+
+    @cached_property
+    def template_renderer(self) -> renderers.TemplateRenderer:
+        renderer = getattr(
+            renderers, self.config['mackerel']['TEMPLATE_RENDERER'])
+        return renderer(site=self)

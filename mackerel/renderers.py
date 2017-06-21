@@ -5,13 +5,18 @@ import mistune
 from mistune_contrib import meta
 
 if TYPE_CHECKING:
+    from mackerel import build, content  # noqa
+    from mackerel.site import Site  # noqa
     from pathlib import Path  # noqa
-    from mackerel import content, build  # noqa
 
 
 class DocumentRenderer:
+    def __init__(self, site: 'Site') -> None:
+        raise NotImplementedError
+
     def extract_metadata(self, text: str) -> Dict[str, str]:
-        """Extract the metadata from the top of the document and return a
+        """
+        Extract the metadata from the top of the document and return a
         dictionary with lower cased keys.
         """
         raise NotImplementedError
@@ -24,7 +29,7 @@ class DocumentRenderer:
 
 
 class MarkdownRenderer(DocumentRenderer):
-    def __init__(self) -> None:
+    def __init__(self, site: 'Site') -> None:
         self.markdown = mistune.Markdown()
 
     def extract_metadata(self, text: str) -> Dict[str, str]:
@@ -40,16 +45,23 @@ class MarkdownRenderer(DocumentRenderer):
 
 
 class TemplateRenderer:
+    def __init__(self, site: 'Site') -> None:
+        raise NotImplementedError
+
     def render(self, ctx: 'build.Context',
                document: 'content.Document') -> str:
         raise NotImplementedError
 
 
 class Jinja2Renderer(TemplateRenderer):
-    def __init__(self, template_path: 'Path') -> None:
+    def __init__(self, site: 'Site') -> None:
+        template_path = site.template_path  # Type: Path
+        trim_blocks = site.config.getboolean('Jinja2Renderer', 'TRIM_BLOCKS')
+        lstrip_blocks = site.config.getboolean(
+            'Jinja2Renderer', 'LSTRIP_BLOCKS')
         self.env = jinja2.Environment(
             loader=jinja2.FileSystemLoader(str(template_path.resolve())),
-            trim_blocks=True, lstrip_blocks=True,)
+            trim_blocks=trim_blocks, lstrip_blocks=lstrip_blocks,)
 
     def render(self, ctx: 'build.Context',
                document: 'content.Document') -> str:

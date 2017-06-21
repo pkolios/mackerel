@@ -54,10 +54,7 @@ def build(ctx: click.core.Context, site_path: str, dry_run: bool) -> None:
             'Directory {b} already exists, do you want to overwrite?'.format(
                 b=str(site.output_path)), abort=True)
 
-    build = mackerel.build.Build(
-        site=site, document_renderer=mackerel.renderers.MarkdownRenderer(),
-        template_renderer=mackerel.renderers.Jinja2Renderer(
-            template_path=Path(site.template_path)))
+    build = mackerel.build.Build(site=site)
     build.execute(dry_run=dry_run)
 
 

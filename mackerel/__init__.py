@@ -4,4 +4,4 @@ __author__ = 'Paris Kolios'
 __license__ = 'Apache 2.0'
 __copyright__ = 'Copyright 2017 Paris Kolios'
 
-from . import build, content, renderers  # noqa
+from . import build, content, renderers, site  # noqa

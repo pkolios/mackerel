@@ -1,5 +1,6 @@
 import shutil
 from pathlib import Path
+from unittest import mock
 
 import pytest
 
@@ -22,7 +23,8 @@ def document_content(document_path):
 @pytest.yield_fixture
 def document(document_path):
     doc = content.Document(
-        document_path=document_path, renderer=renderers.MarkdownRenderer())
+        document_path=document_path,
+        renderer=renderers.MarkdownRenderer(site=mock.Mock()))
     yield doc
 
 
@@ -56,11 +58,8 @@ def output_path(site_path):
 
 
 @pytest.yield_fixture
-def build(site, markdown_renderer, jinja2renderer):
-    b = build_module.Build(
-        site=site, document_renderer=markdown_renderer,
-        template_renderer=jinja2renderer)
-    yield b
+def build(site):
+    yield build_module.Build(site=site)
 
 
 @pytest.yield_fixture
@@ -71,13 +70,3 @@ def build_documents(build):
 @pytest.yield_fixture
 def context(build):
     yield build.context
-
-
-@pytest.yield_fixture
-def markdown_renderer():
-    yield renderers.MarkdownRenderer()
-
-
-@pytest.yield_fixture
-def jinja2renderer(template_path):
-    yield renderers.Jinja2Renderer(template_path=template_path)
