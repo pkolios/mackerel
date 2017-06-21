@@ -43,6 +43,10 @@ def template_path():
 @pytest.yield_fixture
 def output_path(source_path):
     path = Path(__file__).parent / 'site' / '_build'
+    try:
+        shutil.rmtree(path)
+    except FileNotFoundError:
+        pass
     yield path
     try:
         shutil.rmtree(path)

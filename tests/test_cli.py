@@ -28,6 +28,7 @@ def test_build_success(runner, source_path, template_path, output_path):
     assert result.output == (
         'Directory {o} already exists, '
         'do you want to overwrite? [y/N]: y\n'.format(o=str(output_path)))
+    assert len(list(source_path.iterdir()))
 
 
 def test_init_directory_exists(runner, source_path):
