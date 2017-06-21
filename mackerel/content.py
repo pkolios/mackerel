@@ -66,7 +66,7 @@ class Source:
                      if f.suffix == self.doc_ext)
 
     @cached_property
-    def other_files(self) -> Tuple[Path, ...]:
+    def other_content_files(self) -> Tuple[Path, ...]:
         return tuple(f for f in self.content_path.rglob('*')
                      if f.suffix != self.doc_ext and f.is_file())
 

@@ -68,7 +68,7 @@ class Build:
             touch(page.path)
             page.path.write_text(page.content)
 
-        for f in self.source.other_files:
+        for f in self.source.other_content_files:
             path = self._build_other_file_path(f)
             if not path.parent.exists():
                 path.parent.mkdir(parents=True)

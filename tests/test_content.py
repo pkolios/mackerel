@@ -53,5 +53,5 @@ def test_source_init(source_path):
     assert src.output_ext == '.html'
     assert src.doc_ext == '.md'
     assert len(src.document_files) == 3
-    assert len(src.other_files) == 1
+    assert len(src.other_content_files) == 1
     assert len(src.other_template_files) == 1
