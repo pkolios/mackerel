@@ -33,8 +33,8 @@ def test_touch(tmpdir, path):
     assert path.exists()
 
 
-def test_make_config(source_path):
-    config = helpers.make_config(source_path=source_path)
+def test_make_config(site_path):
+    config = helpers.make_config(site_path=site_path)
     assert 'mackerel' in config
     for key in ('OUTPUT_PATH', 'CONTENT_PATH', 'TEMPLATE_PATH', 'DOC_EXT'):
         assert key in config['mackerel']

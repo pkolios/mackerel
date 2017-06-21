@@ -3,12 +3,12 @@ from pathlib import Path
 from mackerel import build
 
 
-def test_build(source, output_path, markdown_renderer, jinja2renderer):
+def test_build(site, output_path, markdown_renderer, jinja2renderer):
     test_build = build.Build(
-        source=source, document_renderer=markdown_renderer,
+        site=site, document_renderer=markdown_renderer,
         template_renderer=jinja2renderer)
 
-    assert test_build.source == source
+    assert test_build.site == site
 
     assert test_build.document_renderer == markdown_renderer
     assert test_build.template_renderer == jinja2renderer
@@ -28,7 +28,7 @@ def test_build(source, output_path, markdown_renderer, jinja2renderer):
 
 def test_build__build_page_path(build, document):
     page_path = build._build_page_path(document)
-    assert page_path == build.source.output_path / Path('document.html')
+    assert page_path == build.site.output_path / Path('document.html')
 
 
 def test_build__build_uri(build, document):
@@ -39,28 +39,28 @@ def test_build__build_uri(build, document):
 def test_build_execute(build):
     build.execute()
     output_pages = [
-        page.relative_to(build.source.output_path)
-        for page in build.source.output_path.rglob(
-            f'*{build.source.output_ext}')]
-    for src_file in build.source.document_files:
+        page.relative_to(build.site.output_path)
+        for page in build.site.output_path.rglob(
+            f'*{build.site.output_ext}')]
+    for src_file in build.site.document_files:
         assert src_file.relative_to(
-            build.source.content_path).with_suffix(
-                build.source.output_ext) in output_pages
+            build.site.content_path).with_suffix(
+                build.site.output_ext) in output_pages
 
-    for other_file in build.source.other_content_files:
-        rel_of = other_file.relative_to(build.source.content_path)
-        assert (build.source.output_path / rel_of).is_file()
+    for other_file in build.site.other_content_files:
+        rel_of = other_file.relative_to(build.site.content_path)
+        assert (build.site.output_path / rel_of).is_file()
 
-    for template_file in build.source.other_template_files:
-        rel_tf = template_file.relative_to(build.source.template_path)
-        assert (build.source.output_path / rel_tf).is_file()
+    for template_file in build.site.other_template_files:
+        rel_tf = template_file.relative_to(build.site.template_path)
+        assert (build.site.output_path / rel_tf).is_file()
 
 
 def test_build_execute_dry_run(build):
     build.execute(dry_run=True)
     output_pages = [
-        page for page in build.source.content_path.rglob(
-            f'*{build.source.output_ext}')]
+        page for page in build.site.content_path.rglob(
+            f'*{build.site.output_ext}')]
     assert len(output_pages) == 0
 
 

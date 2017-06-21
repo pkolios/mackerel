@@ -3,6 +3,7 @@ from pathlib import Path, PurePosixPath
 from typing import TYPE_CHECKING, Tuple, NamedTuple
 
 from mackerel import content
+from mackerel.site import Site
 from mackerel.helpers import cached_property, touch
 
 if TYPE_CHECKING:
@@ -48,10 +49,10 @@ class Context:
 
 
 class Build:
-    def __init__(self, source: content.Source,
+    def __init__(self, site: Site,
                  document_renderer: 'renderers.DocumentRenderer',
                  template_renderer: 'renderers.TemplateRenderer') -> None:
-        self.source = source
+        self.site = site
         self.document_renderer = document_renderer
         self.template_renderer = template_renderer
 
@@ -60,7 +61,7 @@ class Build:
             return None
 
         try:
-            shutil.rmtree(self.source.output_path)
+            shutil.rmtree(self.site.output_path)
         except FileNotFoundError:
             pass
 
@@ -68,13 +69,13 @@ class Build:
             touch(page.path)
             page.path.write_text(page.content)
 
-        for f in self.source.other_content_files:
+        for f in self.site.other_content_files:
             path = self._build_other_file_path(f)
             if not path.parent.exists():
                 path.parent.mkdir(parents=True)
             shutil.copyfile(src=f, dst=path)
 
-        for f in self.source.other_template_files:
+        for f in self.site.other_template_files:
             path = self._build_template_file_path(f)
             if not path.parent.exists():
                 path.parent.mkdir(parents=True)
@@ -83,13 +84,13 @@ class Build:
     @cached_property
     def context(self) -> Context:
         return Context(
-            build_documents=self.build_documents, config=self.source.config)
+            build_documents=self.build_documents, config=self.site.config)
 
     @cached_property
     def documents(self) -> Tuple[content.Document, ...]:
         return tuple(content.Document(
             document_path=document_file, renderer=self.document_renderer)
-            for document_file in self.source.document_files)
+            for document_file in self.site.document_files)
 
     @cached_property
     def build_documents(self) -> Tuple[BuildDocument, ...]:
@@ -106,21 +107,21 @@ class Build:
             for build_doc in self.build_documents)
 
     def __get_relative_doc_path(self, document: content.Document) -> Path:
-        return document.document_path.relative_to(self.source.content_path)
+        return document.document_path.relative_to(self.site.content_path)
 
     def _build_page_path(self, document: content.Document) -> Path:
-        return self.source.output_path / self.__get_relative_doc_path(
-            document).with_suffix(self.source.output_ext)
+        return self.site.output_path / self.__get_relative_doc_path(
+            document).with_suffix(self.site.output_ext)
 
     def _build_uri(self, document: content.Document) -> str:
         relative_path = self.__get_relative_doc_path(
-            document).with_suffix(self.source.output_ext).as_posix()
+            document).with_suffix(self.site.output_ext).as_posix()
         return '/{}'.format(str(relative_path))
 
     def _build_other_file_path(self, other_file: Path) -> Path:
-        return self.source.output_path / other_file.relative_to(
-            self.source.content_path)
+        return self.site.output_path / other_file.relative_to(
+            self.site.content_path)
 
     def _build_template_file_path(self, template_file: Path) -> Path:
-        return self.source.output_path / template_file.relative_to(
-            self.source.template_path)
+        return self.site.output_path / template_file.relative_to(
+            self.site.template_path)

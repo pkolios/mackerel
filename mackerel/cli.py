@@ -36,28 +36,28 @@ def init(ctx: click.core.Context, site_path: str) -> None:
 
 
 @cli.command()
-@click.argument('SOURCE_PATH', type=click.Path(
+@click.argument('SITE_PATH', type=click.Path(
     exists=True, file_okay=False, readable=True, resolve_path=True))
 @click.option('--dry-run', default=False, is_flag=True,
               help='Make a build without persisting any files.')
 @click.pass_context
-def build(ctx: click.core.Context, source_path: str, dry_run: bool) -> None:
-    """Builds the contents of SOURCE_PATH"""
-    source = mackerel.content.Source(path=Path(source_path))
+def build(ctx: click.core.Context, site_path: str, dry_run: bool) -> None:
+    """Builds the contents of SITE_PATH"""
+    site = mackerel.site.Site(path=Path(site_path))
     if ctx.obj.get('VERBOSE'):
         click.echo('- Configuration:')
-        for key, value in source.config['mackerel'].items():
+        for key, value in site.config['mackerel'].items():
             click.echo(f'    - {key}: {value}')
 
-    if source.output_path.exists():
+    if site.output_path.exists():
         click.confirm(
             'Directory {b} already exists, do you want to overwrite?'.format(
-                b=str(source.output_path)), abort=True)
+                b=str(site.output_path)), abort=True)
 
     build = mackerel.build.Build(
-        source=source, document_renderer=mackerel.renderers.MarkdownRenderer(),
+        site=site, document_renderer=mackerel.renderers.MarkdownRenderer(),
         template_renderer=mackerel.renderers.Jinja2Renderer(
-            template_path=Path(source.template_path)))
+            template_path=Path(site.template_path)))
     build.execute(dry_run=dry_run)
 
 

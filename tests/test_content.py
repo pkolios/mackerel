@@ -1,4 +1,3 @@
-from pathlib import Path
 from unittest import mock
 
 import pytest
@@ -42,16 +41,3 @@ def test_document_missing_title(document_path):
         content.Document(document_path=document_path, renderer=renderer)
 
     assert 'missing a title' in str(excinfo.value)
-
-
-def test_source_init(source_path):
-    src = content.Source(source_path)
-    assert src.config['mackerel']
-    assert src.content_path == source_path / Path('content')
-    assert src.output_path == source_path / Path('_build')
-    assert src.template_path == source_path / Path('template')
-    assert src.output_ext == '.html'
-    assert src.doc_ext == '.md'
-    assert len(src.document_files) == 3
-    assert len(src.other_content_files) == 1
-    assert len(src.other_template_files) == 1

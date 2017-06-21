@@ -23,12 +23,12 @@ def touch(path: Path) -> bool:
     return True
 
 
-def make_config(source_path: Path) -> configparser.ConfigParser:
+def make_config(site_path: Path) -> configparser.ConfigParser:
     config = configparser.ConfigParser()
     # Read default config values
     default_cfg_path = Path(os.path.dirname(os.path.realpath(__file__)))
     with open(default_cfg_path / Path('config.ini')) as f:
         config.read_file(f)
     # Read config file
-    config.read(str(Path(source_path) / Path('.mackerelconfig')))
+    config.read(str(Path(site_path) / Path('.mackerelconfig')))
     return config
