@@ -1,0 +1,12 @@
+<div class="nav">
+    <h3 class="nav-title">Menu</h3>
+    <a href="#" class="nav-close">
+        <span class="hidden">Close</span>
+    </a>
+    <ul>
+        {% for item in ctx.nav.nodes %}
+            <li class="nav-{{ item.slug }}{% if item.current %} nav-current{% endif %}"><a href="{{ item.url|e }}">{{ item.title }}</a></li>
+        {% endfor %}
+    </ul>
+</div>
+<span class="nav-cover"></span>

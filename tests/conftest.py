@@ -10,7 +10,7 @@ from mackerel import (
 
 @pytest.yield_fixture
 def document_path():
-    yield Path(__file__).parent / 'site' / 'content' / 'document.md'
+    yield Path(__file__).parent / 'site' / 'content' / 'about.md'
 
 
 @pytest.yield_fixture
@@ -60,11 +60,6 @@ def output_path(site_path):
 @pytest.yield_fixture
 def build(site):
     yield build_module.Build(site=site)
-
-
-@pytest.yield_fixture
-def build_documents(build):
-    yield build.build_documents
 
 
 @pytest.yield_fixture

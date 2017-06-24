@@ -15,11 +15,9 @@ class TestMarkdownRenderer:
             renderer = renderers.MarkdownRenderer(site=mock.Mock())
 
         assert renderer.extract_metadata(document_content) == {
-            'title': 'Test post',
-            'author': 'John Doe',
-            'date': 'December 31, 2099',
-            'template': 'document.html',
-            'custom_meta': 'Nyancat',
+            'title': 'About',
+            'template': 'page.html',
+            'body_class': 'post-template page-template page'
         }
 
     def test_markdown_renderer_extract_text(self, document_content):
@@ -27,16 +25,19 @@ class TestMarkdownRenderer:
             renderer = renderers.MarkdownRenderer(site=mock.Mock())
 
         assert renderer.extract_text(document_content) == (
-            "It's very easy to produce words **bold** and *italic* with "
-            "Markdown.\nYou can even [link to Google!](http://google.com)")
+            'This is a demo site for Mackerel, it contains dummy content '
+            'which allows you to click around and see what a Mackerel blog '
+            'running Ghost\'s Casper theme looks like.\n\nWe use this for '
+            'testing and for reference!')
 
     def test_markdown_renderer_render(self, document_content):
         renderer = renderers.MarkdownRenderer(site=mock.Mock())
         text = renderer.extract_text(document_content)
         assert renderer.render(text) == (
-            "<p>It\'s very easy to produce words <strong>bold</strong> and "
-            "<em>italic</em> with Markdown.\nYou can even "
-            "<a href=\"http://google.com\">link to Google!</a></p>\n")
+            '<p>This is a demo site for Mackerel, it contains dummy content '
+            'which allows you to click around and see what a Mackerel blog '
+            'running Ghost\'s Casper theme looks like.</p>\n<p>We use this '
+            'for testing and for reference!</p>\n')
 
 
 class TestJinja2Renderer:
@@ -54,8 +55,6 @@ class TestJinja2Renderer:
     def test_jinja2_renderer_render(self, site, document, context):
         renderer = renderers.Jinja2Renderer(site=site)
         html = renderer.render(ctx=context, document=document)
-        assert html == (
-            '<html><head><title>Test</title></head><body><p>It\'s very easy '
-            'to produce words <strong>bold</strong> and <em>italic</em> with '
-            'Markdown.\nYou can even <a href="http://google.com">link to '
-            'Google!</a></p>\n</body></html>')
+        assert '<!DOCTYPE html>' in html
+        assert '<a href="about.html"></a>' in html
+        assert '<h1 class="post-title">About</h1>' in html

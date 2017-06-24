@@ -9,29 +9,20 @@ def test_build(site):
 
     assert test_build.site == site
 
-    assert len(test_build.documents) == 3
-    assert len(test_build.pages) == 3
+    assert len(test_build.documents) == 5
+    assert len(test_build.pages) == 5
 
     for page in test_build.pages:
         assert page.path
         assert page.content
 
-    for doc in test_build.build_documents:
-        assert doc.document
-        assert doc.uri
-
     assert isinstance(test_build.context, build.Context)
     assert isinstance(test_build.site, Site)
 
 
-def test_build__build_page_path(build, document):
-    page_path = build._build_page_path(document)
-    assert page_path == build.site.output_path / Path('document.html')
-
-
-def test_build__build_uri(build, document):
-    uri = build._build_uri(document)
-    assert uri == '/document.html'
+def test_build_absolute_page_output_path(build, document):
+    page_path = build._absolute_page_output_path(document)
+    assert page_path == build.site.output_path / Path('about.html')
 
 
 def test_build_execute(build):
@@ -63,5 +54,6 @@ def test_build_execute_dry_run(build):
 
 
 def test_build_context(build):
+    # TODO: Test something more meaningful
     assert build.context.nav
     assert build.context.cfg

@@ -1,4 +1,4 @@
-Title: Test post (/posts/index.html)
+Title: Test post (/posts/test_post.html)
 Author: Professor Farnsworth
 Template: post.html
 

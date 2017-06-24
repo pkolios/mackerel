@@ -10,8 +10,12 @@ def test_site_init(site_path):
     assert site.content_path == site_path / Path('content')
     assert site.output_path == site_path / Path('_build')
     assert site.template_path == site_path / Path('template')
-    assert len(site.document_files) == 3
-    assert len(site.other_content_files) == 1
-    assert len(site.other_template_files) == 1
+    assert len(site.document_files) == 5
+    assert len(site.other_content_files) == 3
+    assert len(site.other_template_files) == 7
     assert isinstance(site.document_renderer, MarkdownRenderer)
     assert isinstance(site.template_renderer, Jinja2Renderer)
+
+
+def test_get_relative_doc_path(site, document):
+    assert site.get_relative_doc_path(document) == Path('about.md')

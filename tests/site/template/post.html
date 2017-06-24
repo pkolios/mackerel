@@ -1,1 +1,91 @@
-<html><head><title>Test</title></head><body>{{ document.html }}</body></html>
+{% extends "default.html" %}
+{%- block body %}
+{# The command above "extends default.html" means - insert everything in this file into
+    the {% block body %} of the default.html template, containing the blog header/footer. #}
+<header class="main-header post-head {% if document.metadata.cover_image %}" style="background-image: url({{ document.metadata.cover_image|e }}){% else %}no-cover{% endif %}">
+    <nav class="main-nav {% if feature_image %}overlay{% endif %} clearfix">
+        {% if ctx.cfg.logo %}<a class="blog-logo" href="{{ ctx.cfg.url|e }}"><img src="{{ ctx.cfg.logo|e }}" alt="{{ ctx.cfg.title }}" /></a>{% endif %}
+        {% if ctx.cfg.navigation %}
+            <a class="menu-button icon-menu" href="#"><span class="word">Menu</span></a>
+        {% endif %}
+    </nav>
+</header>
+
+<main class="content" role="main">
+    <article class="{{ document.metadata.post_class}}">
+
+        <header class="post-header">
+            <h1 class="post-title">{{ document.metadata.title }}</h1>
+            <section class="post-meta">
+                <time class="post-date" datetime="{{ document.metadata.date }}">{{ document.metadata.date }}</time>
+            </section>
+        </header>
+
+        <section class="post-content">
+            {{ document.html }}
+        </section>
+
+        <footer class="post-footer">
+
+            {% if document.metadata.profile_image %}
+            <figure class="author-image">
+                <a class="img" href="{{ url }}" style="background-image: url({{ document.metadata.profile_image }})"><span class="hidden">{{ document.metadata.author }}'s Picture</span></a>
+            </figure>
+            {% endif %}
+
+            <section class="author">
+                <h4><a href="{{ url }}">{{ document.metadata.author }}</a></h4>
+
+                {% if document.metadata.author_bio %}
+                    <p>{{ document.metadata.author_bio }}</p>
+                {% else %}
+                    <p>Read <a href="{{ url }}">more posts</a> by this author.</p>
+                {% endif %}
+                <div class="author-meta">
+                    {% if document.metadata.author_location %}<span class="author-location icon-location">{{ document.metadata.author_location }}</span>{% endif %}
+                    {% if document.metadata.author_website %}<span class="author-link icon-link"><a href="{{ document.metadata.author_website }}">{{ document.metadata.author_website }}</a></span>{% endif %}
+                </div>
+            </section>
+
+            <section class="share">
+                <h4>Share this post</h4>
+                <a class="icon-twitter" href="https://twitter.com/intent/tweet?text={{ document.metadata.title }}&amp;url={{ url_absolute }}"
+                    onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;">
+                    <span class="hidden">Twitter</span>
+                </a>
+                <a class="icon-facebook" href="https://www.facebook.com/sharer/sharer.php?u={{ url_absolute }}"
+                    onclick="window.open(this.href, 'facebook-share','width=580,height=296');return false;">
+                    <span class="hidden">Facebook</span>
+                </a>
+                <a class="icon-google-plus" href="https://plus.google.com/share?url={{ url_absolute }}"
+                   onclick="window.open(this.href, 'google-plus-share', 'width=490,height=530');return false;">
+                    <span class="hidden">Google+</span>
+                </a>
+            </section>
+
+        </footer>
+
+    </article>
+</main>
+
+{# Links to Previous/Next posts #}
+<aside class="read-next">
+    {% if ctx.nav.next %}
+    <a class="read-next-story {% if ctx.nav.next.document.metadata.cover_image %}" style="background-image: url({{ ctx.nav.next.document.metadata.cover_image }}){% else %}no-cover{% endif %}" href="{{ ctx.nav.next }}">
+        <section class="post">
+            <h2>{{ ctx.nav.next.document.metadata.title }}</h2>
+            <p>{{ excerpt(19) }}&hellip;</p>
+        </section>
+    </a>
+    {% endif %}
+    {% if ctx.nav.prev %}
+    <a class="read-next-story prev {% if ctx.nav.prev.document.metadata.cover_image %}" style="background-image: url({{ ctx.nav.prev.document.metadata.cover_image }}){% else %}no-cover{% endif %}" href="{{ ctx.nav.prev }}">
+        <section class="post">
+            <h2>{{ ctx.nav.prev.document.metadata.title }}</h2>
+            <p>{{ excerpt(19) }}&hellip;</p>
+        </section>
+    </a>
+    {% endif %}
+</aside>
+
+{%- endblock %}

@@ -2,3 +2,11 @@
     OUTPUT_PATH = _build
     CONTENT_PATH = content
     TEMPLATE_PATH = template
+
+[user]
+    title = Mackerel Example Site
+    description = A beautiful narrative written with Mackerel. The story begins here.
+    logo = img/logo.svg
+    url = http://localhost:8000/blog/
+    copyright = 2017 Paris Kolios
+    powered = https://github.com/pkolios/mackerel

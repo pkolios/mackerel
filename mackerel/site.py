@@ -6,12 +6,16 @@ from mackerel import renderers
 
 if TYPE_CHECKING:
     from configparser import ConfigParser  # noqa
+    from mackerel.content import Document  # noqa
 
 
 class Site:
     def __init__(self, path: Path) -> None:
         self.path = path
         self.config = make_config(site_path=path)  # type: ConfigParser
+
+    def get_relative_doc_path(self, document: 'Document') -> Path:
+        return document.document_path.relative_to(self.content_path)
 
     @property
     def content_path(self) -> Path:
