@@ -1,8 +1,9 @@
 import shutil
-from pathlib import Path, PurePosixPath
+from pathlib import Path
 from typing import TYPE_CHECKING, Tuple, NamedTuple
 
 from mackerel import content
+from mackerel.navigation import Navigation
 from mackerel.site import Site
 from mackerel.helpers import cached_property, touch
 
@@ -19,25 +20,6 @@ class BuildDocument(NamedTuple):
 class BuildPage(NamedTuple):
     path: Path
     content: str
-
-
-class Node(NamedTuple):
-    uri: str
-    parts: Tuple[str, ...]
-    is_dir: bool
-    is_file: bool
-
-
-class Navigation:
-    """Navigation provides methods to list and access the content"""
-    def __init__(self, build_documents: 'Tuple[BuildDocument, ...]') -> None:
-        self._build_documents = build_documents  # type: Tuple[BuildDocument, ...]  # noqa
-
-    @cached_property
-    def nodes(self) -> Tuple[Node, ...]:
-        return tuple(Node(uri=doc.uri, parts=PurePosixPath(doc.uri).parts,
-                          is_dir=False, is_file=True)
-                     for doc in self._build_documents)
 
 
 class Context:
