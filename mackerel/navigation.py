@@ -1,3 +1,4 @@
+from pathlib import Path
 from typing import NamedTuple, TYPE_CHECKING
 from urllib.parse import urljoin
 
@@ -5,7 +6,7 @@ from mackerel.content import Document
 from mackerel.helpers import cached_property
 
 if TYPE_CHECKING:
-    from typing import Optional, Tuple  # noqa
+    from typing import Optional, Tuple, Union  # noqa
     from mackerel.site import Site  # noqa
 
 
@@ -22,11 +23,29 @@ class Navigation:
         self._documents = documents
         self._site = site
 
-    def main(self) -> 'Optional[Tuple[Node, ...]]':
-        # TODO: Return root level navigation nodes
-        pass
+    def get_menu(self, menu: str) -> 'Tuple[Node, ...]':
+        menu = self._site.config.get('navigation', menu, fallback='')
+        menu_entries = tuple(
+            item.strip() for item in menu.split(',') if menu)
+        nodes = []
+        for entry in menu_entries:
+            nodes.append(self.get_node(entry))
+        return tuple(nodes)
 
-    def loop(self, loop: str = None) -> 'Tuple':
+    def get_node(self, document: 'Union[str, Document]') -> 'Optional[Node]':
+        if isinstance(document, str):
+            for node in self.nodes:
+                node_rel_path = self._site.get_relative_doc_path(node.document)
+                if node_rel_path == Path(document):
+                    return node
+
+        elif isinstance(document, Document):
+            for node in self.nodes:
+                if node.document == document:
+                    return node
+        return None
+
+    def loop(self, loop: 'Optional[str]' = None) -> 'Tuple':
         # TODO: Return nodes of the requested loop / condition / filter
         return tuple()
 
@@ -39,6 +58,8 @@ class Navigation:
             for document in self._documents)
 
     def _build_url(self, document: Document) -> str:
+        # TODO: Parse the config user.url to extract potential path
+        # ex. http://localhost:8000/blog/  'blog' path should be added
         url = self._site.get_relative_doc_path(document).with_suffix(
             self._site.config['mackerel']['OUTPUT_EXT']).as_posix()
         return str(url)

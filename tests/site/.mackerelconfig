@@ -3,6 +3,9 @@
     CONTENT_PATH = content
     TEMPLATE_PATH = template
 
+[navigation]
+    main = index.md, about.md
+
 [user]
     title = Mackerel Example Site
     description = A beautiful narrative written with Mackerel. The story begins here.

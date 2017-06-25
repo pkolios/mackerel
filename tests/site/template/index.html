@@ -5,7 +5,7 @@
 <header class="main-header {% if document.metadata.cover_image %}" style="background-image: url({{ document.metadata.cover_image|e }}){% else %}no-cover{% endif %}">
     <nav class="main-nav overlay clearfix">
         {% if ctx.cfg.user.logo %}<a class="blog-logo" href="{{ ctx.cfg.user.url|e }}"><img src="{{ ctx.cfg.user.logo|e }}" alt="{{ ctx.cfg.user.title }}" /></a>{% endif %}
-        {% if ctx.nav.main %}
+        {% if ctx.nav.get_menu('main') %}
             <a class="menu-button icon-menu" href="#"><span class="word">Menu</span></a>
         {% endif %}
     </nav>
