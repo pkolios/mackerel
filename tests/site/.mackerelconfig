@@ -10,6 +10,6 @@
     title = Mackerel Example Site
     description = A beautiful narrative written with Mackerel. The story begins here.
     logo = img/logo.svg
-    url = http://localhost:8000/blog/
+    url = http://localhost:8000/
     copyright = 2017 Paris Kolios
     powered = https://github.com/pkolios/mackerel

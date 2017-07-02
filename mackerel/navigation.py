@@ -1,6 +1,6 @@
 from pathlib import Path
 from typing import NamedTuple, TYPE_CHECKING
-from urllib.parse import urljoin
+from urllib.parse import urljoin, urlparse
 
 from mackerel.content import Document
 from mackerel.helpers import cached_property
@@ -58,11 +58,11 @@ class Navigation:
             for document in self._documents)
 
     def _build_url(self, document: Document) -> str:
-        # TODO: Parse the config user.url to extract potential path
-        # ex. http://localhost:8000/blog/  'blog' path should be added
-        url = self._site.get_relative_doc_path(document).with_suffix(
+        site_url = urlparse(
+            self._site.config.get('user', 'url', fallback='/'))
+        doc_url = self._site.get_relative_doc_path(document).with_suffix(
             self._site.config['mackerel']['OUTPUT_EXT']).as_posix()
-        return str(url)
+        return urljoin(site_url.path, doc_url)
 
     def _build_absolute_url(self, document: Document) -> str:
         return urljoin(self._site.config.get('user', 'url', fallback='/'),

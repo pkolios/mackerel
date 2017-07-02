@@ -1,4 +1,5 @@
 import pytest
+from unittest import mock
 
 from mackerel.navigation import Navigation
 
@@ -20,12 +21,38 @@ def test_navigation_nodes(navigation):
 
 def test_build_url(navigation):
     url = navigation._build_url(navigation._documents[0])
-    assert url == 'about.html'
+    assert url == '/about.html'
+
+
+def test_build_url_with_directory(navigation):
+    with mock.patch.dict(navigation._site.config,
+                         {'user': {'url': 'http://test/blog/'}}):
+        url = navigation._build_url(navigation._documents[0])
+        assert url == '/blog/about.html'
+
+
+def test_build_url_with_missing_config_value(navigation):
+    with mock.patch.dict(navigation._site.config, {'user': {}}):
+        url = navigation._build_url(navigation._documents[0])
+        assert url == '/about.html'
 
 
 def test_build_absolute_url(navigation):
     url = navigation._build_absolute_url(navigation._documents[0])
-    assert url == 'http://localhost:8000/blog/about.html'
+    assert url == 'http://localhost:8000/about.html'
+
+
+def test_build_absolute_url_with_directory(navigation):
+    with mock.patch.dict(navigation._site.config,
+                         {'user': {'url': 'http://test/blog/'}}):
+        url = navigation._build_absolute_url(navigation._documents[0])
+        assert url == 'http://test/blog/about.html'
+
+
+def test_build_absolute_url_with_missing_config_value(navigation):
+    with mock.patch.dict(navigation._site.config, {'user': {}}):
+        url = navigation._build_absolute_url(navigation._documents[0])
+        assert url == '/about.html'
 
 
 def test_get_node(navigation):
@@ -34,12 +61,12 @@ def test_get_node(navigation):
              navigation.get_node(navigation._documents[0]))
     for node in nodes:
         assert node.document == navigation._documents[0]
-        assert node.url == 'about.html'
-        assert node.absolute_url == 'http://localhost:8000/blog/about.html'
+        assert node.url == '/about.html'
+        assert node.absolute_url == 'http://localhost:8000/about.html'
 
 
 def test_get_menu(navigation):
     assert navigation.get_menu('unknown_menu') == tuple()
     index, about = navigation.get_menu('main')
-    assert index.url == 'index.html'
-    assert about.url == 'about.html'
+    assert index.url == '/index.html'
+    assert about.url == '/about.html'

@@ -56,5 +56,5 @@ class TestJinja2Renderer:
         renderer = renderers.Jinja2Renderer(site=site)
         html = renderer.render(ctx=context, document=document)
         assert '<!DOCTYPE html>' in html
-        assert '<a href="about.html">About</a>' in html
+        assert '<a href="/about.html">About</a>' in html
         assert '<h1 class="post-title">About</h1>' in html
