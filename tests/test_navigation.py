@@ -1,7 +1,7 @@
 import pytest
 from unittest import mock
 
-from mackerel.navigation import Navigation
+from mackerel.navigation import Navigation, Node
 
 
 @pytest.yield_fixture
@@ -70,3 +70,20 @@ def test_get_menu(navigation):
     index, about = navigation.get_menu('main')
     assert index.url == '/index.html'
     assert about.url == '/about.html'
+
+
+def test_loop(navigation):
+    nodes = navigation.loop()
+    assert len(nodes) == 5
+    for node in nodes:
+        assert isinstance(node, Node)
+
+    nodes = navigation.loop('posts')
+    assert len(nodes) == 2
+    for node in nodes:
+        assert isinstance(node, Node)
+
+    nodes = navigation.loop('/posts')
+    assert len(nodes) == 2
+    for node in nodes:
+        assert isinstance(node, Node)

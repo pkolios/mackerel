@@ -17,7 +17,8 @@ class TestMarkdownRenderer:
         assert renderer.extract_metadata(document_content) == {
             'title': 'About',
             'template': 'page.html',
-            'body_class': 'post-template page-template page'
+            'body_class': 'post-template page-template page',
+            'article_class': 'page'
         }
 
     def test_markdown_renderer_extract_text(self, document_content):
@@ -29,6 +30,11 @@ class TestMarkdownRenderer:
             'which allows you to click around and see what a Mackerel blog '
             'running Ghost\'s Casper theme looks like.\n\nWe use this for '
             'testing and for reference!')
+
+    def test_markdown_renderer_strip_tags(self):
+        renderer = renderers.MarkdownRenderer(site=mock.Mock())
+        assert renderer.strip_tags('<em>Foo &amp; Bar</em>') == 'Foo & Bar'
+        assert renderer.strip_tags('Foo & Bar') == 'Foo & Bar'
 
     def test_markdown_renderer_render(self, document_content):
         renderer = renderers.MarkdownRenderer(site=mock.Mock())

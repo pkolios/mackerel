@@ -2,6 +2,7 @@ from typing import Dict, TYPE_CHECKING
 
 import jinja2
 import mistune
+from markupsafe import Markup
 from mistune_contrib import meta
 
 if TYPE_CHECKING:
@@ -22,6 +23,11 @@ class DocumentRenderer:
         raise NotImplementedError
 
     def extract_text(self, text: str) -> str:
+        """Extract the text that follows the metadata of the document."""
+        raise NotImplementedError
+
+    def strip_tags(self, text: str) -> str:
+        """Strip the html tags of the given string."""
         raise NotImplementedError
 
     def render(self, text: str) -> str:
@@ -39,6 +45,9 @@ class MarkdownRenderer(DocumentRenderer):
     def extract_text(self, text: str) -> str:
         _, text = meta.parse(text)
         return text.strip()
+
+    def strip_tags(self, text: str) -> str:
+        return Markup(text).striptags()
 
     def render(self, text: str) -> str:
         return self.markdown(text)

@@ -5,19 +5,19 @@
 </div>
 #}
 {# This is the post loop - each post will be output using this markup #}
-{% for node in ctx.nav.loop()%}
-<article class="{{ document.template|replace(".html", "") }}">
+{% for node in ctx.nav.loop(document.metadata.loop) %}
+<article class="{{ node.document.metadata.article_class }}">
     <header class="post-header">
-        <h2 class="post-title"><a href="{{url}}">{{ document.metadata.title}}</a></h2>
+        <h2 class="post-title"><a href="{{ node.url }}">{{ node.document.metadata.title}}</a></h2>
     </header>
     <section class="post-excerpt">
-        <p>{{ excerpt(26) }} <a class="read-more" href="{{url}}">&raquo;</a></p>
+        <p>{{ node.document.excerpt(150) }} <a class="read-more" href="{{ node.url }}">&raquo;</a></p>
     </section>
     <footer class="post-meta">
-        {% if document.metadata.profile_image %}<img class="author-thumb" src="{{ document.metadata.profile_image }}" alt="{{ document.metadata.author }}" nopin="nopin" />{% endif %}
-        {{ document.metadata.author }}
+        {% if node.document.metadata.profile_image %}<img class="author-thumb" src="{{ node.document.metadata.profile_image }}" alt="{{ node.document.metadata.author }}" nopin="nopin" />{% endif %}
+        {{ node.document.metadata.author }}
         {{ ctx.tags }}
-        <time class="post-date" datetime="{{ document.metadata.date }}">{{ document.metadata.date }}</time>
+        <time class="post-date" datetime="{{ node.document.metadata.date }}">{{ node.document.metadata.date }}</time>
     </footer>
 </article>
 {% endfor %}

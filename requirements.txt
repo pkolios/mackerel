@@ -2,6 +2,7 @@ click
 flake8
 ipdb
 Jinja2
+MarkupSafe
 mistune
 mistune-contrib
 mypy

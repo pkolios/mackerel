@@ -16,7 +16,7 @@ def test_document_init(document_path):
     renderer.render.assert_called_with(doc.text)
 
     assert doc.document_path == document_path
-    assert doc.checksum == 'a31d6dc8f176c868adc50503e4477a9f3be556d7'
+    assert doc.checksum == '960d1eea96bf8d50547d917b768ed964077c1e1f'
     assert doc.template == 'document.html'
     assert doc.title == 'Test post'
     assert renderer.extract_metadata() == doc.metadata
@@ -41,3 +41,12 @@ def test_document_missing_title(document_path):
         content.Document(document_path=document_path, renderer=renderer)
 
     assert 'missing a title' in str(excinfo.value)
+
+
+def test_document_excerpt(document):
+    assert document.excerpt(width=1) == '...'
+    assert document.excerpt(width=4, placeholder='... more') == 'This... more'
+    assert document.excerpt() == document.excerpt(0) == (
+        'This is a demo site for Mackerel, it contains dummy content which '
+        'allows you to click around and see what a Mackerel blog running '
+        'Ghost\'s Casper theme...')

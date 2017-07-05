@@ -1,6 +1,7 @@
 import hashlib
 from pathlib import Path
-from typing import TYPE_CHECKING, Dict
+from textwrap import shorten
+from typing import TYPE_CHECKING, Dict, Optional
 
 if TYPE_CHECKING:
     from mackerel.renderers import DocumentRenderer  # noqa
@@ -18,6 +19,7 @@ class Document:
         self.template = self.metadata.get('template', 'post.html')  # type: str
         self.html = renderer.render(self.text)  # type: str
         self.title = self._get_title(self.metadata)  # type: str
+        self._renderer = renderer
 
     def __generate_checksum(self, content: str) -> str:
         h = hashlib.sha1(content.encode())
@@ -35,3 +37,9 @@ class Document:
         if not isinstance(other, Document):
             return False
         return self.checksum == other.checksum
+
+    def excerpt(self, width: Optional[int] = 150,
+                placeholder: Optional[str] = '...') -> str:
+        text = self._renderer.strip_tags(self.html)
+        return shorten(text, width=(width or 150)+len(placeholder),
+                       placeholder=placeholder)

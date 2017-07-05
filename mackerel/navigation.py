@@ -34,9 +34,12 @@ class Navigation:
 
     def get_node(self, document: 'Union[str, Document]') -> 'Optional[Node]':
         if isinstance(document, str):
+            doc_path = Path(document)
+            if doc_path.is_absolute():
+                doc_path = doc_path.relative_to(self._site.content_path)
             for node in self.nodes:
                 node_rel_path = self._site.get_relative_doc_path(node.document)
-                if node_rel_path == Path(document):
+                if node_rel_path == doc_path:
                     return node
 
         elif isinstance(document, Document):
@@ -45,9 +48,12 @@ class Navigation:
                     return node
         return None
 
-    def loop(self, loop: 'Optional[str]' = None) -> 'Tuple':
-        # TODO: Return nodes of the requested loop / condition / filter
-        return tuple()
+    def loop(self, path: 'Optional[str]' = '.') -> 'Tuple':
+        loop_path = self._site.content_path / path.lstrip('/')
+        loop_docs = tuple(
+            f for f in loop_path.rglob('*')
+            if f.suffix == self._site.config['mackerel']['DOC_EXT'])
+        return tuple(self.get_node(str(doc)) for doc in loop_docs)
 
     @cached_property
     def nodes(self) -> 'Tuple[Node, ...]':
