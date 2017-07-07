@@ -1,7 +1,7 @@
 __version__ = '0.1'
-__title__ = 'mackerel'
+__title__ = 'Mackerel'
 __author__ = 'Paris Kolios'
-__license__ = 'Apache 2.0'
+__license__ = 'MIT License'
 __copyright__ = 'Copyright 2017 Paris Kolios'
 
 from . import build, content, renderers, site  # noqa

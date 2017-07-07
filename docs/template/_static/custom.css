@@ -1,0 +1,9 @@
+div.document, div.footer {
+    width: 700px;
+    margin: 0 auto 10 auto;
+}
+.logo {
+    display: block;
+    margin: 0 auto;
+    height: 200px;
+}

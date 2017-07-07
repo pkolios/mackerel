@@ -12,9 +12,12 @@ import mackerel
               help='Enable the debug mode.')
 @click.option('--verbose', '-v', default=False, is_flag=True,
               help='Enable the verbose mode.')
+@click.version_option(message=f'{mackerel.__title__} {mackerel.__version__}')  # type: ignore # noqa
 @click.pass_context
 def cli(ctx: click.core.Context, debug: bool, verbose: bool) -> None:
-    # TODO: cli description text
+    """
+    Mackerel is a minimal static site generator written in typed Python 3.6+.
+    """
     ctx.obj = {}
     ctx.obj['VERBOSE'] = verbose
 
@@ -23,16 +26,15 @@ def cli(ctx: click.core.Context, debug: bool, verbose: bool) -> None:
 @click.argument('SITE_PATH', type=click.Path(exists=False, resolve_path=True))
 @click.pass_context
 def init(ctx: click.core.Context, site_path: str) -> None:
-    """Create an empty mackerel site"""
+    """Create an new mackerel site"""
     output_path = Path(site_path)
     if output_path.exists():
-        raise click.UsageError('Directory {s} already exists.'.format(
-            s=site_path))
+        raise click.UsageError(f'Directory {site_path} already exists.')
 
     sample_site_path = Path(os.path.dirname(
         os.path.realpath(__file__))).parent / 'tests' / 'site'
     shutil.copytree(src=sample_site_path, dst=output_path)
-    click.echo('Initialized empty mackerel site in {}'.format(output_path))
+    click.echo(f'Initialized empty mackerel site in {output_path}')
 
 
 @cli.command()
@@ -42,7 +44,7 @@ def init(ctx: click.core.Context, site_path: str) -> None:
               help='Make a build without persisting any files.')
 @click.pass_context
 def build(ctx: click.core.Context, site_path: str, dry_run: bool) -> None:
-    """Builds the contents of SITE_PATH"""
+    """Build the contents of SITE_PATH"""
     site = mackerel.site.Site(path=Path(site_path))
     if ctx.obj.get('VERBOSE'):
         click.echo('- Configuration:')
@@ -56,6 +58,7 @@ def build(ctx: click.core.Context, site_path: str, dry_run: bool) -> None:
 
     build = mackerel.build.Build(site=site)
     build.execute(dry_run=dry_run)
+    click.echo('Build finished.')
 
 
 if __name__ == '__main__':

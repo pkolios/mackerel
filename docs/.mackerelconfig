@@ -1,0 +1,8 @@
+[mackerel]
+    OUTPUT_PATH = _build
+    CONTENT_PATH = content
+    TEMPLATE_PATH = template
+
+[user]
+    copyright = 2017 Paris Kolios
+    powered = https://github.com/pkolios/mackerel

@@ -1,4 +1,4 @@
-.PHONY: lint test typing
+.PHONY: lint test typing docs
 
 lint:
 	flake8 --exit-zero mackerel
@@ -11,3 +11,6 @@ typing:
 			 --disallow-untyped-defs \
 			 --ignore-missing-imports \
 			 --disallow-untyped-calls
+
+docs:
+	PYTHONPATH=$PYTHONPATH:$(pwd) python mackerel/cli.py build docs

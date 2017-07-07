@@ -1,0 +1,37 @@
+{# Layout template for mackerel docs. Loosely based on Sphinx & Alabaster theme. #}
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en-us">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>{{ document.metadata.title|striptags|e }} | Mackerel (a minimal static website generator)</title>
+    <link rel="stylesheet" href="/_static/styles.css" type="text/css" />
+    <link rel="stylesheet" href="/_static/pygments.css" type="text/css" />
+    <link rel="shortcut icon" href="/_static/favicon.ico" />
+    <link rel="apple-touch-icon" href="/_static/apple-touch-icon.png" />
+    <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+    <link rel="stylesheet" href="/_static/custom.css" type="text/css" />
+  </head>
+  <body>
+{%- block header %}{% endblock %}
+
+{%- block content %}
+    <div class="document">
+      <div class="documentwrapper">
+          <div class="body" role="main">
+            {% block body %}
+              {{ document.html }}
+            {% endblock %}
+          </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+{%- endblock %}
+
+{%- block footer %}
+    <div class="footer">
+        &copy;{{ ctx.cfg.user.copyright }}.
+        | Powered by <a href="{{ ctx.cfg.user.powered|e }}">mackerel</a>
+    </div>
+{%- endblock %}
+  </body>
+</html>
