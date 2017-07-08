@@ -1,4 +1,4 @@
-.PHONY: lint test typing docs
+.PHONY: lint test typing docs release
 
 lint:
 	flake8 --exit-zero mackerel
@@ -14,3 +14,8 @@ typing:
 
 docs:
 	PYTHONPATH=$PYTHONPATH:$(pwd) python mackerel/cli.py build docs
+
+release:
+	python setup.py sdist
+	python setup.py bdist_wheel
+	twine upload dist/*
