@@ -15,4 +15,8 @@ install:
   - pip install -U -r requirements.txt
 
 script:
-    - make test
+    - make typing
+    - coverage run --source=mackerel setup.py test
+
+after_success:
+    - coveralls

@@ -4,7 +4,7 @@ lint:
 	flake8 --exit-zero mackerel
 
 test: lint typing
-	py.test -v
+	py.test -v --cov=mackerel
 
 typing:
 	MYPYPATH='' mypy mackerel \

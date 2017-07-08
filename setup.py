@@ -37,6 +37,8 @@ setup(
         'mistune',
         'mistune-contrib',
     ],
+    setup_requires=['pytest-runner'],
+    tests_require=['pytest', 'pytest-cov'],
     entry_points='''
         [console_scripts]
         mackerel=mackerel.cli:cli
