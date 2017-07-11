@@ -147,6 +147,17 @@ When rendering the content files, Mackerel passes the following objects to the t
 
 ## Changelog
 
+### Version 0.2
+
+*Bugfixes*
+
+- Fix an error in the packaging that caused ``mackerel init`` command to fail
+  due to the lack of ``config.ini``.
+
+*Improvements*
+
+- Rework the ``setup.py`` script to increase release automation.
+
 ### Version 0.1
 
 First preview release.
