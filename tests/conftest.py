@@ -4,13 +4,12 @@ from unittest import mock
 
 import pytest
 
-from mackerel import (
-    build as build_module, site as site_module, content, renderers)
+import mackerel
 
 
 @pytest.yield_fixture
 def document_path():
-    yield Path(__file__).parent / 'site' / 'content' / 'about.md'
+    yield Path(mackerel.__file__).parent / 'site' / 'content' / 'about.md'
 
 
 @pytest.yield_fixture
@@ -22,30 +21,30 @@ def document_content(document_path):
 
 @pytest.yield_fixture
 def document(document_path):
-    doc = content.Document(
+    doc = mackerel.content.Document(
         document_path=document_path,
-        renderer=renderers.MarkdownRenderer(site=mock.Mock()))
+        renderer=mackerel.renderers.MarkdownRenderer(site=mock.Mock()))
     yield doc
 
 
 @pytest.yield_fixture
 def site_path():
-    yield Path(__file__).parent / 'site'
+    yield Path(mackerel.__file__).parent / 'site'
 
 
 @pytest.yield_fixture
 def site(site_path, output_path):
-    yield site_module.Site(site_path)
+    yield mackerel.site.Site(site_path)
 
 
 @pytest.yield_fixture
 def template_path():
-    yield Path(__file__).parent / 'site' / 'template'
+    yield Path(mackerel.__file__).parent / 'site' / 'template'
 
 
 @pytest.yield_fixture
 def output_path(site_path):
-    path = Path(__file__).parent / 'site' / '_build'
+    path = Path(mackerel.__file__).parent / 'site' / '_build'
     try:
         shutil.rmtree(path)
     except FileNotFoundError:
@@ -59,7 +58,7 @@ def output_path(site_path):
 
 @pytest.yield_fixture
 def build(site):
-    yield build_module.Build(site=site)
+    yield mackerel.build.Build(site=site)
 
 
 @pytest.yield_fixture

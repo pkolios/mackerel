@@ -28,12 +28,13 @@ def cli(ctx: click.core.Context, debug: bool, verbose: bool) -> None:
 def init(ctx: click.core.Context, site_path: str) -> None:
     """Create an new mackerel site"""
     output_path = Path(site_path)
-    if output_path.exists():
-        raise click.UsageError(f'Directory {site_path} already exists.')
-
     sample_site_path = Path(os.path.dirname(
-        os.path.realpath(__file__))).parent / 'tests' / 'site'
-    shutil.copytree(src=sample_site_path, dst=output_path)
+        os.path.realpath(mackerel.__file__))) / 'site'
+    try:
+        shutil.copytree(src=sample_site_path, dst=output_path)
+    except FileExistsError as e:
+        ctx.fail(f'Initialize failed, file {e.filename} already exists')
+
     click.echo(f'Initialized empty mackerel site in {output_path}')
 
 
@@ -53,8 +54,8 @@ def build(ctx: click.core.Context, site_path: str, dry_run: bool) -> None:
 
     if site.output_path.exists():
         click.confirm(
-            'Directory {b} already exists, do you want to overwrite?'.format(
-                b=str(site.output_path)), abort=True)
+            f'Directory {str(site.output_path)} already exists, do you want '
+            'to overwrite?', abort=True)
 
     build = mackerel.build.Build(site=site)
     build.execute(dry_run=dry_run)
