@@ -1,8 +1,6 @@
-include *.rst LICENSE
-recursive-include tests *
-recursive-include docs *
-recursive-exclude docs *.pyc
-recursive-exclude docs *.pyo
-recursive-exclude tests *.pyc
-recursive-exclude tests *.pyo
+include README.rst LICENSE CHANGELOG.rst
+
+recursive-include tests *.py
+global-exclude *.py[co]
+
 prune docs/_build

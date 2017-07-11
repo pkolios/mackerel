@@ -1,34 +1,31 @@
-import re
-import ast
-from setuptools import setup, find_packages
+#!/usr/bin/env python
+
+import os
+from setuptools import setup
 
 
-_version_re = re.compile(r'__version__\s+=\s+(.*)')
-
-with open('mackerel/__init__.py', 'rb') as f:
-    version = str(ast.literal_eval(_version_re.search(
-        f.read().decode('utf-8')).group(1)))
-
-
-def read(fname):
-    with open(fname) as fp:
-        content = fp.read()
-    return content
-
+here = os.path.abspath(os.path.dirname(__file__))
+about = {}
+with open(os.path.join(here, 'mackerel', '__version__.py'), 'r',
+          encoding='utf-8') as f:
+    exec(f.read(), about)
+with open('README.rst', 'r', encoding='utf-8') as f:
+    readme = f.read()
+with open('CHANGELOG.rst', 'r', encoding='utf-8') as f:
+    changelog = f.read()
 
 setup(
-    name='mackerel',
-    version=version,
-    author='Paris Kolios',
-    author_email='hi@enc.io',
-    url='https://github.com/pkolios/mackerel',
-    download_url='https://github.com/pkolios/mackerel/archive/0.1.tar.gz',
-    description='Mackerel is a minimal static site generator written in '
-                'typed Python 3.6+',
-    long_description=read('README.rst'),
-    packages=find_packages(),
+    name=about['__title__'],
+    version=about['__version__'],
+    author=about['__author__'],
+    author_email=about['__author_email__'],
+    description=about['__description__'],
+    long_description=readme + '\n\n' + changelog,
+    url=about['__url__'],
+    packages=['mackerel'],
+    package_data={'': ['LICENSE'], 'mackerel': ['config.ini']},
     include_package_data=True,
-    license='MIT',
+    license=about['__license__'],
     python_requires='>=3.6',
     install_requires=[
         'Click',

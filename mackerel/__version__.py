@@ -1,0 +1,8 @@
+__version__ = '0.1'
+__title__ = 'Mackerel'
+__description__ = 'Minimal static site generator built with type annotations'
+__author__ = 'Paris Kolios'
+__author_email__ = 'paris@enc.io'
+__url__ = 'http://mackerel.sh'
+__license__ = 'MIT'
+__copyright__ = 'Copyright 2017 Paris Kolios'
