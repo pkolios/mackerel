@@ -40,7 +40,8 @@ def test_document_missing_title(document_path):
     with pytest.raises(KeyError) as excinfo:
         content.Document(document_path=document_path, renderer=renderer)
 
-    assert 'missing a title' in str(excinfo.value)
+    assert f'Document `{str(document_path)}` is missing a title' in str(
+        excinfo.value)
 
 
 def test_document_excerpt(document):

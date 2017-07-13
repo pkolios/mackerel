@@ -4,7 +4,7 @@ Mackerel
 Mackerel is a minimal static site generator written in typed Python 3.6+.
 
 .. image:: https://img.shields.io/pypi/v/mackerel.svg
-   :target: https://pypi.python.org/pypi/mackerel/
+   :target: https://pypi.python.org/pypi/mackerel
    :alt: Latest Version
 .. image:: https://travis-ci.org/pkolios/mackerel.svg?branch=master
    :target: https://travis-ci.org/pkolios/mackerel

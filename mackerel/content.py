@@ -30,8 +30,7 @@ class Document:
             return metadata['title']
         except KeyError:
             raise KeyError(
-                'Document `{}` is missing a title'.format(
-                    str(self.document_path)))
+                f'Document `{str(self.document_path)}` is missing a title')
 
     def __eq__(self, other: object) -> bool:
         if not isinstance(other, Document):
