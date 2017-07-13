@@ -74,12 +74,14 @@ $ mackerel build ~/my_site
 ```
 
 The static site will be generated inside the `_build` directory of the site.
-You can use python's simple http server to preview the site locally.
+
+You can use mackerel's development server to host the site.
 
 ```
-$ cd ~/my_site/_build
-$ python -m SimpleHTTPServer
+$ mackerel develop ~/my_site
 ```
+
+The development server automatically detects changes in the `content` and `template` folders and rebuilds the site.
 
 ### Create a new page or post
 

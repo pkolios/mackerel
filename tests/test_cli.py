@@ -1,3 +1,5 @@
+from unittest import mock
+
 import pytest
 from click.testing import CliRunner
 
@@ -43,3 +45,20 @@ def test_init_directory_success(runner, tmpdir, site_path):
     assert result.exit_code == 0
     assert result.output == f'Initialized empty mackerel site in {test_dir}\n'
     assert len(list(site_path.iterdir())) == len(test_dir.listdir())
+
+
+def test_develop(runner, site):
+    with mock.patch('mackerel.cli.Server') as server, mock.patch(
+            'mackerel.cli.mackerel.build.Build') as build:
+        runner.invoke(
+            cli.cli, ['develop', str(site.path), '-h 0.0.0.0', '-p 8080'])
+
+    server.assert_called_with()
+    watch_calls = (mock.call(str(site.template_path), mock.ANY),
+                   mock.call(str(site.content_path), mock.ANY))
+    server().watch.assert_has_calls(watch_calls, any_order=True)
+    server().serve.assert_called_with(
+        host='0.0.0.0', port=8080, root=str(site.output_path))
+
+    assert build.called
+    build().execute.assert_called_with()

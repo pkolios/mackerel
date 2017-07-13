@@ -3,6 +3,7 @@ import shutil
 from pathlib import Path
 
 import click
+from livereload import Server
 
 import mackerel
 
@@ -60,6 +61,30 @@ def build(ctx: click.core.Context, site_path: str, dry_run: bool) -> None:
     build = mackerel.build.Build(site=site)
     build.execute(dry_run=dry_run)
     click.echo('Build finished.')
+
+
+@cli.command()
+@click.argument('SITE_PATH', type=click.Path(
+    exists=True, file_okay=False, readable=True, resolve_path=True))
+@click.option('--host', '-h', default='127.0.0.1',
+              help='The interface to bind to.')
+@click.option('--port', '-p', default=8000,
+              help='The port to bind to.')
+@click.pass_context
+def develop(ctx: click.core.Context, site_path: str, host: str,
+            port: int) -> None:
+    """Runs a local development server"""
+    def rebuild_site() -> mackerel.site.Site:
+        site = mackerel.site.Site(path=Path(site_path))
+        build = mackerel.build.Build(site=site)
+        build.execute()
+        return site
+
+    site = rebuild_site()
+    server = Server()
+    server.watch(str(site.content_path), rebuild_site)
+    server.watch(str(site.template_path), rebuild_site)
+    server.serve(host=host.strip(), port=port, root=str(site.output_path))
 
 
 if __name__ == '__main__':

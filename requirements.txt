@@ -3,6 +3,7 @@ coveralls
 flake8
 ipdb
 Jinja2
+livereload
 MarkupSafe
 mistune
 mistune-contrib

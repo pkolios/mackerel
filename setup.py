@@ -30,6 +30,7 @@ setup(
     install_requires=[
         'Click',
         'Jinja2',
+        'livereload',
         'MarkupSafe',
         'mistune',
         'mistune-contrib',
