@@ -2,7 +2,7 @@ from unittest import mock
 
 import pytest
 
-from mackerel import content
+from mackerel import content, exceptions
 
 
 def test_document_init(document_path):
@@ -37,7 +37,7 @@ def test_document_eq(document_path):
 def test_document_missing_title(document_path):
     renderer = mock.Mock()
     renderer.extract_metadata.return_value = {'template': 'document.html'}
-    with pytest.raises(KeyError) as excinfo:
+    with pytest.raises(exceptions.DocumentError) as excinfo:
         content.Document(document_path=document_path, renderer=renderer)
 
     assert f'Document `{str(document_path)}` is missing a title' in str(

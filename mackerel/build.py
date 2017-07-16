@@ -2,7 +2,7 @@ import shutil
 from pathlib import Path
 from typing import TYPE_CHECKING, Tuple, NamedTuple
 
-from mackerel import content
+from mackerel import content, exceptions
 from mackerel.navigation import Navigation
 from mackerel.site import Site
 from mackerel.helpers import cached_property, touch
@@ -60,17 +60,29 @@ class Build:
 
     @cached_property
     def documents(self) -> Tuple[content.Document, ...]:
-        return tuple(content.Document(
-            document_path=document_file, renderer=self.site.document_renderer)
-            for document_file in self.site.document_files)
+        documents = []
+        for file in self.site.document_files:
+            try:
+                documents.append(content.Document(
+                    document_path=file, renderer=self.site.document_renderer))
+            except exceptions.DocumentError as exc:
+                # TODO: Log warning here
+                pass
+        return tuple(documents)
 
     @cached_property
     def pages(self) -> Tuple[BuildPage, ...]:
-        return tuple(BuildPage(
-            path=self._absolute_page_output_path(document),
-            content=self.site.template_renderer.render(
-                ctx=self.context, document=document))
-            for document in self.documents)
+        pages = []
+        for document in self.documents:
+            try:
+                pages.append(BuildPage(
+                    path=self._absolute_page_output_path(document),
+                    content=self.site.template_renderer.render(
+                        ctx=self.context, document=document)))
+            except exceptions.RenderingError as exc:
+                # TODO: Log warning here
+                pass
+        return tuple(pages)
 
     def _absolute_page_output_path(self, document: content.Document) -> Path:
         return self.site.output_path / self.site.get_relative_doc_path(

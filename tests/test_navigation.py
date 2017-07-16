@@ -16,7 +16,7 @@ def test_navigation_init(build, site):
 
 
 def test_navigation_nodes(navigation):
-    assert len(navigation.nodes) == 5
+    assert len(navigation.nodes) == 6
 
 
 def test_build_url(navigation):
@@ -74,7 +74,7 @@ def test_get_menu(navigation):
 
 def test_loop(navigation):
     nodes = navigation.loop()
-    assert len(nodes) == 5
+    assert len(nodes) == 6
     for node in nodes:
         assert isinstance(node, Node)
 

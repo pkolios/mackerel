@@ -9,7 +9,7 @@ def test_build(site):
 
     assert test_build.site == site
 
-    assert len(test_build.documents) == 5
+    assert len(test_build.documents) == 6
     assert len(test_build.pages) == 5
 
     for page in test_build.pages:
@@ -31,8 +31,10 @@ def test_build_execute(build):
         page.relative_to(build.site.output_path)
         for page in build.site.output_path.rglob(
             f"*{build.site.config['mackerel']['OUTPUT_EXT']}")]
-    for src_file in build.site.document_files:
-        assert src_file.relative_to(
+    for doc in build.documents:
+        if doc.title == 'Unknown Template':
+            continue
+        assert doc.document_path.relative_to(
             build.site.content_path).with_suffix(
                 build.site.config['mackerel']['OUTPUT_EXT']) in output_pages
 

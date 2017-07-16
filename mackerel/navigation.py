@@ -2,6 +2,7 @@ from pathlib import Path
 from typing import NamedTuple, TYPE_CHECKING
 from urllib.parse import urljoin, urlparse
 
+from mackerel import exceptions
 from mackerel.content import Document
 from mackerel.helpers import cached_property
 
@@ -34,18 +35,17 @@ class Navigation:
 
     def get_node(self, document: 'Union[str, Document]') -> 'Optional[Node]':
         if isinstance(document, str):
-            doc_path = Path(document)
-            if doc_path.is_absolute():
-                doc_path = doc_path.relative_to(self._site.content_path)
-            for node in self.nodes:
-                node_rel_path = self._site.get_relative_doc_path(node.document)
-                if node_rel_path == doc_path:
-                    return node
+            doc_path = self._site.content_path / Path(document)
+            try:
+                document = Document(
+                    document_path=doc_path,
+                    renderer=self._site.document_renderer)
+            except (FileNotFoundError, exceptions.DocumentError):
+                return None
 
-        elif isinstance(document, Document):
-            for node in self.nodes:
-                if node.document == document:
-                    return node
+        for node in self.nodes:
+            if node.document == document:
+                return node
         return None
 
     def loop(self, path: 'Optional[str]' = '.') -> 'Tuple':
@@ -53,7 +53,12 @@ class Navigation:
         loop_docs = tuple(
             f for f in loop_path.rglob('*')
             if f.suffix == self._site.config['mackerel']['DOC_EXT'])
-        return tuple(self.get_node(str(doc)) for doc in loop_docs)
+        nodes = []
+        for doc in loop_docs:
+            node = self.get_node(str(doc))
+            if node:
+                nodes.append(node)
+        return tuple(nodes)
 
     @cached_property
     def nodes(self) -> 'Tuple[Node, ...]':

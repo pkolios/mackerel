@@ -3,6 +3,8 @@ from pathlib import Path
 from textwrap import shorten
 from typing import TYPE_CHECKING, Dict, Optional
 
+from mackerel import exceptions
+
 if TYPE_CHECKING:
     from mackerel.renderers import DocumentRenderer  # noqa
 
@@ -16,21 +18,23 @@ class Document:
         self.metadata = renderer.extract_metadata(
             text=self.content)  # type: Dict[str, str]
         self.text = renderer.extract_text(text=self.content)  # type: str
-        self.template = self.metadata.get('template', 'post.html')  # type: str
+        self.template = self._get_metadata_value(
+            key='template', metadata=self.metadata)  # type: str
         self.html = renderer.render(self.text)  # type: str
-        self.title = self._get_title(self.metadata)  # type: str
+        self.title = self._get_metadata_value(
+            key='title', metadata=self.metadata)  # type: str
         self._renderer = renderer
 
     def __generate_checksum(self, content: str) -> str:
         h = hashlib.sha1(content.encode())
         return h.hexdigest()
 
-    def _get_title(self, metadata: Dict[str, str]) -> str:
+    def _get_metadata_value(self, key: str, metadata: Dict[str, str]) -> str:
         try:
-            return metadata['title']
+            return metadata[key]
         except KeyError:
-            raise KeyError(
-                f'Document `{str(self.document_path)}` is missing a title')
+            raise exceptions.DocumentError(
+                f'Document `{str(self.document_path)}` is missing a {key}')
 
     def __eq__(self, other: object) -> bool:
         if not isinstance(other, Document):

@@ -5,6 +5,8 @@ import mistune
 from markupsafe import Markup
 from mistune_contrib import meta
 
+from mackerel import exceptions
+
 if TYPE_CHECKING:
     from mackerel import build, content  # noqa
     from mackerel.site import Site  # noqa
@@ -74,5 +76,9 @@ class Jinja2Renderer(TemplateRenderer):
 
     def render(self, ctx: 'build.Context',
                document: 'content.Document') -> str:
-        template = self.env.get_template(document.template)
+        try:
+            template = self.env.get_template(document.template)
+        except jinja2.exceptions.TemplateNotFound:
+            raise exceptions.RenderingError(
+                f'Template file `{document.template}` not found')
         return template.render(ctx=ctx, document=document)
