@@ -37,21 +37,21 @@ def test_build_url_with_missing_config_value(navigation):
         assert url == '/about.html'
 
 
-def test_build_absolute_url(navigation):
-    url = navigation._build_absolute_url(navigation._documents[0])
+def test_build_external_url(navigation):
+    url = navigation._build_external_url(navigation._documents[0])
     assert url == 'http://localhost:8000/about.html'
 
 
-def test_build_absolute_url_with_directory(navigation):
+def test_build_external_url_with_directory(navigation):
     with mock.patch.dict(navigation._site.config,
                          {'user': {'url': 'http://test/blog/'}}):
-        url = navigation._build_absolute_url(navigation._documents[0])
+        url = navigation._build_external_url(navigation._documents[0])
         assert url == 'http://test/blog/about.html'
 
 
-def test_build_absolute_url_with_missing_config_value(navigation):
+def test_build_external_url_with_missing_config_value(navigation):
     with mock.patch.dict(navigation._site.config, {'user': {}}):
-        url = navigation._build_absolute_url(navigation._documents[0])
+        url = navigation._build_external_url(navigation._documents[0])
         assert url == '/about.html'
 
 
@@ -62,7 +62,7 @@ def test_get_node(navigation):
     for node in nodes:
         assert node.document == navigation._documents[0]
         assert node.url == '/about.html'
-        assert node.absolute_url == 'http://localhost:8000/about.html'
+        assert node.external_url == 'http://localhost:8000/about.html'
 
 
 def test_get_menu(navigation):

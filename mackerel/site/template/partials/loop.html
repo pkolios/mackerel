@@ -14,7 +14,7 @@
         <p>{{ node.document.excerpt(150) }} <a class="read-more" href="{{ node.url }}">&raquo;</a></p>
     </section>
     <footer class="post-meta">
-        {% if node.document.metadata.profile_image %}<img class="author-thumb" src="{{ node.document.metadata.profile_image }}" alt="{{ node.document.metadata.author }}" nopin="nopin" />{% endif %}
+        {% if node.document.metadata.profile_image %}<img class="author-thumb" src="{{ ctx.url_for(node.document.metadata.profile_image|e) }}" alt="{{ node.document.metadata.author }}" nopin="nopin" />{% endif %}
         {{ node.document.metadata.author }}
         {{ ctx.tags }}
         <time class="post-date" datetime="{{ node.document.metadata.date }}">{{ node.document.metadata.date }}</time>

@@ -11,7 +11,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     {# Styles'n'Scripts #}
     <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Merriweather:300,700,700italic,300italic|Open+Sans:700,400" />
-    <link rel="stylesheet" type="text/css" href="/_static/css/screen.css" />
+    <link rel="stylesheet" type="text/css" href="{{ ctx.url_for('_static/css/screen.css') }}" />
 </head>
 <body class="{{ document.metadata.body_class }} nav-closed">
     {# The blog navigation links #}
@@ -27,8 +27,8 @@
     </div>
     <script type="text/javascript" src="//code.jquery.com/jquery-1.12.0.min.js"></script>
     {# Fitvids makes video embeds responsive and awesome #}
-    <script type="text/javascript" src="/_static/js/jquery.fitvids.js"></script>
+    <script type="text/javascript" src="{{ ctx.url_for('_static/js/jquery.fitvids.js') }}"></script>
     {# The main JavaScript file for Casper #}
-    <script type="text/javascript" src="/_static/js/index.js"></script>
+    <script type="text/javascript" src="{{ ctx.url_for('_static/js/index.js') }}"></script>
 </body>
 </html>

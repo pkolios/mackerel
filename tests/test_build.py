@@ -1,4 +1,5 @@
 from pathlib import Path
+from unittest import mock
 
 from mackerel import build
 from mackerel.site import Site
@@ -59,3 +60,15 @@ def test_build_context(build):
     # TODO: Test something more meaningful
     assert build.context.nav
     assert build.context.cfg
+
+
+def test_context_url_for(build):
+    assert build.context.url_for('css/style.css') == '/css/style.css'
+    assert build.context.url_for('app.js') == '/app.js'
+    assert build.context.url_for(
+        'app.js', external=True) == 'http://localhost:8000/app.js'
+
+    with mock.patch.dict(build.context.cfg,
+                         {'user': {'url': 'http://test/blog/'}}):
+        assert build.context.url_for('css/style.css') == '/blog/css/style.css'
+        assert build.context.url_for('app.js') == '/blog/app.js'

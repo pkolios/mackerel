@@ -13,7 +13,7 @@ if TYPE_CHECKING:
 
 class Node(NamedTuple):
     url: str
-    absolute_url: str
+    external_url: str
     document: Document
 
 
@@ -64,7 +64,7 @@ class Navigation:
     def nodes(self) -> 'Tuple[Node, ...]':
         return tuple(
             Node(url=self._build_url(document),
-                 absolute_url=self._build_absolute_url(document),
+                 external_url=self._build_external_url(document),
                  document=document)
             for document in self._documents)
 
@@ -75,6 +75,6 @@ class Navigation:
             self._site.config['mackerel']['OUTPUT_EXT']).as_posix()
         return urljoin(site_url.path, doc_url)
 
-    def _build_absolute_url(self, document: Document) -> str:
+    def _build_external_url(self, document: Document) -> str:
         return urljoin(self._site.config.get('user', 'url', fallback='/'),
                        self._build_url(document))

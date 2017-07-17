@@ -2,9 +2,9 @@
 {%- block body %}
 {# This is a page template. A page outputs content just like any other post, and has all the same
     attributes by default, but you can also customise it to behave differently if you prefer. #}
-<header class="main-header post-head {% if document.metadata.cover_image %}" style="background-image: url({{ document.metadata.cover_image|e }}){% else %}no-cover{% endif %}">
+<header class="main-header post-head {% if document.metadata.cover_image %}" style="background-image: url({{ ctx.url_for(document.metadata.cover_image|e) }}){% else %}no-cover{% endif %}">
     <nav class="main-nav {% if document.metadata.cover_image %}overlay{% endif %} clearfix">
-        {% if ctx.cfg.user.logo %}<a class="blog-logo" href="{{ ctx.cfg.user.url|e }}"><img src="{{ ctx.cfg.user.logo|e }}" alt="{{ ctx.cfg.user.title }}" /></a>{% endif %}
+        {% if ctx.cfg.user.logo %}<a class="blog-logo" href="{{ ctx.cfg.user.url|e }}"><img src="{{ ctx.url_for(ctx.cfg.user.logo|e) }}" alt="{{ ctx.cfg.user.title }}" /></a>{% endif %}
         {% if ctx.nav %}
             <a class="menu-button icon-menu" href="#"><span class="word">Menu</span></a>
         {% endif %}

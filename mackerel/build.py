@@ -1,6 +1,7 @@
 import shutil
 from pathlib import Path
 from typing import TYPE_CHECKING, Tuple, NamedTuple
+from urllib.parse import urljoin, urlparse
 
 from mackerel import content, exceptions
 from mackerel.navigation import Navigation
@@ -23,6 +24,13 @@ class Context:
                  site: Site) -> None:
         self.nav = Navigation(documents=documents, site=site)
         self.cfg = site.config
+
+    def url_for(self, resource: str, external: bool = False) -> str:
+        site_url = urlparse(self.cfg.get('user', 'url', fallback='/'))
+        if external:
+            return urljoin(site_url.geturl(), resource)
+
+        return urljoin(site_url.path, resource)
 
 
 class Build:
