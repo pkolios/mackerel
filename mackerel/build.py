@@ -1,3 +1,4 @@
+import logging
 import shutil
 from pathlib import Path
 from typing import TYPE_CHECKING, Tuple, NamedTuple
@@ -11,6 +12,15 @@ from mackerel.helpers import cached_property, touch
 if TYPE_CHECKING:
     from configparser import ConfigParser  # noqa
     from mackerel import renderers  # noqa
+
+
+logger = logging.getLogger(__name__)
+handler = logging.StreamHandler()
+formatter = logging.Formatter(
+    '%(asctime)s %(name)-12s %(levelname)-8s %(message)s')
+handler.setFormatter(formatter)
+logger.addHandler(handler)
+logger.setLevel(logging.INFO)
 
 
 class BuildPage(NamedTuple):
@@ -50,6 +60,8 @@ class Build:
             touch(page.path)
             page.path.write_text(page.content)
 
+        logger.info(f'{len(self.pages)} pages were built')
+
         for f in self.site.other_content_files:
             path = self._absolute_other_file_output_path(f)
             if not path.parent.exists():
@@ -74,8 +86,8 @@ class Build:
                 documents.append(content.Document(
                     document_path=file, renderer=self.site.document_renderer))
             except exceptions.DocumentError as exc:
-                # TODO: Log warning here
-                pass
+                logger.warning(str(exc))
+
         return tuple(documents)
 
     @cached_property
@@ -88,8 +100,8 @@ class Build:
                     content=self.site.template_renderer.render(
                         ctx=self.context, document=document)))
             except exceptions.RenderingError as exc:
-                # TODO: Log warning here
-                pass
+                logger.warning(str(exc))
+
         return tuple(pages)
 
     def _absolute_page_output_path(self, document: content.Document) -> Path:

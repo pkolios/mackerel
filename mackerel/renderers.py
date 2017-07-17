@@ -80,5 +80,6 @@ class Jinja2Renderer(TemplateRenderer):
             template = self.env.get_template(document.template)
         except jinja2.exceptions.TemplateNotFound:
             raise exceptions.RenderingError(
-                f'Template file `{document.template}` not found')
+                f'Template file `{document.template}` for document '
+                f'`{document.document_path}` not found')
         return template.render(ctx=ctx, document=document)
