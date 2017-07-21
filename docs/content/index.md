@@ -145,6 +145,7 @@ When rendering the content files, Mackerel passes the following objects to the t
 * [Python 3](https://www.python.org/)
 * [mypy](http://mypy.readthedocs.io) Static type checker
 * [Jinja2](http://jinja.pocoo.org/) Template engine
+* [Markdown](http://pythonhosted.org/Markdown/) Python implementation of Markdown
 * [mistune](http://mistune.readthedocs.io) Markdown parser in pure Python
 
 ## Changelog

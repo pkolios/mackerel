@@ -4,6 +4,7 @@ flake8
 ipdb
 Jinja2
 livereload
+markdown
 MarkupSafe
 mistune
 mistune-contrib

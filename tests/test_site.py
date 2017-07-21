@@ -1,6 +1,6 @@
 from pathlib import Path
 
-from mackerel.renderers.document import MistuneMarkdownRenderer
+from mackerel.renderers.document import MarkdownMarkdownRenderer
 from mackerel.renderers.template import Jinja2Renderer
 from mackerel.site import Site
 
@@ -14,7 +14,7 @@ def test_site_init(site_path):
     assert len(site.document_files) == 7
     assert len(site.other_content_files) == 6
     assert len(site.other_template_files) == 7
-    assert isinstance(site.document_renderer, MistuneMarkdownRenderer)
+    assert isinstance(site.document_renderer, MarkdownMarkdownRenderer)
     assert isinstance(site.template_renderer, Jinja2Renderer)
 
 

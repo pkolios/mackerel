@@ -12,15 +12,13 @@ def test_document_init(document_path):
     doc = content.Document(document_path=document_path, renderer=renderer)
 
     renderer.extract_metadata.assert_called_with(text=doc.content)
-    renderer.extract_text.assert_called_with(text=doc.content)
-    renderer.render.assert_called_with(doc.text)
+    renderer.render.assert_called_with(doc.content)
 
     assert doc.document_path == document_path
     assert doc.checksum == '960d1eea96bf8d50547d917b768ed964077c1e1f'
     assert doc.template == 'document.html'
     assert doc.title == 'Test post'
     assert renderer.extract_metadata() == doc.metadata
-    assert renderer.extract_text() == doc.text
     assert renderer.render() == doc.html
 
 

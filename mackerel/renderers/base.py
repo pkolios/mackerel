@@ -16,10 +16,6 @@ class DocumentRenderer:
         """
         raise NotImplementedError
 
-    def extract_text(self, text: str) -> str:
-        """Extract the text that follows the metadata of the document."""
-        raise NotImplementedError
-
     def render(self, text: str) -> str:
         raise NotImplementedError
 

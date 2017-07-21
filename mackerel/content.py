@@ -18,10 +18,9 @@ class Document:
         self.checksum = self.__generate_checksum(self.content)  # type: str
         self.metadata = renderer.extract_metadata(
             text=self.content)  # type: Dict[str, str]
-        self.text = renderer.extract_text(text=self.content)  # type: str
         self.template = self._get_metadata_value(
             key='template', metadata=self.metadata)  # type: str
-        self.html = renderer.render(self.text)  # type: str
+        self.html = renderer.render(self.content)  # type: str
         self.title = self._get_metadata_value(
             key='title', metadata=self.metadata)  # type: str
         self._renderer = renderer

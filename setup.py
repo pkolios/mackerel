@@ -31,6 +31,7 @@ setup(
         'Click',
         'Jinja2',
         'livereload',
+        'markdown',
         'MarkupSafe',
         'mistune',
         'mistune-contrib',
