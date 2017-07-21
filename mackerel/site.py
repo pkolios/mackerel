@@ -48,13 +48,13 @@ class Site:
             f.is_file())
 
     @cached_property
-    def document_renderer(self) -> renderers.DocumentRenderer:
+    def document_renderer(self) -> renderers.base.DocumentRenderer:
         renderer = getattr(
-            renderers, self.config['mackerel']['DOCUMENT_RENDERER'])
+            renderers.document, self.config['mackerel']['DOCUMENT_RENDERER'])
         return renderer(site=self)
 
     @cached_property
-    def template_renderer(self) -> renderers.TemplateRenderer:
+    def template_renderer(self) -> renderers.base.TemplateRenderer:
         renderer = getattr(
-            renderers, self.config['mackerel']['TEMPLATE_RENDERER'])
+            renderers.template, self.config['mackerel']['TEMPLATE_RENDERER'])
         return renderer(site=self)

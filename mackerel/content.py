@@ -4,9 +4,10 @@ from textwrap import shorten
 from typing import TYPE_CHECKING, Dict, Optional
 
 from mackerel import exceptions
+from mackerel.renderers.helpers import strip_tags
 
 if TYPE_CHECKING:
-    from mackerel.renderers import DocumentRenderer  # noqa
+    from mackerel.renderers.base import DocumentRenderer  # noqa
 
 
 class Document:
@@ -43,6 +44,6 @@ class Document:
 
     def excerpt(self, width: Optional[int] = 150,
                 placeholder: Optional[str] = '...') -> str:
-        text = self._renderer.strip_tags(self.html)
+        text = strip_tags(self.html)
         return shorten(text, width=(width or 150)+len(placeholder),
                        placeholder=placeholder)

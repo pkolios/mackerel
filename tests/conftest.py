@@ -23,7 +23,8 @@ def document_content(document_path):
 def document(document_path):
     doc = mackerel.content.Document(
         document_path=document_path,
-        renderer=mackerel.renderers.MarkdownRenderer(site=mock.Mock()))
+        renderer=mackerel.renderers.document.MistuneMarkdownRenderer(
+            site=mock.Mock()))
     yield doc
 
 
