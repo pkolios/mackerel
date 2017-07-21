@@ -32,6 +32,7 @@ def test_document_eq(document_path):
     doc2 = content.Document(document_path=document_path, renderer=renderer)
 
     assert doc1 == doc2
+    assert doc1 != 'some_string'
 
 
 def test_document_missing_title(document_path):

@@ -13,7 +13,7 @@ typing:
 			 --disallow-untyped-calls
 
 docs:
-	PYTHONPATH=$PYTHONPATH:$(pwd) python mackerel/cli.py build docs
+	PYTHONPATH=$$PYTHONPATH:$(pwd) python mackerel/cli.py build docs
 
 release:
 	python setup.py sdist
