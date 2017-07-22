@@ -3,8 +3,8 @@
 {# The command above "extends default.html" means - insert everything in this file into
     the {% block body %} of the default.html template, containing the blog header/footer. #}
 <header class="main-header post-head {% if document.metadata.cover_image %}" style="background-image: url({{ ctx.url_for(document.metadata.cover_image|e) }}){% else %}no-cover{% endif %}">
-    <nav class="main-nav {% if feature_image %}overlay{% endif %} clearfix">
-        {% if ctx.cfg.logo %}<a class="blog-logo" href="{{ ctx.cfg.url|e }}"><img src="{{ ctx.url_for(ctx.cfg.logo|e) }}" alt="{{ ctx.cfg.title }}" /></a>{% endif %}
+    <nav class="main-nav {% if feature_image %}overlay {% endif %}clearfix">
+        {% if ctx.cfg.user.logo %}<a class="blog-logo" href="{{ ctx.cfg.user.url|e }}"><img src="{{ ctx.url_for(ctx.cfg.user.logo|e) }}" alt="{{ ctx.cfg.user.title }}" /></a>{% endif %}
         {% if ctx.cfg.navigation %}
             <a class="menu-button icon-menu" href="#"><span class="word">Menu</span></a>
         {% endif %}

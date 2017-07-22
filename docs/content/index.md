@@ -2,6 +2,8 @@ Title: Welcome
 Copyright: 2017 Paris Kolios
 Template: layout.html
 
+![Mackerel Logo](mackerel.svg "Mackerel Logo"){.logo}
+
 # Mackerel
 
 Mackerel is a minimal static site generator written in typed Python 3.6+.
