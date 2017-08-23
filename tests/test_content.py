@@ -18,7 +18,6 @@ def test_document_init(document_path, content_path):
 
     assert doc.document_path == document_path
     assert doc.relative_path == Path('about.md')
-    assert doc.checksum == '960d1eea96bf8d50547d917b768ed964077c1e1f'
     assert doc.template == 'document.html'
     assert doc.title == 'Test post'
     assert renderer.extract_metadata() == doc.metadata

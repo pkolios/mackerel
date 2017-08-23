@@ -1,4 +1,3 @@
-import hashlib
 from pathlib import Path
 from textwrap import shorten
 from typing import TYPE_CHECKING, Dict, Optional
@@ -16,7 +15,6 @@ class Document:
         self.document_path = document_path  # type: Path
         self.relative_path = document_path.relative_to(content_path)  # type: Path # noqa
         self.content = self.document_path.read_text()  # type: str
-        self.checksum = self.__generate_checksum(self.content)  # type: str
         self.metadata = renderer.extract_metadata(
             text=self.content)  # type: Dict[str, str]
         self.template = self._get_metadata_value(
@@ -24,10 +22,6 @@ class Document:
         self.html = renderer.render(self.content)  # type: str
         self.title = self._get_metadata_value(
             key='title', metadata=self.metadata)  # type: str
-
-    def __generate_checksum(self, content: str) -> str:
-        h = hashlib.sha1(content.encode())
-        return h.hexdigest()
 
     def _get_metadata_value(self, key: str, metadata: Dict[str, str]) -> str:
         try:
@@ -39,7 +33,7 @@ class Document:
     def __eq__(self, other: object) -> bool:
         if not isinstance(other, Document):
             return False
-        return self.checksum == other.checksum
+        return self.document_path == other.document_path
 
     def excerpt(self, width: Optional[int] = 150,
                 placeholder: Optional[str] = '...') -> str:
