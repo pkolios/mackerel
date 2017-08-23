@@ -1,3 +1,4 @@
+from pathlib import Path
 from unittest import mock
 
 import pytest
@@ -5,16 +6,18 @@ import pytest
 from mackerel import content, exceptions
 
 
-def test_document_init(document_path):
+def test_document_init(document_path, content_path):
     renderer = mock.Mock()
     renderer.extract_metadata.return_value = {
         'template': 'document.html', 'title': 'Test post'}
-    doc = content.Document(document_path=document_path, renderer=renderer)
+    doc = content.Document(document_path=document_path,
+                           content_path=content_path, renderer=renderer)
 
     renderer.extract_metadata.assert_called_with(text=doc.content)
     renderer.render.assert_called_with(doc.content)
 
     assert doc.document_path == document_path
+    assert doc.relative_path == Path('about.md')
     assert doc.checksum == '960d1eea96bf8d50547d917b768ed964077c1e1f'
     assert doc.template == 'document.html'
     assert doc.title == 'Test post'
@@ -22,22 +25,25 @@ def test_document_init(document_path):
     assert renderer.render() == doc.html
 
 
-def test_document_eq(document_path):
+def test_document_eq(document_path, content_path):
     renderer = mock.Mock()
     renderer.extract_metadata.return_value = {
         'template': 'document.html', 'title': 'Test post'}
-    doc1 = content.Document(document_path=document_path, renderer=renderer)
-    doc2 = content.Document(document_path=document_path, renderer=renderer)
+    doc1 = content.Document(document_path=document_path,
+                            content_path=content_path, renderer=renderer)
+    doc2 = content.Document(document_path=document_path,
+                            content_path=content_path, renderer=renderer)
 
     assert doc1 == doc2
     assert doc1 != 'some_string'
 
 
-def test_document_missing_title(document_path):
+def test_document_missing_title(document_path, content_path):
     renderer = mock.Mock()
     renderer.extract_metadata.return_value = {'template': 'document.html'}
     with pytest.raises(exceptions.DocumentError) as excinfo:
-        content.Document(document_path=document_path, renderer=renderer)
+        content.Document(document_path=document_path,
+                         content_path=content_path, renderer=renderer)
 
     assert f'Document `{str(document_path)}` is missing a title' in str(
         excinfo.value)

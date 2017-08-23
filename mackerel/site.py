@@ -52,7 +52,8 @@ class Site:
         for file in self.document_files:
             try:
                 documents.append(Document(
-                    document_path=file, renderer=self.document_renderer))
+                    document_path=file, content_path=self.content_path,
+                    renderer=self.document_renderer))
             except exceptions.DocumentError as exc:
                 self.logger.warning(str(exc))
 

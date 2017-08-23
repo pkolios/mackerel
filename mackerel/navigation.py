@@ -37,6 +37,7 @@ class Navigation:
             try:
                 document = Document(
                     document_path=doc_path,
+                    content_path=self.site.content_path,
                     renderer=self.site.document_renderer)
             except (FileNotFoundError, exceptions.DocumentError):
                 return None

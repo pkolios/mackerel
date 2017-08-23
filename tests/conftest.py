@@ -8,6 +8,11 @@ import mackerel
 
 
 @pytest.yield_fixture
+def content_path():
+    yield Path(mackerel.__file__).parent / 'site' / 'content'
+
+
+@pytest.yield_fixture
 def document_path():
     yield Path(mackerel.__file__).parent / 'site' / 'content' / 'about.md'
 
@@ -20,9 +25,10 @@ def document_content(document_path):
 
 
 @pytest.yield_fixture
-def document(document_path):
+def document(document_path, content_path):
     doc = mackerel.content.Document(
         document_path=document_path,
+        content_path=content_path,
         renderer=mackerel.renderers.document.MistuneMarkdownRenderer(
             site=mock.Mock()))
     yield doc

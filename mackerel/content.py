@@ -11,9 +11,10 @@ if TYPE_CHECKING:
 
 
 class Document:
-    def __init__(self, document_path: Path,
+    def __init__(self, document_path: Path, content_path: Path,
                  renderer: 'DocumentRenderer') -> None:
         self.document_path = document_path  # type: Path
+        self.relative_path = document_path.relative_to(content_path)  # type: Path # noqa
         self.content = self.document_path.read_text()  # type: str
         self.checksum = self.__generate_checksum(self.content)  # type: str
         self.metadata = renderer.extract_metadata(
