@@ -17,7 +17,3 @@ def test_site_init(site_path):
     assert isinstance(site.document_renderer, MarkdownMarkdownRenderer)
     assert isinstance(site.template_renderer, Jinja2Renderer)
     assert len(site.documents) == 6
-
-
-def test_get_relative_doc_path(site, document):
-    assert site.get_relative_doc_path(document) == Path('about.md')

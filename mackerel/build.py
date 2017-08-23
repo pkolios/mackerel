@@ -82,8 +82,8 @@ class Build:
         return tuple(pages)
 
     def _absolute_page_output_path(self, document: content.Document) -> Path:
-        return self.site.output_path / self.site.get_relative_doc_path(
-            document).with_suffix(self.site.config['mackerel']['OUTPUT_EXT'])
+        return self.site.output_path / document.relative_path.with_suffix(
+            self.site.config['mackerel']['OUTPUT_EXT'])
 
     def _absolute_other_file_output_path(self, other_file: Path) -> Path:
         return self.site.output_path / other_file.relative_to(

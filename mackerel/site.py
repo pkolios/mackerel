@@ -58,6 +58,3 @@ class Site:
                 self.logger.warning(str(exc))
 
         return tuple(documents)
-
-    def get_relative_doc_path(self, document: 'Document') -> Path:
-        return document.document_path.relative_to(self.content_path)

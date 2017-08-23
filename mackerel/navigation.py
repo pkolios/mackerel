@@ -2,7 +2,6 @@ from pathlib import Path
 from typing import NamedTuple, TYPE_CHECKING
 from urllib.parse import urljoin, urlparse
 
-from mackerel import exceptions
 from mackerel.content import Document
 from mackerel.helpers import cached_property
 
@@ -31,19 +30,12 @@ class Navigation:
             nodes.append(self.get_node(entry))
         return tuple(nodes)
 
-    def get_node(self, document: 'Union[str, Document]') -> 'Optional[Node]':
-        if isinstance(document, str):
-            doc_path = self.site.content_path / Path(document)
-            try:
-                document = Document(
-                    document_path=doc_path,
-                    content_path=self.site.content_path,
-                    renderer=self.site.document_renderer)
-            except (FileNotFoundError, exceptions.DocumentError):
-                return None
+    def get_node(self, rel_path: 'Union[str, Path]') -> 'Optional[Node]':
+        if isinstance(rel_path, str):
+            rel_path = Path(rel_path)
 
         for node in self.nodes:
-            if node.document == document:
+            if node.document.relative_path == rel_path:
                 return node
         return None
 
@@ -53,8 +45,8 @@ class Navigation:
             f for f in loop_path.rglob('*')
             if f.suffix == self.site.config['mackerel']['DOC_EXT'])
         nodes = []
-        for doc in loop_docs:
-            node = self.get_node(str(doc))
+        for doc_path in loop_docs:
+            node = self.get_node(doc_path.relative_to(self.site.content_path))
             if node:
                 nodes.append(node)
         return tuple(nodes)
@@ -70,7 +62,7 @@ class Navigation:
     def _build_url(self, document: Document) -> str:
         site_url = urlparse(
             self.site.config.get('user', 'url', fallback='/'))
-        doc_url = self.site.get_relative_doc_path(document).with_suffix(
+        doc_url = document.relative_path.with_suffix(
             self.site.config['mackerel']['OUTPUT_EXT']).as_posix()
         return urljoin(site_url.path, doc_url)
 

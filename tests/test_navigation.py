@@ -57,7 +57,7 @@ def test_build_external_url_with_missing_config_value(navigation):
 def test_get_node(navigation):
     assert navigation.get_node('unknown_node.md') is None
     nodes = (navigation.get_node('about.md'),
-             navigation.get_node(navigation.site.documents[0]))
+             navigation.get_node(navigation.site.documents[0].relative_path))
     for node in nodes:
         assert node.document == navigation.site.documents[0]
         assert node.url == '/about.html'
