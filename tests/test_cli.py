@@ -27,9 +27,9 @@ def test_build_success(runner, site_path, template_path, output_path):
     output_path.mkdir()
     result = runner.invoke(cli.cli, ['build', str(site_path)], input='y\n')
     assert result.exit_code == 0
-    assert result.output == (
-        f'Directory {str(output_path)} already exists, '
-        'do you want to overwrite? [y/N]: y\nBuild finished.\n')
+    assert (f'Directory {str(output_path)} already exists, '
+            'do you want to overwrite? [y/N]: y') in result.output
+    assert '\nBuild finished.\n' in result.output
     assert len(list(site_path.iterdir()))
 
 

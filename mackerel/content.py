@@ -23,7 +23,6 @@ class Document:
         self.html = renderer.render(self.content)  # type: str
         self.title = self._get_metadata_value(
             key='title', metadata=self.metadata)  # type: str
-        self._renderer = renderer
 
     def __generate_checksum(self, content: str) -> str:
         h = hashlib.sha1(content.encode())
