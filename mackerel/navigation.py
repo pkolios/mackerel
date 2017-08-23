@@ -39,15 +39,12 @@ class Navigation:
                 return node
         return None
 
-    def loop(self, path: 'Optional[str]' = '.') -> 'Tuple':
-        loop_path = self.site.content_path / path.lstrip('/')
-        loop_docs = tuple(
-            f for f in loop_path.rglob('*')
-            if f.suffix == self.site.config['mackerel']['DOC_EXT'])
+    def loop(self, path: 'Optional[str]' = '/') -> 'Tuple':
+        path = path.rstrip('/') + '/'
+        path = '/' + path.lstrip('/')
         nodes = []
-        for doc_path in loop_docs:
-            node = self.get_node(doc_path.relative_to(self.site.content_path))
-            if node:
+        for node in self.nodes:
+            if node.url.startswith(path):
                 nodes.append(node)
         return tuple(nodes)
 

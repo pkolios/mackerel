@@ -77,12 +77,12 @@ def test_loop(navigation):
     for node in nodes:
         assert isinstance(node, Node)
 
+    nodes = navigation.loop('about')
+    assert len(nodes) == 0
+    nodes = navigation.loop('/about')
+    assert len(nodes) == 0
+
     nodes = navigation.loop('posts')
     assert len(nodes) == 2
-    for node in nodes:
-        assert isinstance(node, Node)
-
     nodes = navigation.loop('/posts')
     assert len(nodes) == 2
-    for node in nodes:
-        assert isinstance(node, Node)
