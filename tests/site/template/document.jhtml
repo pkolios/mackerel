@@ -1,0 +1,4 @@
+document.jhtml Template
+
+context: {{ ctx }}
+document: {{ document }}

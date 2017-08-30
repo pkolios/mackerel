@@ -30,9 +30,10 @@ def test_build_pages(build, site):
                 site.template_renderer.render.call_args_list)
 
 
-def test_build_absolute_page_output_path(build, document):
+def test_build_absolute_page_output_path(build, document_mocks):
+    document = document_mocks.create(relative_path=Path('document.md'))
     page_path = build._absolute_page_output_path(document)
-    assert page_path == build.site.output_path / Path('about.html')
+    assert page_path == build.site.output_path / Path('document.html')
 
 
 def test_build_execute_dry_run(build):
