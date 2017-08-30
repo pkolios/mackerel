@@ -16,13 +16,6 @@ class cached_property:
         return value
 
 
-def touch(path: Path) -> bool:
-    if not path.parent.exists():
-        path.parent.mkdir(parents=True)
-    path.touch()
-    return True
-
-
 def make_config(site_path: Path) -> configparser.ConfigParser:
     config = configparser.ConfigParser()
     # Read default config values
