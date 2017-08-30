@@ -1,0 +1,4 @@
+subdocument.jhtml Template
+
+context: {{ ctx }}
+document: {{ document }}

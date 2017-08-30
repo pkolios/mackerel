@@ -1,3 +1,5 @@
+from unittest import mock
+
 from mackerel import helpers
 
 
@@ -16,12 +18,10 @@ def test_cached_property():
     assert test_object.some_property == 1
 
 
-def test_make_config(site_path):
-    config = helpers.make_config(site_path=site_path)
-    assert 'mackerel' in config
-    for key in ('OUTPUT_PATH', 'CONTENT_PATH', 'TEMPLATE_PATH', 'DOC_EXT'):
-        assert key in config['mackerel']
-    assert config['mackerel']['TEMPLATE_PATH'] == 'template'
-    assert config['mackerel']['OUTPUT_PATH'] == '_build'
-    assert config['mackerel']['CONTENT_PATH'] == 'content'
-    assert config['mackerel']['DOC_EXT'] == '.md'
+def test_make_config():
+    with mock.patch('configparser.ConfigParser.read') as cfg_read, \
+            mock.patch('configparser.ConfigParser.read_file') as cfg_read_file:
+        helpers.make_config(site_path='/random/path/')
+
+    assert cfg_read_file.called
+    cfg_read.assert_called_once_with('/random/path/.mackerelconfig')
