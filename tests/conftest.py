@@ -64,6 +64,14 @@ def site(document_mocks):
         'mackerel': {'OUTPUT_EXT': '.html'},
         'user': {'url': 'http://localhost:8000/'},
         'navigation': {'main': 'index.md, about.md'},
+        'Jinja2Renderer': {
+            'TRIM_BLOCKS': True,
+            'LSTRIP_BLOCKS': True,
+        },
+        'MarkdownMarkdownRenderer': {
+            'OUTPUT_FORMAT': 'html5',
+            'EXTENSIONS': 'markdown.extensions.meta, markdown.extensions.extra'
+        }
     })
     site.content_path = Path('/tmp/mackerel/content')
     site.documents = (
