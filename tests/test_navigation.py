@@ -1,42 +1,8 @@
-import configparser
-from pathlib import Path
 from unittest import mock
 
 import pytest
 
 from mackerel.navigation import Navigation, Node
-
-
-class DocumentMock:
-    def __init__(self, **kwargs):
-        for key in kwargs:
-            setattr(self, key, kwargs[key])
-
-
-@pytest.yield_fixture
-def document_mocks():
-    class DocumentFactory:
-        def create(self, **kwargs):
-            return DocumentMock(**kwargs)
-    return DocumentFactory()
-
-
-@pytest.yield_fixture
-def site(document_mocks):
-    site = mock.Mock('site')
-    site.documents = (
-        document_mocks.create(relative_path=Path('about.md')),
-        document_mocks.create(relative_path=Path('index.md')),
-        document_mocks.create(relative_path=Path('posts/hello.md')),
-        document_mocks.create(relative_path=Path('posts/world.md')),
-    )
-    site.config = configparser.ConfigParser()
-    site.config.read_dict({
-        'mackerel': {'OUTPUT_EXT': '.html'},
-        'user': {'url': 'http://localhost:8000/'},
-        'navigation': {'main': 'index.md, about.md'},
-    })
-    yield site
 
 
 @pytest.yield_fixture

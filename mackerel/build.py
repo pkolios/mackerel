@@ -6,7 +6,7 @@ from urllib.parse import urljoin, urlparse
 from mackerel import content, exceptions
 from mackerel.navigation import Navigation
 from mackerel.site import Site
-from mackerel.helpers import cached_property, touch
+from mackerel.helpers import cached_property
 
 if TYPE_CHECKING:
     from configparser import ConfigParser  # noqa
@@ -46,7 +46,7 @@ class Build:
             pass
 
         for page in self.pages:
-            touch(page.path)
+            self.touch(page.path)
             page.path.write_text(page.content)
 
         self.site.logger.info(f'{len(self.pages)} pages were built')
@@ -62,6 +62,12 @@ class Build:
             if not path.parent.exists():
                 path.parent.mkdir(parents=True)
             shutil.copyfile(src=f, dst=path)
+
+    def touch(self, path: Path) -> bool:
+        if not path.parent.exists():
+            path.parent.mkdir(parents=True)
+        path.touch()
+        return True
 
     @cached_property
     def context(self) -> Context:
