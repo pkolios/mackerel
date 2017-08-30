@@ -80,6 +80,7 @@ def site(document_mocks):
         document_mocks.create(relative_path=Path('posts/hello.md')),
         document_mocks.create(relative_path=Path('posts/world.md')),
     )
+    site.logger = mock.Mock(spec=logging.Logger)
     site.other_content_files = (
         Path('/tmp/mackerel/content/logo.svg'),
         Path('/tmp/mackerel/content/posts/image.png'),
@@ -89,11 +90,11 @@ def site(document_mocks):
         Path('/tmp/mackerel/templates/example/css/style.css'),
         Path('/tmp/mackerel/templates/example/js/app.js'),
     )
-    site.logger = mock.Mock(spec=logging.Logger)
     site.output_path = Path('/tmp/mackerel/_build')
+    site.path = Path('/tmp/mackerel')
+    site.template_path = Path('/tmp/mackerel/templates/example')
     site.template_renderer = mock.Mock(
         spec=mackerel.renderers.base.TemplateRenderer)
-    site.template_path = Path('/tmp/mackerel/templates/example')
     yield site
 # End new fixtures
 
