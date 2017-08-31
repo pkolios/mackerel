@@ -1,6 +1,7 @@
 include README.rst LICENSE CHANGELOG.rst
 
 graft mackerel/site
+graft mackerel/tests/site
 recursive-include tests *.py
 global-exclude *.py[co]
 
