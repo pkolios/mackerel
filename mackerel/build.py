@@ -63,7 +63,8 @@ class Build:
                 path.parent.mkdir(parents=True)
             shutil.copyfile(src=f, dst=path)
 
-    def touch(self, path: Path) -> bool:
+    @staticmethod
+    def touch(path: Path) -> bool:
         if not path.parent.exists():
             path.parent.mkdir(parents=True)
         path.touch()
