@@ -45,7 +45,7 @@ $ pip install -e .
 
 ## Basic Usage
 
-After succesfully installing mackerel you can use the mackerel cli to initialize a new site or build an existing one.
+After successfully installing mackerel you can use the mackerel cli to initialize a new site or build an existing one.
 
 ### Start a new site
 
@@ -59,12 +59,12 @@ The mackerel directory structure looks like this:
 
 ```
 .
-├── .mackerelconfig  # The configuration file of this site
+├── mackerelconfig.toml  # The configuration file of this site
 ├── content  # The site's content
 └── template  # The site's template
 ```
 
-You can have a look at the generated `.mackerelconfig` file and `content` directory and alter them to your liking.
+You can have a look at the generated `mackerelconfig.toml` file and `content` directory and alter them to your liking.
 For further documentation regarding the template development see the Template development section.
 
 ### Build your site
@@ -111,24 +111,24 @@ This is the main content of this document written in Markdown.
 
 ## Configuration
 
-The `.mackerelconfig` file contains the configuration for the site
+The `mackerelconfig.toml` file contains the configuration for the site
 
 ```
 [mackerel]
-    OUTPUT_PATH = _build  # Sets the build output directory
-    CONTENT_PATH = content  # Specifies the site's content directory
-    TEMPLATE_PATH = template  # Specifies the site's template directory
+build_path = _build  # Sets the build output directory
+content_path = content  # Specifies the site's content directory
+template_path = template  # Specifies the site's template directory
 
 [navigation]  # This section is used to define navigation menus for the template
-    main = index.md, about.md  # The main navigation consists of the index and the about documents
+main = index.md, about.md  # The main navigation consists of the index and the about documents
 
 [user]  # This section contains all the user / template site-wide settings
-    title = Mackerel Example Site  # The site's title
-    description = A beautiful narrative written with Mackerel. The story begins here.  # The site's description
-    logo = img/logo.svg  # The path to the site's logo inside the content directory
-    url = http://localhost:8000/  # The site's url (supports sub directories ex. /blog/)
-    copyright = 2017 Paris Kolios  # Site-wide copyright string
-    powered = https://github.com/pkolios/mackerel  # Site-wide powered-by string
+title = Mackerel Example Site  # The site's title
+description = A beautiful narrative written with Mackerel. The story begins here.  # The site's description
+logo = img/logo.svg  # The path to the site's logo inside the content directory
+url = http://localhost:8000/  # The site's url (supports sub directories ex. /blog/)
+copyright = 2017 Paris Kolios  # Site-wide copyright string
+powered = https://github.com/pkolios/mackerel  # Site-wide powered-by string
 ```
 
 ## Template development
@@ -148,7 +148,6 @@ When rendering the content files, Mackerel passes the following objects to the t
 * [mypy](http://mypy.readthedocs.io) Static type checker
 * [Jinja2](http://jinja.pocoo.org/) Template engine
 * [Markdown](http://pythonhosted.org/Markdown/) Python implementation of Markdown
-* [mistune](http://mistune.readthedocs.io) Markdown parser in pure Python
 
 ## Changelog
 

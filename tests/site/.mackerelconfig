@@ -1,6 +1,0 @@
-[mackerel]
-    TEMPLATE_PATH = template
-    TEMPLATE_EXT = .jhtml
-
-[user]
-    title = Mackerel Test Site
