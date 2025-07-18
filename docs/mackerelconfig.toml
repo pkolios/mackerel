@@ -1,0 +1,30 @@
+[mackerel]
+build_path = "_build"
+build_suffix = ".html"
+content_path = "content"
+doc_suffix = ".md"
+template_path = "template"
+template_suffix = ".html"
+content_renderer = "MarkdownRenderer"
+template_renderer = "Jinja2Renderer"
+navigation = [
+    { label = "Home", url = "/", children = [] },
+]
+
+[MarkdownRenderer]
+output_format = "html"
+extensions = [
+    "markdown.extensions.meta",
+    "markdown.extensions.extra",
+    "markdown.extensions.toc",
+]
+
+[Jinja2Renderer]
+trim_blocks = true
+lstrip_blocks = true
+
+[user]
+site_title = "Mackerel (a minimal static website generator)"
+copyright = "2025 Paris Kolios"
+powered = "https://github.com/pkolios/mackerel"
+favicon_path = "/assets/favicon.ico"

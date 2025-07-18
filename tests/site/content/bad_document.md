@@ -1,3 +1,3 @@
 Title: Some Document
 
-Bad document missing template metadata.
+Bad document wrong metadata.

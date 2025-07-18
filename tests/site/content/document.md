@@ -1,4 +1,6 @@
-Title: Some Document
-Template: document.jhtml
+---
+title: Some Document
+template: document
+---
 
-We use this for testing and for reference!
+We use this for testing!

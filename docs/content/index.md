@@ -1,172 +1,210 @@
-Title: Welcome
-Copyright: 2017 Paris Kolios
-Template: layout.html
+---
+title: Welcome
+template: base
+---
 
-![Mackerel Logo](mackerel.svg "Mackerel Logo"){.logo}
+![Mackerel Logo](/assets/mackerel.svg "Mackerel Logo"){.logo}
 
 # Mackerel
 
-Mackerel is a minimal static site generator written in typed Python 3.6+.
+Mackerel is a minimal, typed static site generator built with Python.
 
-[![Latest Version](https://img.shields.io/pypi/v/mackerel.svg)](https://pypi.python.org/pypi/mackerel/)
-[![Build Status](https://travis-ci.org/pkolios/mackerel.svg?branch=master)](https://travis-ci.org/pkolios/mackerel)
-[![Coverage Status](https://coveralls.io/repos/pkolios/mackerel/badge.svg?branch=master)](https://coveralls.io/r/pkolios/mackerel)
+Turn Markdown content into static sites, using templates for flexible presentation.
+
+
+[![PyPI](https://img.shields.io/pypi/v/mackerel.svg)](https://pypi.org/project/mackerel/)
+[![CI](https://github.com/pkolios/mackerel/actions/workflows/ci.yml/badge.svg)](https://github.com/pkolios/mackerel/actions/workflows/ci.yml)
+[![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
+[![codecov](https://codecov.io/gh/pkolios/mackerel/branch/main/graph/badge.svg)](https://codecov.io/gh/pkolios/mackerel)
+
+---
+
+## Table of Contents
+
+[TOC]
+
+---
 
 ## Installation
 
-This part of the documentation covers the installation of Mackerel.
+### With pip
 
-### pip install
-
-To install Mackerel, simply run this command in your terminal of choice:
-
-```
-$ pip install mackerel
+```bash
+pip install mackerel
 ```
 
-If you don't have pip installed, this [pip installation guide](https://pip.pypa.io/en/stable/installing/) can guide you through the process.
+### With uv
 
-### Get the Source Code
-
-Mackerel is developed on GitHub, where the [source code is available](https://github.com/pkolios/mackerel).
-
-You can clone the public repository:
-
-```
-$ git clone git@github.com:pkolios/mackerel.git
+```bash
+uv add mackerel
 ```
 
-Once you have a copy of the repository you can install it:
+### Use as tool (pipx, uvx)
 
-```
-$ cd mackerel
-$ pip install -e .
-```
+Run directly without installing globally:
 
-## Basic Usage
+pipx:
 
-After succesfully installing mackerel you can use the mackerel cli to initialize a new site or build an existing one.
-
-### Start a new site
-
-Mackerel's cli provides with an `init` command that generates a new site under the given directory name.
-
-```
-$ mackerel init ~/my_site
+```bash
+pipx run mackerel --help
 ```
 
-The mackerel directory structure looks like this:
+uvx:
 
-```
-.
-├── .mackerelconfig  # The configuration file of this site
-├── content  # The site's content
-└── template  # The site's template
+```bash
+uvx mackerel --help
 ```
 
-You can have a look at the generated `.mackerelconfig` file and `content` directory and alter them to your liking.
-For further documentation regarding the template development see the Template development section.
+---
 
-### Build your site
+## Usage
 
-The new site already contains some demo content and a template. The `build` command will build the site.
+### Initialize a site
 
-```
-$ mackerel build ~/my_site
-```
-
-The static site will be generated inside the `_build` directory of the site.
-
-You can use mackerel's development server to host the site.
-
-```
-$ mackerel develop ~/my_site
+```bash
+mackerel init my-site
 ```
 
-The development server automatically detects changes in the `content` and `template` folders and rebuilds the site.
+Creates a new directory `my-site/` with a starter config, content, and templates.
 
-### Create a new page or post
+### Build the site
 
-Using your favorite editor, create a new `.md` file anywhere in the site's `content` directory.
-Make sure the new file has the `.md` file extension. The content file has two sections.
-The top section that contains metadata keys and values related to this document.
-
-```
-Title: New page
-Author: John Doe
-Date: December 31, 2099
-Template: page.html
-Custom_meta: Nyancat
-
-...
+```bash
+cd my-site
+mackerel build
 ```
 
-And the main section that contains the actual content.
+This renders your content and templates into static HTML inside `_build/`.
+
+Options:
+
+* `--config PATH` – specify a config file (default: `mackerelconfig.toml`)
+* `--yes` – overwrite existing `_build/` without confirmation
+* `--dry-run` – run without writing files
+
+### Run the development server
+
+```bash
+mackerel develop
+```
+
+Serves the built site at [http://127.0.0.1:8000](http://127.0.0.1:8000), with live rebuilds when content or templates change.
+
+---
+
+## Site Structure
+
+A Mackerel site typically looks like this:
 
 ```
-...
-
-This is the main content of this document written in Markdown.
+my-site/
+├── content/                # Markdown content files
+│   ├── index.md
+│   ├── about.md
+│   └── posts/
+│       └── hello-world.md
+├── templates/              # Jinja2 templates
+│   ├── base.html
+│   ├── page.html
+│   └── list.html
+├── mackerelconfig.toml     # Site configuration
+└── _build/                 # Generated HTML output (after build)
 ```
+
+---
 
 ## Configuration
 
-The `.mackerelconfig` file contains the configuration for the site
+The `mackerelconfig.toml` defines how your site is built:
 
-```
+```toml
 [mackerel]
-    OUTPUT_PATH = _build  # Sets the build output directory
-    CONTENT_PATH = content  # Specifies the site's content directory
-    TEMPLATE_PATH = template  # Specifies the site's template directory
+build_path = "_build"
+build_suffix = ".html"
+content_path = "content"
+doc_suffix = ".md"
+template_path = "templates/starter"
+template_suffix = ".html"
+content_renderer = "MarkdownRenderer"
+template_renderer = "Jinja2Renderer"
+navigation = [
+    { label = "Home", url = "/", children = [] },
+    { label = "About", url = "/about.html", children = [] },
+]
 
-[navigation]  # This section is used to define navigation menus for the template
-    main = index.md, about.md  # The main navigation consists of the index and the about documents
+[MarkdownRenderer]
+output_format = "html"
+extensions = ["markdown.extensions.meta", "markdown.extensions.extra"]
 
-[user]  # This section contains all the user / template site-wide settings
-    title = Mackerel Example Site  # The site's title
-    description = A beautiful narrative written with Mackerel. The story begins here.  # The site's description
-    logo = img/logo.svg  # The path to the site's logo inside the content directory
-    url = http://localhost:8000/  # The site's url (supports sub directories ex. /blog/)
-    copyright = 2017 Paris Kolios  # Site-wide copyright string
-    powered = https://github.com/pkolios/mackerel  # Site-wide powered-by string
+[Jinja2Renderer]
+trim_blocks = true
+lstrip_blocks = true
+
+[user]
+title = "My Site"
+description = "A site built with Mackerel"
+copyright = "2025 Me"
+powered = "http://mackerel.sh"
 ```
 
-## Template development
+### Key sections
 
-Currently the chosen template engine is [Jinja2](http://jinja.pocoo.org/).
-When rendering the content files, Mackerel passes the following objects to the template:
+* **[mackerel]**: core build settings (paths, suffixes, navigation)
+* **[MarkdownRenderer]**: Markdown parser settings
+* **[Jinja2Renderer]**: Template engine settings
+* **[user]**: Custom fields available in templates (site title, description, etc.)
 
-* `document` - the document that is currently being generated
-* `ctx` - the context object that contains the navigation & config objects
-    * `ctx.nav` - the navigation object
-    * `ctx.cfg` - the config parser object
+---
 
+## Content Documents
 
-## Built With
+Content lives in `content/` as Markdown files (`.md`):
 
-* [Python 3](https://www.python.org/)
-* [mypy](http://mypy.readthedocs.io) Static type checker
-* [Jinja2](http://jinja.pocoo.org/) Template engine
-* [Markdown](http://pythonhosted.org/Markdown/) Python implementation of Markdown
-* [mistune](http://mistune.readthedocs.io) Markdown parser in pure Python
+```markdown
+---
+title: My First Post
+template: page
+created_at: 2025-01-01
+categories: ["posts"]
+excerpt: A short preview of my post.
+---
 
-## Changelog
+# Hello World
 
-### Version 0.2
+Welcome to my site powered by **Mackerel**!
+```
 
-*Bugfixes*
+* **Front matter** (between `---`) defines metadata (`title`, `template`, `created_at`, etc.).
+* **Body** is written in Markdown and gets rendered into HTML.
+* Metadata supports drafts, categories, and lists of posts.
 
-- Fix an error in the packaging that caused ``mackerel init`` command to fail
-  due to the lack of ``config.ini``.
+---
 
-*Improvements*
+## Template Development
 
-- Rework the ``setup.py`` script to increase release automation.
+Templates are written in [Jinja2](https://jinja.palletsprojects.com/):
 
-### Version 0.1
+* `base.html` defines the main structure (header, footer, blocks).
+* `page.html` renders individual pages.
+* `list.html` can display lists of posts using category metadata.
 
-First preview release.
+Inside templates you can access:
 
-## License
+* `document`: the current page (HTML + metadata)
+* `ctx.user`: values from `[user]` in config
+* `ctx.nav`: navigation items
+* `document.category_lists`: auto-generated lists of posts
 
-See the [LICENSE](https://raw.githubusercontent.com/pkolios/mackerel/master/LICENSE) file for details.
+Example snippet:
+
+```html
+<ul>
+  {% for item in ctx.nav %}
+    <li><a href="{{ item.url }}">{{ item.label }}</a></li>
+  {% endfor %}
+</ul>
+```
+
+---
+
+Happy publishing with mackerel.

@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+
+{%- block css%}
+img[alt=mackerel-logo] { width: 200px; display: block; margin: 0 auto; }
+{%- endblock %}
+
+{%- block body %}
+<main>
+<header>
+    <img alt="mackerel-logo" src="/img/logo.svg">
+    <h1>{{ document.metadata.title }}</h1>
+</header>
+<section>{{ document.html }}</section>
+</main>
+{% include 'footer.html' %}
+
+{%- endblock %}

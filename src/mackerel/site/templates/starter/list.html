@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+
+{%- block body %}
+{% include 'header.html' %}
+<main>
+<header><h1>{{ document.metadata.title }}</h1></header>
+<section>{{ document.html }}</section>
+<section>
+{% for cat in document.category_lists %}
+{% for item in cat.items %}
+<h3><a href="{{item.url}}">{{item.metadata.title}}</a></h3>
+{% if item.metadata.created_at %}<sup>{{item.metadata.created_at}}</sup>{% endif %}
+{% if item.metadata.excerpt %}<p>{{item.metadata.excerpt}}</p>{% endif %}
+{% endfor %}
+{% endfor %}
+</section>
+</main>
+{% include 'footer.html' %}
+
+{%- endblock %}
