@@ -36,11 +36,11 @@ classifiers=[
 dependencies = [
     "Click",
     "Jinja2",
-    "livereload",
     "markdown",
     "python-dateutil>=2.9.0.post0",
     "python-frontmatter>=1.1.0",
     "tomli-w>=1.2.0",
+    "watchfiles>=1.1.0",
 ]
 
 [dependency-groups]
@@ -89,3 +89,6 @@ lint.flake8-tidy-imports.ban-relative-imports = "all"
 
 lint.isort.force-single-line = true
 lint.pydocstyle.convention = "google"
+
+[tool.deptry]
+known_first_party = [ "mackerel" ]

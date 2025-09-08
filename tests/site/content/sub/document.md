@@ -1,0 +1,6 @@
+---
+title: Some Sub Document
+template: subdocument.jhtml
+---
+
+We use this for testing and for reference!

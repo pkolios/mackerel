@@ -1,11 +1,7 @@
 # Next
 
 - Update cli module
-    - test build cmd
     - make "-v" option work regardless where it is placed?
-    - develop cmd
-        - use more modern dev server / file watch?
-    - fix typing errors on cli
 
 - Add minimal demo site
     - With minimal base template (little to no css, but acceptable look)
@@ -13,8 +9,6 @@
 
 - Handle listing of pages
     - Pass url to the page listing for linking
-
-- Adjust build cli to support multiple renderers
 
 - Use protocols instead of dataclasses in types
     - This way types is purely about typing
@@ -25,6 +19,11 @@
     - https://chatgpt.com/g/g-p-68720c48b3d88191a30af2ffd2f3b792-mackerel/c/687cabcf-5ba0-8001-a76b-5069f835f8f2
 
 - Check / remove MANIFEST.in
+
+- Adjust build cli to support multiple renderers
+    - Sphinx document renderer
+    - htpy html renderer
+
 
 # Other
 

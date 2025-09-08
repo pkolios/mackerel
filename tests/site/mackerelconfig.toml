@@ -1,0 +1,26 @@
+[mackerel]
+build_path = "_build"
+build_suffix = ".html"
+content_path = "content"
+doc_suffix = ".md"
+template_path = "template"
+template_suffix = ".jhtml"
+content_renderer = "MarkdownRenderer"
+template_renderer = "Jinja2Renderer"
+navigation = [
+    { label = "Home", url = "/", children = [] },
+    { label = "mackerel", url = "http://mackerel.sh", children = [] },
+]
+
+[MarkdownRenderer]
+output_format = "html"
+extensions = [
+    "markdown.extensions.meta",
+    "markdown.extensions.extra",
+]
+
+[Jinja2Renderer]
+trim_blocks = true
+lstrip_blocks = true
+
+[user]

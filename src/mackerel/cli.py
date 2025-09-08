@@ -1,11 +1,13 @@
 """Mackerel CLI."""
 
+import http.server
 import logging
 import shutil
 from pathlib import Path
 
 import click
 import tomli_w
+from watchfiles import run_process
 
 import mackerel
 from mackerel import config
@@ -52,7 +54,7 @@ def init(ctx: click.core.Context, site_path: Path) -> None:
     click.echo(f"Initialized new mackerel site in {site_path}")
 
 
-@cli.command()
+@cli.command(name="build")
 @click.option(
     "--dry-run",
     default=False,
@@ -78,7 +80,12 @@ def init(ctx: click.core.Context, site_path: Path) -> None:
     ),
 )
 @click.pass_context
-def build(ctx: click.core.Context, config_path: Path, dry_run: bool, yes: bool) -> None:
+def build_(
+    ctx: click.core.Context,
+    config_path: Path,
+    dry_run: bool,  # noqa: FBT001
+    yes: bool,  # noqa: FBT001
+) -> None:
     """Build the contents of SITE_PATH."""
     cfg = config.load_config(config_path)
     if cfg.mackerel.build_path.exists() and not yes:
@@ -103,113 +110,57 @@ def build(ctx: click.core.Context, config_path: Path, dry_run: bool, yes: bool) 
     click.echo("Mackerel build finished.")
 
 
-# import shutil
-# from pathlib import Path
-#
-# import click
-# import tomli_w
-# from livereload import Server
-#
-# import mackerel
-# from mackerel import config
-# from mackerel.build import Build
-# from mackerel.site import Site
-#
-#
-# @click.group()
-# @click.version_option(message=f"{mackerel.__title__} {mackerel.__version__}")
-# @click.pass_context
-# def cli(ctx: click.core.Context) -> None:
-#     """Mackerel is a minimal static site generator."""
-#     ctx.obj = {}
-#
-#
-# @cli.command()
-# @click.argument(
-#     "SITE_PATH",
-#     type=click.Path(exists=False, resolve_path=True, path_type=Path),
-# )
-# @click.pass_context
-# def init(ctx: click.core.Context, site_path: Path) -> None:
-#     """Create an new mackerel site."""
-#     sample_site_path = Path(mackerel.__file__).parent / "site"
-#
-#     try:
-#         shutil.copytree(src=sample_site_path, dst=site_path)
-#     except FileExistsError as e:
-#         ctx.fail(f"Initialize failed, file {e.filename} already exists")
-#
-#     # Generate mackerelconfig.toml with default settings
-#     default_config = config.AppConfig()
-#     config_dict = default_config.model_dump(mode="json")
-#     config_file_path = site_path / "mackerelconfig.toml"
-#     with config_file_path.open("wb") as f:
-#         tomli_w.dump(config_dict, f)
-#
-#     click.echo(f"Initialized empty mackerel site in {site_path}")
-#
-#
-# @cli.command()
-# @click.option(
-#     "--dry-run",
-#     default=False,
-#     is_flag=True,
-#     help="Run build without persisting any files.",
-# )
-# @click.option(
-#     "--config",
-#     "-c",
-#     "config_path",
-#     type=click.Path(exists=True, dir_okay=False, resolve_path=True, path_type=Path),
-#     default="mackerelconfig.toml",
-#     help="Path to mackerel configuration file.",
-# )
-# @click.pass_context
-# def build(ctx: click.core.Context, config_path: Path, dry_run: bool) -> None:
-#     """Build the contents of SITE_PATH."""
-#     site = Site(config_path=config_path)
-#
-#     if site.config.mackerel.build_path.exists():
-#         click.confirm(
-#             (
-#                 f"Directory {site.config.mackerel.build_path!s} already exists, "
-#                 "do you want to overwrite?"
-#             ),
-#             abort=True,
-#         )
-#
-#     build = Build(site=site)
-#     build.execute(dry_run=dry_run)
-#     click.echo("Build finished.")
-#
-#
-# @cli.command()
-# @click.option(
-#     "--config",
-#     "-c",
-#     "config_path",
-#     type=click.Path(exists=True, dir_okay=False, resolve_path=True, path_type=Path),
-#     default="mackerelconfig.toml",
-#     help="Path to mackerel configuration file.",
-# )
-# @click.option("--host", "-h", default="127.0.0.1", help="The interface to bind to.")
-# @click.option("--port", "-p", default=8000, help="The port to bind to.")
-# @click.pass_context
-# def develop(ctx: click.core.Context, config_path: Path, host: str, port: int) -> None:
-#     """Runs a local development server."""
-#
-#     def rebuild_site() -> Site:
-#         site = Site(config_path=config_path)
-#         build = Build(site=site)
-#         build.execute()
-#         return site
-#
-#     site = rebuild_site()
-#     server = Server()
-#     server.watch(site.config.mackerel.content_path, func=rebuild_site)
-#     server.watch(site.config.mackerel.template_path, func=rebuild_site)
-#     server.serve(host=host.strip(), port=port, root=site.config.mackerel.build_path)
-#
-#
-# if __name__ == "__main__":
-#     cli()
+@cli.command()
+@click.option(
+    "--config",
+    "-c",
+    "config_path",
+    type=click.Path(exists=True, dir_okay=False, resolve_path=True, path_type=Path),
+    default="mackerelconfig.toml",
+    help="Path to mackerel configuration file.",
+)
+@click.option("--host", "-h", default="127.0.0.1", help="The interface to bind to.")
+@click.option("--port", "-p", default=8000, help="The port to bind to.")
+@click.pass_context
+def develop(ctx: click.core.Context, config_path: Path, host: str, port: int) -> None:
+    """Runs a local development server."""
+    cfg = config.load_config(config_path)
+    run_process(
+        config_path,
+        cfg.mackerel.content_path,
+        cfg.mackerel.template_path,
+        target=run_server,
+        args=(host, port, config_path),
+    )
+
+
+def run_server(host: str, port: int, config_path: Path) -> None:
+    """Run a simple HTTP server."""
+    cfg = config.load_config(config_path)
+
+    def rebuild_site() -> None:
+        """Rebuild the site."""
+        build(
+            cfg=cfg,
+            content_renderer=MarkdownRenderer(cfg.content_renderer),
+            metadata_parser=PythonFrontmatterParser(),
+            template_renderer=Jinja2Renderer(
+                template_path=cfg.mackerel.template_path,
+                cfg=cfg.template_renderer,
+            ),
+        )
+
+    rebuild_site()
+    handler = http.server.SimpleHTTPRequestHandler
+    handler.directory = str(cfg.mackerel.build_path)
+    with http.server.ThreadingHTTPServer((host, port), handler) as httpd:
+        click.echo(f"Serving mackerel at http://{host}:{port}")
+        try:
+            httpd.serve_forever()
+        except KeyboardInterrupt:
+            logger.info("Shutting down server.")
+            httpd.server_close()
+
+
+if __name__ == "__main__":
+    cli()

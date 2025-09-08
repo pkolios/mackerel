@@ -71,8 +71,14 @@ pre-commit:       ## Runs pre-commit hooks; includes ruff formatting and linting
 	@uv run pre-commit run --all-files
 	@echo "=> Pre-commit complete"
 
+.PHONY: deptry
+deptry:          ## Run dependency checks with deptry
+	@echo "=> Running dependency checks"
+	@uv run deptry .
+	@echo "=> Dependency checks complete"
+
 .PHONY: lint
-lint: pre-commit type-check     ## Run all linting
+lint: pre-commit type-check deptry     ## Run all linting
 
 # Tests
 

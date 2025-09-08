@@ -1,6 +1,0 @@
-[mackerel]
-template_path = "template"
-template_ext = ".jhtml"
-
-[user]
-title = "Mackerel Test Site"

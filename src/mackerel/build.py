@@ -8,7 +8,6 @@ from collections.abc import Generator
 from functools import wraps
 from itertools import chain
 from pathlib import Path
-from typing import Any
 
 from dateutil.parser import ParserError
 from dateutil.parser import parse as parse_datetime
@@ -105,9 +104,17 @@ def _parse_sort_value(doc: t.RenderedDocument, field: str) -> str | dt.datetime:
     return ""  # fallback for unknown field
 
 
-def cache_by_category_signature(fn: Callable) -> Callable:
+def cache_by_category_signature(
+    fn: Callable[
+        [t.CategoryList, dict[t.BuildPath, t.RenderedDocument]],
+        t.BuildCategoryList,
+    ],
+) -> Callable[
+    [t.CategoryList, dict[t.BuildPath, t.RenderedDocument]],
+    t.BuildCategoryList,
+]:
     """Custom cache decorator that keys only by category name, sort_by, and order."""
-    cache: dict[tuple[str, str | None, str], Any] = {}
+    cache: dict[tuple[str, str | None, str], t.BuildCategoryList] = {}
 
     @wraps(fn)
     def wrapper(
@@ -208,13 +215,17 @@ def build(
                     dry_run=dry_run,
                 )
             case t.DocumentFile():
-                target_path, document = read_document(
-                    f=f,
-                    cfg=cfg,
-                    content_renderer=content_renderer,
-                    metadata_parser=metadata_parser,
-                )
-                docs[target_path] = document
+                try:
+                    target_path, document = read_document(
+                        f=f,
+                        cfg=cfg,
+                        content_renderer=content_renderer,
+                        metadata_parser=metadata_parser,
+                    )
+                except Exception:
+                    logger.exception("Error reading document %s", f)
+                else:
+                    docs[target_path] = document
     write_documents(
         docs=docs,
         cfg=cfg,
