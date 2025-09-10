@@ -165,12 +165,22 @@ def load_config(config_path: Path) -> AppConfig:
     base_dir = config_path.parent.resolve()
     mcfg = config.mackerel
     raw_navigation = raw_data.get("mackerel", {}).get("navigation", [])
+
+    build_path = t.BuildPath(base_dir / mcfg.build_path)
+    content_path = t.ContentPath(base_dir / mcfg.content_path)
+    template_path = t.TemplatePath(base_dir / mcfg.template_path)
+
+    for path in (content_path, template_path):
+        if not path.exists():
+            msg = f"Path '{path}' does not exist."
+            raise FileNotFoundError(msg)
+
     config.mackerel = MackerelConfig(
         **{
             **asdict(mcfg),
-            "build_path": t.BuildPath(base_dir / mcfg.build_path),
-            "content_path": t.ContentPath(base_dir / mcfg.content_path),
-            "template_path": base_dir / mcfg.template_path,
+            "build_path": build_path,
+            "content_path": content_path,
+            "template_path": template_path,
             "navigation": _parse_nav_items(raw_navigation),
         },
     )

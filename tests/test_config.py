@@ -85,6 +85,8 @@ def test_app_config_to_dict() -> None:
 def test_load_config_with_navigation(tmp_path: Path) -> None:
     """Test loading config with navigation items."""
     cfg_file = tmp_path / "mackerelconfig.toml"
+    Path(tmp_path / "content").mkdir()
+    Path(tmp_path / "templates" / "example").mkdir(parents=True)
     user_toml = """
     [mackerel]
     build_path = "custom_build"
@@ -116,6 +118,8 @@ def test_load_config_with_navigation(tmp_path: Path) -> None:
 def test_load_config_partial_override(tmp_path: Path) -> None:
     """Test loading user config that partially overrides defaults."""
     cfg_file = tmp_path / "mackerelconfig.toml"
+    Path(tmp_path / "content").mkdir()
+    Path(tmp_path / "templates" / "example").mkdir(parents=True)
     user_toml = """
     [mackerel]
     build_path = "custom_build"
@@ -137,6 +141,8 @@ def test_load_config_partial_override(tmp_path: Path) -> None:
 def test_load_config_no_file(tmp_path: Path) -> None:
     """Test loading config with no file, should return defaults."""
     cfg_file = tmp_path / "mackerelconfig.toml"
+    Path(tmp_path / "content").mkdir()
+    Path(tmp_path / "templates" / "example").mkdir(parents=True)
     assert not cfg_file.exists()
 
     cfg = config.load_config(cfg_file)
@@ -149,6 +155,8 @@ def test_load_config_no_file(tmp_path: Path) -> None:
 def test_user_section(tmp_path: Path) -> None:
     """Test loading user section in config."""
     cfg_file = tmp_path / "mackerelconfig.toml"
+    Path(tmp_path / "content").mkdir()
+    Path(tmp_path / "templates" / "example").mkdir(parents=True)
     user_toml = """
     [user]
     name = "Test User"
