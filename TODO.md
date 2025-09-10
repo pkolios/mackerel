@@ -1,8 +1,5 @@
 # Next
 
-- Update cli module
-    - make "-v" option work regardless where it is placed?
-
 - Add minimal demo site
     - With minimal base template (little to no css, but acceptable look)
     - Demo content for all supported features
@@ -24,6 +21,8 @@
     - Sphinx document renderer
     - htpy html renderer
 
+- Update cli module
+    - make "-v" option work regardless where it is placed?
 
 # Other
 

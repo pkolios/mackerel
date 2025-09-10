@@ -18,7 +18,7 @@ from mackerel import __url__
 from mackerel import types as t
 
 
-def _config_dict_factory(data: Any) -> dict[str, Any]:
+def _config_dict_factory(data: Any) -> dict[str, Any]:  # noqa: ANN401
     """Custom dict factory to handle Paths."""
     return {k: (v.as_posix() if isinstance(v, Path) else v) for k, v in data}
 

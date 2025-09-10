@@ -79,6 +79,13 @@ show_error_codes = true
 [tool.ruff]
 line-length = 88
 lint.select = [ "ALL" ]
+lint.ignore = [
+  "ARG",    # Allow unused function / method args (ex. views, fixtures)
+  "E501",   # Line too long
+  "FIX002", # Allow todo comments
+  "TD002",  # Allow todo comments
+  "TD003",  # Allow todo comments
+]
 
 lint.extend-per-file-ignores."tests/**/*.py" = [
   "FBT",     # Booleans as positional arguments, e.g. via @pytest.mark.parametrize()

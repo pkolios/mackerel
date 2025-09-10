@@ -27,7 +27,7 @@ class MockContentRenderer(t.ContentRenderer):
 class MockMetadataParser(t.MetadataParser):
     """A simple metadata parser for testing purposes."""
 
-    def parse(self, raw: str) -> t.DocumentMetadata:  # noqa: ARG002
+    def parse(self, raw: str) -> t.DocumentMetadata:
         """Parse metadata from a static file (no-op for this test)."""
         return t.DocumentMetadata(
             title=t.Title("Test Document"),

@@ -4,7 +4,7 @@ from pathlib import Path
 from typing import Any
 from typing import cast
 
-import frontmatter
+import frontmatter  # type: ignore[import-untyped]  # TODO: remove when frontmatter gets types
 
 from mackerel import types as t
 
