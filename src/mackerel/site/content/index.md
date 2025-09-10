@@ -1,5 +1,6 @@
-Title: Homepage
-Template: index.html
-Cover_image: /img/testimg-home-1.jpg
-Body_class: home-template
-Loop: /posts
+---
+title: Home
+template: page.html
+---
+<style>img[alt=mackerel-logo] { width: 650px; }</style>
+![mackerel-logo](/img/logo.svg)

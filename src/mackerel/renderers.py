@@ -34,7 +34,7 @@ class Jinja2Renderer(t.TemplateRenderer):
         """Initialize the Jinja2 env."""
         self.env = jinja2.Environment(
             loader=jinja2.FileSystemLoader(template_path),
-            autoescape=True,
+            autoescape=jinja2.select_autoescape(enabled_extensions=()),
             **asdict(cfg),
         )
 

@@ -10,6 +10,8 @@
 - Use protocols instead of dataclasses in types
     - This way types is purely about typing
 
+- Skip documents that are in draft mode
+
 - Add pagination support for collections
 
 - Add exception handling
@@ -23,6 +25,8 @@
 
 - Update cli module
     - make "-v" option work regardless where it is placed?
+
+- Add RSS support
 
 # Other
 
@@ -55,11 +59,14 @@
 
 - [ ] Replace travis with github actions
     - [ ] Update badges in README.md
+
 - [ ] Verify coveralls badge works
     - [ ] Use github action for coverage ?
+
 - [ ] Update documentation site after overhaul
     - [ ] Find a nice theme
     - [ ] Release theme template as doc theme
+
 - [ ] Rewrite README.md with updated instructions
 - [ ] Change branch name from master to main
 - [ ] Add / extend release to cheeseshop

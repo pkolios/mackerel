@@ -1,15 +1,30 @@
 [mackerel]
 build_path = "_build"
+build_suffix = ".html"
 content_path = "content"
-template_path = "template"
+doc_suffix = ".md"
+template_path = "templates/bfmw"
+template_suffix = ".html"
+content_renderer = "MarkdownRenderer"
+template_renderer = "Jinja2Renderer"
+navigation = [
+    { label = "Home", url = "/", children = [] },
+    { label = "About", url = "/about.html", children = [] },
+]
 
-[navigation]
-main = ["index.md", "about.md"]
+[MarkdownRenderer]
+output_format = "html"
+extensions = [
+    "markdown.extensions.meta",
+    "markdown.extensions.extra",
+]
+
+[Jinja2Renderer]
+trim_blocks = true
+lstrip_blocks = true
 
 [user]
-title = "Mackerel Example Site"
-description = "A beautiful narrative written with Mackerel. The story begins here."
-logo = "img/logo.svg"
-url = "http://localhost:8000/"
+title = "Mackerel"
+description = "A minimal site built with mackerel."
 copyright = "2017-2025 Paris Kolios"
 powered = "https://github.com/pkolios/mackerel"

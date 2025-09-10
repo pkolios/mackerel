@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg version="1.1" width="950" height="700" viewbox="0 0 950 700" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve">
+<defs>
+    <g id="eq-tr">
+        <!--
+        <circle cx="0" cy="0" r="115.6" fill="none" stroke="black" />
+        -->
+        <!--
+            a = 200
+            h = 173
+            h/3 = 57.66
+            (0, 57.66, 115.33, 173)
+        -->
+        <polygon points="0,-115.33 -100,57.66 100,57.66" />
+    </g>
+    <g id="col-1">
+        <use xlink:href="#eq-tr" transform="translate(100, 150) rotate(-30)" style="fill: #2CBA94;" />
+        <use xlink:href="#eq-tr" transform="translate(157.66, 250) rotate(30)" style="fill: #848484;" />
+        <use xlink:href="#eq-tr" transform="translate(100, 350) rotate(-30)" style="fill: #9E9E9E;" />
+        <use xlink:href="#eq-tr" transform="translate(157.66, 450) rotate(30)" style="fill: #848484;" />
+        <use xlink:href="#eq-tr" transform="translate(100, 550) rotate(-30)" style="fill: #686868;" />
+    </g>
+    <g id="col-2">
+        <use xlink:href="#eq-tr" transform="translate(330.7, 150) rotate(30)" style="fill: #72DEC2;" />
+        <use xlink:href="#eq-tr" transform="translate(273, 250) rotate(-30)" style="fill: #EFEFEF;" />
+    </g>
+    <g id="col-3">
+        <use xlink:href="#eq-tr" transform="translate(100, 150) rotate(-30)" style="fill: #98E7D2;" />
+        <use xlink:href="#eq-tr" transform="translate(157.66, 250) rotate(30)" style="fill: #888888;" />
+        <use xlink:href="#eq-tr" transform="translate(100, 350) rotate(-30)" style="fill: #757575;" />
+        <use xlink:href="#eq-tr" transform="translate(157.66, 450) rotate(30)" style="fill: #606060;" />
+        <use xlink:href="#eq-tr" transform="translate(100, 550) rotate(-30)" style="fill: #4B4B4B;" />
+    </g>
+    <g id="col-4">
+        <use xlink:href="#eq-tr" transform="translate(330.7, 150) rotate(30)" style="fill: #C6C6C6;" />
+        <use xlink:href="#eq-tr" transform="translate(273, 250) rotate(-30)" style="fill: #B2B2B2;" />
+    </g>
+    <g id="col-5">
+        <use xlink:href="#eq-tr" transform="translate(100, 150) rotate(-30)" style="fill: #787878;" />
+        <use xlink:href="#eq-tr" transform="translate(157.66, 250) rotate(30)" style="fill: #686868;" />
+        <use xlink:href="#eq-tr" transform="translate(100, 350) rotate(-30)" style="fill: #585858;" />
+        <use xlink:href="#eq-tr" transform="translate(157.66, 450) rotate(30)" style="fill: #484848;" />
+        <use xlink:href="#eq-tr" transform="translate(100, 550) rotate(-30)" style="fill: #383838;" />
+    </g>
+</defs>
+
+<use xlink:href="#col-1" />
+<use xlink:href="#col-2" />
+<use xlink:href="#col-3" transform="translate(346, 0)" />
+<use xlink:href="#col-4" transform="translate(346, 0)" />
+<use xlink:href="#col-5" transform="translate(692, 0)" />
+</svg>

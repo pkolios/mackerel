@@ -3,6 +3,7 @@
 import http.server
 import logging
 import shutil
+from functools import partial
 from pathlib import Path
 
 import click
@@ -151,8 +152,9 @@ def run_server(host: str, port: int, config_path: Path) -> None:
         )
 
     rebuild_site()
-    handler = http.server.SimpleHTTPRequestHandler
-    handler.directory = str(cfg.mackerel.build_path)
+    handler = partial(
+        http.server.SimpleHTTPRequestHandler, directory=cfg.mackerel.build_path,
+    )
     with http.server.ThreadingHTTPServer((host, port), handler) as httpd:
         click.echo(f"Serving mackerel at http://{host}:{port}")
         try:
