@@ -67,6 +67,7 @@ class DocumentMetadata:
 class RenderedDocument:
     """Represents a document rendered content and parsed metadata."""
 
+    url: RelativeURL
     html: HTML
     metadata: DocumentMetadata
 

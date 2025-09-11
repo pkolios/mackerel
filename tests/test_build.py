@@ -152,6 +152,7 @@ def test_write_documents(tmp_path: Path, dry_run: bool) -> None:
     )
     docs = {
         build_path / "doc1.html": t.RenderedDocument(
+            url=t.RelativeURL("/doc1.html"),
             metadata=t.DocumentMetadata(
                 title=t.Title("Doc 1"),
                 template=Path("default.html"),
@@ -159,6 +160,7 @@ def test_write_documents(tmp_path: Path, dry_run: bool) -> None:
             html=t.HTML("<p>Content of Doc 1</p>"),
         ),
         build_path / "subdir" / "doc2.html": t.RenderedDocument(
+            url=t.RelativeURL("/subdir/doc2.html"),
             metadata=t.DocumentMetadata(
                 title=t.Title("Doc 2"),
                 template=Path("default.html"),
@@ -239,6 +241,7 @@ def test_create_category_items_sorting_and_caching() -> None:
     """Test create_category_items with sorting and caching behavior."""
     # Create 3 rendered documents with different metadata
     doc1 = t.RenderedDocument(
+        url=t.RelativeURL("/alpha.html"),
         html=t.HTML("<p>Alpha</p>"),
         metadata=t.DocumentMetadata(
             title=t.Title("Alpha"),
@@ -248,6 +251,7 @@ def test_create_category_items_sorting_and_caching() -> None:
         ),
     )
     doc2 = t.RenderedDocument(
+        url=t.RelativeURL("/beta.html"),
         html=t.HTML("<p>Beta</p>"),
         metadata=t.DocumentMetadata(
             title=t.Title("Beta"),
@@ -257,6 +261,7 @@ def test_create_category_items_sorting_and_caching() -> None:
         ),
     )
     doc3 = t.RenderedDocument(
+        url=t.RelativeURL("/gamma.html"),
         html=t.HTML("<p>Gamma</p>"),
         metadata=t.DocumentMetadata(
             title=t.Title("Gamma"),

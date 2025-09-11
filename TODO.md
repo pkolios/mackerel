@@ -1,14 +1,13 @@
 # Next
 
-- Handle listing of pages
-    - Pass url to the page listing for linking
-
 - Use protocols instead of dataclasses in types
     - This way types is purely about typing
 
 - Skip documents that are in draft mode
 
 - Add pagination support for collections
+
+- Support serving sites from sub directories
 
 - Add exception handling
     - https://chatgpt.com/g/g-p-68720c48b3d88191a30af2ffd2f3b792-mackerel/c/687cabcf-5ba0-8001-a76b-5069f835f8f2

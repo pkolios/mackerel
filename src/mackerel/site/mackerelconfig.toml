@@ -10,7 +10,7 @@ template_renderer = "Jinja2Renderer"
 navigation = [
     { label = "Home", url = "/", children = [] },
     { label = "About", url = "/about.html", children = [] },
-    { label = "Posts", url = "/posts", children = [] },
+    { label = "Posts", url = "/posts/", children = [] },
 ]
 
 [MarkdownRenderer]

@@ -50,8 +50,12 @@ def read_document(
     ).with_suffix(
         cfg.mackerel.build_suffix,
     )
+    url = t.RelativeURL(
+        str(Path("/") / target_path.relative_to(cfg.mackerel.build_path).as_posix())
+    )
     # Plugin hook post document file parsing here
     return target_path, t.RenderedDocument(
+        url=url,
         html=content_renderer.render(raw),
         metadata=metadata_parser.parse(raw),
     )
@@ -72,6 +76,7 @@ def write_documents(
     for target_path, doc in docs.items():
         logger.info("Writing document: %s", target_path)
         build_doc = t.BuildDocument(
+            url=doc.url,
             html=doc.html,
             metadata=doc.metadata,
             category_lists=[

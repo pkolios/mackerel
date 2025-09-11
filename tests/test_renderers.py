@@ -55,6 +55,7 @@ def test_jinja2_renderer(tmp_path: Path) -> None:
         template=Path("test_template.html"),
     )
     document = t.RenderedDocument(
+        url=t.RelativeURL("/test-document.html"),
         html=t.HTML("<h1>Test Document</h1>"),
         metadata=metadata,
     )
