@@ -20,10 +20,10 @@ class PythonFrontmatterParser(t.MetadataParser):
         return t.DocumentMetadata(
             title=t.Title(metadata["title"]),
             template=Path(metadata["template"]),
-            created_at=t.CreatedAt(metadata["created_at"])
+            created_at=t.CreatedAt(str(metadata["created_at"]))
             if "created_at" in metadata
             else None,
-            modified_at=t.ModifiedAt(metadata["modified_at"])
+            modified_at=t.ModifiedAt(str(metadata["modified_at"]))
             if "modified_at" in metadata
             else None,
             draft=bool(metadata.get("draft", False)),

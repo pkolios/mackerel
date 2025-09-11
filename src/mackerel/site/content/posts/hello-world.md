@@ -2,12 +2,12 @@
 title: Hello, world!
 template: page.html
 created_at: 2025-09-11
-exceprt: This is a markdown cheatsheet / demo for this mackerel starter template.
+excerpt: This is a markdown elements demo for this mackerel starter template.
 categories:
     - posts
 ---
 
-This is markdown cheatsheet / demo for this mackerel starter template. Please check the raw content of this file for the markdown usage.
+This is markdown elements demo for this mackerel starter template. Please check the raw content of this file for the markdown usage.
 
 
 ## Typography Elements in One

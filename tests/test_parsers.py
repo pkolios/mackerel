@@ -1,7 +1,6 @@
 """Tests for the parsers module."""
 
 import textwrap
-from datetime import datetime as dt
 from pathlib import Path
 
 from mackerel import types as t
@@ -15,8 +14,8 @@ def test_python_frontmatter_parser() -> None:
     ---
     title: Test Document
     template: default
-    created_at: 2023-10-01T12:00:00Z
-    modified_at: 2023-10-02T12:00:00Z
+    created_at: 2023-10-01 12:00:00
+    modified_at: 2023-10-02 12:00:00
     draft: false
     categories:
       - test
@@ -32,8 +31,8 @@ def test_python_frontmatter_parser() -> None:
     metadata = parser.parse(raw)
     assert metadata.title == "Test Document"
     assert metadata.template == Path("default")
-    assert metadata.created_at == dt.fromisoformat("2023-10-01T12:00:00+00:00")
-    assert metadata.modified_at == dt.fromisoformat("2023-10-02T12:00:00+00:00")
+    assert metadata.created_at == t.CreatedAt("2023-10-01 12:00:00")
+    assert metadata.modified_at == t.ModifiedAt("2023-10-02 12:00:00")
     assert metadata.categories == [t.Category("test"), t.Category("example")]
     assert metadata.category_lists == [
         t.CategoryList(

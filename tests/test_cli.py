@@ -59,8 +59,8 @@ def test_init(runner: CliRunner, tmp_path: Path) -> None:
 
     content_files = {p.name for p in (site_path / "content").iterdir()}
     assert "index.md" in content_files
-    template_files = {p.name for p in (site_path / "templates" / "example").iterdir()}
-    assert "index.html" in template_files
+    template_files = {p.name for p in (site_path / "templates" / "starter").iterdir()}
+    assert "page.html" in template_files
 
 
 def test_init_file_exists_error(runner: CliRunner, tmp_path: Path) -> None:

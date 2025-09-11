@@ -81,6 +81,7 @@ line-length = 88
 lint.select = [ "ALL" ]
 lint.ignore = [
   "ARG",    # Allow unused function / method args (ex. views, fixtures)
+  "COM812", # Missing trailing comma
   "E501",   # Line too long
   "FIX002", # Allow todo comments
   "TD002",  # Allow todo comments

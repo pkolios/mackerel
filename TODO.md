@@ -1,9 +1,5 @@
 # Next
 
-- Add minimal demo site
-    - With minimal base template (little to no css, but acceptable look)
-    - Demo content for all supported features
-
 - Handle listing of pages
     - Pass url to the page listing for linking
 
@@ -16,8 +12,6 @@
 
 - Add exception handling
     - https://chatgpt.com/g/g-p-68720c48b3d88191a30af2ffd2f3b792-mackerel/c/687cabcf-5ba0-8001-a76b-5069f835f8f2
-
-- Check / remove MANIFEST.in
 
 - Adjust build cli to support multiple renderers
     - Sphinx document renderer
@@ -38,15 +32,15 @@
     - [x] Turn Site into dataclass OR create a site protocol
     - [x] Use protocols for document and template render
 
-- [ ] Change the default template
-    - [ ] Use plain html default template with common use case examples
-        - [ ] Homepage
-        - [ ] Post page
-        - [ ] About page
-        - [ ] Page listing
-        - [ ] Navigation
+- [x] Change the default template
+    - [x] Use plain html default template with common use case examples
+        - [x] Homepage
+        - [x] Post page
+        - [x] About page
+        - [x] Page listing
+        - [x] Navigation
 
-- [ ] Move default site to different path / name
+- [x] Move default site to different path / name
 - [ ] Make adding & configuring templates / themes easy
     - [ ] As simple as pip install mackerel-theme-name?
     - [ ] Dropping the files in the templates folder
