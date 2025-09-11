@@ -3,13 +3,14 @@ build_path = "_build"
 build_suffix = ".html"
 content_path = "content"
 doc_suffix = ".md"
-template_path = "templates/bfmw"
+template_path = "templates/starter"
 template_suffix = ".html"
 content_renderer = "MarkdownRenderer"
 template_renderer = "Jinja2Renderer"
 navigation = [
     { label = "Home", url = "/", children = [] },
     { label = "About", url = "/about.html", children = [] },
+    { label = "Posts", url = "/posts", children = [] },
 ]
 
 [MarkdownRenderer]
@@ -25,6 +26,6 @@ lstrip_blocks = true
 
 [user]
 title = "Mackerel"
-description = "A minimal site built with mackerel."
-copyright = "2017-2025 Paris Kolios"
-powered = "https://github.com/pkolios/mackerel"
+description = "A minimal starter site."
+copyright = "MIT License © 2025"
+powered = "http://mackerel.sh"

@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <style type="text/css">body{margin:40px auto;max-width:650px;line-height:1.6;font-size:18px;color:#444;padding:0 10px}h1,h2,h3{line-height:1.2}{%- block css%}{%- endblock %}</style>
+    <link rel="shortcut icon" href="/assets/favicon.ico" />
+    <title>{{ ctx.user.title|e }} - {{ document.metadata.title|striptags|e }}</title>
+    <meta name="description" content="{{ ctx.user.description|e }}">
+</head>
+<body>
+{%- block body %}{%- endblock %}
+</body>
+</html>
