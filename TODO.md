@@ -1,10 +1,5 @@
 # Next
 
-- Use protocols instead of dataclasses in types
-    - This way types is purely about typing
-
-- Skip documents that are in draft mode
-
 - Add pagination support for collections
 
 - Support serving sites from sub directories

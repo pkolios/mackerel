@@ -74,6 +74,9 @@ def write_documents(
         nav=cfg.mackerel.navigation,
     )
     for target_path, doc in docs.items():
+        if doc.metadata.draft:
+            logger.info("Skipping draft document: %s", target_path)
+            continue
         logger.info("Writing document: %s", target_path)
         build_doc = t.BuildDocument(
             url=doc.url,

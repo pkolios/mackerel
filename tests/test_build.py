@@ -167,6 +167,15 @@ def test_write_documents(tmp_path: Path, dry_run: bool) -> None:
             ),
             html=t.HTML("<p>Content of Doc 2</p>"),
         ),
+        build_path / "wip.html": t.RenderedDocument(
+            url=t.RelativeURL("/wip.html"),
+            metadata=t.DocumentMetadata(
+                title=t.Title("wip"),
+                template=Path("default.html"),
+                draft=True,
+            ),
+            html=t.HTML("<p>wip</p>"),
+        ),
     }
     write_documents(
         docs=docs,
@@ -174,7 +183,12 @@ def test_write_documents(tmp_path: Path, dry_run: bool) -> None:
         template_renderer=MockTemplateRenderer(),
         dry_run=dry_run,
     )
-    for target_path, doc in docs.items():
+
+    expected_docs = {k: v for k, v in docs.items() if not v.metadata.draft}
+    build_files = [f for f in build_path.glob("**/*") if f.is_file()]
+    assert len(build_files) == (0 if dry_run else len(expected_docs))
+
+    for target_path, doc in expected_docs.items():
         assert (dry_run and not target_path.exists()) or (
             not dry_run and target_path.exists()
         )
