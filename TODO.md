@@ -11,10 +11,10 @@
     - Sphinx document renderer
     - htpy html renderer
 
-- Update cli module
-    - make "-v" option work regardless where it is placed?
-
 - Add RSS support
+
+- Add docs
+    - Use https://github.com/lepture/shibuya theme
 
 # Other
 

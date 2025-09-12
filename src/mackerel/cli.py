@@ -5,6 +5,7 @@ import logging
 import shutil
 from functools import partial
 from pathlib import Path
+from typing import Final
 
 import click
 import tomli_w
@@ -19,6 +20,14 @@ from mackerel.renderers import MarkdownRenderer
 
 logger = logging.getLogger(__name__)
 
+LOG_FORMAT: Final[str] = "%(levelname)s:%(name)s:%(message)s"
+
+
+def setup_logging(verbose: bool) -> None:  # noqa: FBT001
+    """Setup logging configuration."""
+    level = logging.INFO if verbose else logging.WARNING
+    logging.basicConfig(level=level, format=LOG_FORMAT, force=True)
+
 
 @click.group()
 @click.version_option(message=f"{mackerel.__title__} {mackerel.__version__}")
@@ -26,8 +35,8 @@ logger = logging.getLogger(__name__)
 @click.pass_context
 def cli(ctx: click.core.Context, verbose: bool) -> None:  # noqa: FBT001
     """Mackerel is a minimal static site generator."""
-    if verbose:
-        logging.basicConfig(level="INFO")
+    ctx.obj = {"verbose": verbose}
+    setup_logging(verbose)
 
 
 @cli.command()
@@ -126,17 +135,19 @@ def build_(
 def develop(ctx: click.core.Context, config_path: Path, host: str, port: int) -> None:
     """Runs a local development server."""
     cfg = config.load_config(config_path)
+    verbose = bool(ctx.obj and ctx.obj.get("verbose", False))
     run_process(
         config_path,
         cfg.mackerel.content_path,
         cfg.mackerel.template_path,
         target=run_server,
-        args=(host, port, config_path),
+        args=(host, port, config_path, verbose),
     )
 
 
-def run_server(host: str, port: int, config_path: Path) -> None:
+def run_server(host: str, port: int, config_path: Path, verbose: bool) -> None:  # noqa: FBT001
     """Run a simple HTTP server."""
+    setup_logging(verbose)
     cfg = config.load_config(config_path)
 
     def rebuild_site() -> None:
