@@ -8,7 +8,9 @@
     - https://chatgpt.com/g/g-p-68720c48b3d88191a30af2ffd2f3b792-mackerel/c/687cabcf-5ba0-8001-a76b-5069f835f8f2
 
 - Adjust build cli to support multiple renderers
-    - Sphinx document renderer
+    - markdown-it-py renderer
+        - https://markdown-it-py.readthedocs.io/en/latest/
+        - Make the default one? Replaces need for separate metadata parser
     - htpy html renderer
 
 - Add RSS support
