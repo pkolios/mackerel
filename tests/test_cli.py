@@ -90,7 +90,7 @@ def test_build(
     assert "Mackerel build finished." in result.output
     assert (
         f"Error reading document {site_path / 'content' / 'bad_document.md'}"
-        in caplog.text
+        in result.output
     )
 
 
@@ -196,6 +196,7 @@ def test_run_server(
             host="127.0.0.42",
             port=8080,
             config_path=site_path / "mackerelconfig.toml",
+            verbose=False,
         )
     captured = capsys.readouterr()
     assert "Serving mackerel at http://127.0.0.42:8080" in captured.out
