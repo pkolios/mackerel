@@ -29,9 +29,11 @@ class Jinja2Renderer(t.TemplateRenderer):
     def __init__(
         self,
         template_path: t.TemplatePath,
+        template_suffix: t.TemplateSuffix,
         cfg: Jinja2RendererConfig,
     ) -> None:
         """Initialize the Jinja2 env."""
+        self.template_suffix = template_suffix
         self.env = jinja2.Environment(
             loader=jinja2.FileSystemLoader(template_path),
             autoescape=jinja2.select_autoescape(enabled_extensions=()),
@@ -40,5 +42,7 @@ class Jinja2Renderer(t.TemplateRenderer):
 
     def render(self, ctx: t.TemplateContext, document: t.RenderedDocument) -> t.HTML:
         """Render the document using the Jinja2 template."""
-        template = self.env.get_template(str(document.metadata.template))
+        template = self.env.get_template(
+            str(document.metadata.template.with_suffix(self.template_suffix))
+        )
         return t.HTML(template.render(ctx=ctx, document=document))

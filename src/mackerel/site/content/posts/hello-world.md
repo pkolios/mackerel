@@ -1,6 +1,6 @@
 ---
 title: Hello, world!
-template: page.html
+template: page
 created_at: 2025-09-11
 excerpt: This is a markdown elements demo for this mackerel starter template.
 categories:

@@ -1,6 +1,6 @@
 ---
 title: Posts
-template: list.html
+template: list
 category_lists:
     - name: posts
       sort_by: created_at

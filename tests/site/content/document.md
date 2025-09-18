@@ -1,6 +1,6 @@
 ---
 title: Some Document
-template: document.jhtml
+template: document
 ---
 
 We use this for testing!

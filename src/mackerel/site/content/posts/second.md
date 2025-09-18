@@ -1,6 +1,6 @@
 ---
 title: Second post
-template: page.html
+template: page
 created_at: 2025-10-01
 excerpt: This is another post.
 categories:

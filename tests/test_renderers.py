@@ -46,7 +46,11 @@ def test_jinja2_renderer(tmp_path: Path) -> None:
 
     # Initialize the Jinja2 renderer with the template path
     cfg = Jinja2RendererConfig()
-    renderer = Jinja2Renderer(template_path, cfg)
+    renderer = Jinja2Renderer(
+        template_path=template_path,
+        template_suffix=t.TemplateSuffix(".html"),
+        cfg=cfg,
+    )
     ctx = t.TemplateContext(user=t.UserConfig({}))
 
     # Create a RenderedDocument with metadata and content

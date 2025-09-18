@@ -1,6 +1,6 @@
 ---
 title: Welcome to Mackerel
-template: home.html
+template: home
 ---
 
 ## Get started

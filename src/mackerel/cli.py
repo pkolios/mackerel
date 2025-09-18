@@ -113,6 +113,7 @@ def build_(
         metadata_parser=PythonFrontmatterParser(),
         template_renderer=Jinja2Renderer(
             template_path=cfg.mackerel.template_path,
+            template_suffix=cfg.mackerel.template_suffix,
             cfg=cfg.template_renderer,
         ),
         dry_run=dry_run,
@@ -158,6 +159,7 @@ def run_server(host: str, port: int, config_path: Path, verbose: bool) -> None: 
             metadata_parser=PythonFrontmatterParser(),
             template_renderer=Jinja2Renderer(
                 template_path=cfg.mackerel.template_path,
+                template_suffix=cfg.mackerel.template_suffix,
                 cfg=cfg.template_renderer,
             ),
         )

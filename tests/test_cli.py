@@ -165,6 +165,21 @@ def test_build_no_config_error(
     assert "File 'mackerelconfig.toml' does not exist" in result.output
 
 
+def test_build_starter_site(
+    runner: CliRunner,
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    """Test the build command with the starter site."""
+    starter_site = Path(__file__).parent.parent / "src" / "mackerel" / "site"
+    site_path = tmp_path / "starter_site"
+    shutil.copytree(starter_site, site_path)
+    monkeypatch.chdir(site_path)
+    result = runner.invoke(cli, ["-v", "build"], input="y\n")
+    assert result.exit_code == 0
+    assert "Mackerel build finished." in result.output
+
+
 def test_develop(
     runner: CliRunner,
     tmp_path: Path,
