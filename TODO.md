@@ -1,5 +1,10 @@
 # Next
 
+- Write docs
+    - Add pymdownx to the doc group dependencies
+    - Use https://github.com/asiffer/mkdocs-shadcn for theming
+    - Look into https://mkdocstrings.github.io/ generating cli & api docs
+
 - Adjust build cli to support multiple renderers
     - markdown-it-py renderer
         - https://markdown-it-py.readthedocs.io/en/latest/
