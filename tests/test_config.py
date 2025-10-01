@@ -94,7 +94,7 @@ def test_app_config_to_dict() -> None:
             "doc_suffix": ".md",
             "navigation": [
                 {"children": [], "label": "Home", "url": "/"},
-                {"children": [], "label": "mackerel", "url": "http://mackerel.sh"},
+                {"children": [], "label": "mackerel", "url": "https://mackerel.sh"},
             ],
             "template_path": "templates/starter",
             "template_renderer": "Jinja2Renderer",

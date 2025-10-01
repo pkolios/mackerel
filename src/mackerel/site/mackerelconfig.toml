@@ -28,4 +28,4 @@ lstrip_blocks = true
 title = "Mackerel"
 description = "A minimal starter site."
 copyright = "MIT License © 2025"
-powered = "http://mackerel.sh"
+powered = "https://mackerel.sh"

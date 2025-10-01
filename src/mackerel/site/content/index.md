@@ -13,7 +13,7 @@ Open `mackerelconfig.toml` for further adjustments.
 
 ## Documentation
 
-Explore the [documentation](http://mackerel.sh/), see the available cli commands and dive deeper in the internals of mackerel.
+Explore the [documentation](https://mackerel.sh/), see the available cli commands and dive deeper in the internals of mackerel.
 
 ## File structure
 

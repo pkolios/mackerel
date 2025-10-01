@@ -11,7 +11,7 @@ __description__ = _meta.get("Summary")
 __author__ = _meta.get("Author")
 __author_email__ = _meta.get("Author-email")
 __license__ = _meta.get("License")
-__url__ = _meta.get("Home-page", "http://mackerel.sh")
+__url__ = _meta.get("Home-page", "https://mackerel.sh")
 
 __all__ = [
     "__author__",

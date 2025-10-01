@@ -144,7 +144,7 @@ lstrip_blocks = true
 title = "My Site"
 description = "A site built with Mackerel"
 copyright = "2025 Me"
-powered = "http://mackerel.sh"
+powered = "https://mackerel.sh"
 ```
 
 ### Key sections

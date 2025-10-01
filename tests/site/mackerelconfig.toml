@@ -9,7 +9,7 @@ content_renderer = "MarkdownRenderer"
 template_renderer = "Jinja2Renderer"
 navigation = [
     { label = "Home", url = "/", children = [] },
-    { label = "mackerel", url = "http://mackerel.sh", children = [] },
+    { label = "mackerel", url = "https://mackerel.sh", children = [] },
 ]
 
 [MarkdownRenderer]
