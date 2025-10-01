@@ -4,6 +4,9 @@ on:
   release:
     types: [published]
 
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
 jobs:
   pypi-publish:
     name: upload release to PyPI
@@ -14,6 +17,18 @@ jobs:
       # IMPORTANT: this permission is mandatory for Trusted Publishing
       id-token: write
     steps:
+      - name: Set up Python
+        id: setup-python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+
+      - name: Install uv
+        run: pipx install uv
+
+      - name: Sync dependencies (incl. dev)
+        run: uv sync --all-extras --dev
+
       - name: Build package
         run: make build
 
