@@ -100,7 +100,7 @@ def build_(
     dry_run: bool,  # noqa: FBT001
     yes: bool,  # noqa: FBT001
 ) -> None:
-    """Build the contents of SITE_PATH."""
+    """Build the static site."""
     cfg = config.load_config(config_path)
     if cfg.mackerel.build_path.exists() and not yes:
         click.confirm(

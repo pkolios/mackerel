@@ -86,7 +86,7 @@ test:            ## Run tests
 .PHONY: docs
 docs: docs-clean  ## Clean and build docs
 	@echo "=> Building documentation"
-	PYTHONPATH=$$PYTHONPATH:$(pwd) uv run python src/mackerel/cli.py build docs
+	PYTHONPATH=$$PYTHONPATH:$(pwd) uv run mackerel build --config docs/mackerelconfig.toml
 
 .PHONY: docs-clean
 docs-clean:      ## Clean built documentation

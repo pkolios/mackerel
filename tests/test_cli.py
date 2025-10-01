@@ -33,7 +33,7 @@ def test_help(runner: CliRunner) -> None:
         "  --help         Show this message and exit.\n"
         "\n"
         "Commands:\n"
-        "  build    Build the contents of SITE_PATH.\n"
+        "  build    Build the static site.\n"
         "  develop  Runs a local development server.\n"
         "  init     Create an new mackerel site.\n"
     )
