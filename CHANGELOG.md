@@ -1,12 +1,11 @@
 # Changelog
 
-## 0.3 (2025-07-11)
+## 0.3 (2025-10-01)
 
 ### Improvements
 
-- Use `pyproject.toml` for packaging and dependency management.
-- Introduce uv package manager.
-- Switch documents from rst to markdown format.
+- Perform **complete rewrite** of the application.
+- See [README.md](./README.md)
 
 ## 0.2 (2017-07-09)
 

@@ -5,7 +5,7 @@
 [![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 [![codecov](https://codecov.io/gh/pkolios/mackerel/branch/main/graph/badge.svg)](https://codecov.io/gh/pkolios/mackerel)
 
-A minimal static site generator written in strongly typed Python.
+A minimal static site generator written in typed Python.
 This README is for **developers** contributing to Mackerel. For end-user documentation, see [docs](https://mackerel.sh).
 
 ---
@@ -50,12 +50,11 @@ src/mackerel/
 ├── parsers.py      # Front matter parsing
 ├── renderers.py    # Markdown + Jinja2 rendering
 ├── site/           # Starter site (templates + content)
-└── types.py        # Strongly typed core types & protocols
+└── types.py        # Typed core types & protocols
 ```
 
 * **Functional Core, Imperative Shell**: Business logic is pure and typed, orchestration happens in CLI.
-* **Minimal dependencies**: Click, Jinja2, Markdown, watchfiles.
-* **TODO Extensible**: plugin hooks in build pipeline.
+* **Minimal dependencies**: Keeping the cli installation time as fast as possible.
 
 ---
 

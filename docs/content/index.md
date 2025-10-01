@@ -184,10 +184,6 @@ Welcome to my site powered by **Mackerel**!
 
 Templates are written in [Jinja2](https://jinja.palletsprojects.com/):
 
-* `base.html` defines the main structure (header, footer, blocks).
-* `page.html` renders individual pages.
-* `list.html` can display lists of posts using category metadata.
-
 Inside templates you can access:
 
 * `document`: the current page (HTML + metadata)
@@ -204,6 +200,8 @@ Example snippet:
   {% endfor %}
 </ul>
 ```
+
+See starter site & template for more.
 
 ---
 
