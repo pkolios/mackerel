@@ -1,0 +1,102 @@
+[build-system]
+build-backend = "hatchling.build"
+
+requires = [ "hatchling" ]
+
+[project]
+name = "mackerel"
+version = "0.3.0"
+description = "Minimal static site generator built with type annotations"
+readme = "README.md"
+requires-python = ">=3.11"
+license = "MIT"
+license-files = ["LICENSE*"]
+authors = [ { name = "Paris Kolios", email = "hey@pariskolios.com" } ]
+keywords = ["static site generator", "markdown", "cli", "type annotations"]
+
+classifiers=[
+    'Development Status :: 2 - Pre-Alpha',
+    'Environment :: Console',
+    'Environment :: Web Environment',
+    'Intended Audience :: Developers',
+    'Intended Audience :: End Users/Desktop',
+    'License :: OSI Approved :: MIT License',
+    'Operating System :: OS Independent',
+    'Programming Language :: Python',
+    'Programming Language :: Python :: 3',
+    'Programming Language :: Python :: 3.11',
+    'Programming Language :: Python :: 3 :: Only',
+    'Topic :: Documentation',
+    'Topic :: Internet :: WWW/HTTP :: Dynamic Content',
+    'Topic :: Internet :: WWW/HTTP :: Dynamic Content :: Content Management System',
+    'Topic :: Software Development :: Documentation',
+    'Topic :: Text Processing :: Markup :: HTML'
+]
+
+dependencies = [
+    "Click",
+    "Jinja2",
+    "markdown",
+    "python-dateutil>=2.9.0.post0",
+    "python-frontmatter>=1.1.0",
+    "tomli-w>=1.2.0",
+    "watchfiles>=1.1.0",
+]
+
+[dependency-groups]
+dev = [
+    "coveralls",
+    "deptry",
+    "mypy",
+    "pre-commit",
+    "pyright",
+    "pytest",
+    "pytest-cov",
+    "ruff",
+    "types-Markdown",
+    "types-python-dateutil>=2.9.0.20250708",
+]
+
+[project.urls]
+Homepage = "https://mackerel.sh"
+Repository = "https://github.com/pkolios/mackerel"
+Changelog = "https://github.com/pkolios/mackerel/blob/main/CHANGELOG.md"
+
+[project.scripts]
+mackerel = "mackerel.cli:cli"
+
+[tool.mypy]
+pretty = true
+strict = true
+disallow_untyped_defs = true
+disallow_any_unimported = true
+no_implicit_optional = true
+check_untyped_defs = true
+warn_return_any = true
+warn_unused_ignores = true
+show_error_codes = true
+
+[tool.ruff]
+line-length = 88
+lint.select = [ "ALL" ]
+lint.ignore = [
+  "ARG",    # Allow unused function / method args (ex. views, fixtures)
+  "COM812", # Missing trailing comma
+  "E501",   # Line too long
+  "FIX002", # Allow todo comments
+  "TD002",  # Allow todo comments
+  "TD003",  # Allow todo comments
+]
+
+lint.extend-per-file-ignores."tests/**/*.py" = [
+  "FBT",     # Booleans as positional arguments, e.g. via @pytest.mark.parametrize()
+  "PLR2004", # Allow magic value comparisons in tests
+  "S101",    # Allow asserts
+]
+lint.flake8-tidy-imports.ban-relative-imports = "all"
+
+lint.isort.force-single-line = true
+lint.pydocstyle.convention = "google"
+
+[tool.deptry]
+known_first_party = [ "mackerel" ]

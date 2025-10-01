@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+
+{%- block body %}
+{% include 'header.html' %}
+<main>
+<header><h1>{{ document.metadata.title }}</h1></header>
+<section>{{ document.html }}</section>
+</main>
+{% include 'footer.html' %}
+
+{%- endblock %}

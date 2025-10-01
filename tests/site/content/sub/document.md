@@ -1,4 +1,6 @@
-Title: Some Sub Document
-Template: subdocument.jhtml
+---
+title: Some Sub Document
+template: subdocument
+---
 
 We use this for testing and for reference!
