@@ -92,3 +92,11 @@ docs: docs-clean  ## Clean and build docs
 docs-clean:      ## Clean built documentation
 	@echo "=> Cleaning docs build artifacts"
 	rm -rf docs/_build
+
+# Build
+
+.PHONY: build
+build: clean     ## Build the package
+	@echo "=> Building the package"
+	uv pip install --upgrade build
+	uv run python -m build
